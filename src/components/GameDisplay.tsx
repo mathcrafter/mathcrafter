@@ -258,7 +258,7 @@ const GameDisplay: React.FC = () => {
                         style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
                     >
                         <img
-                            src={`/assets/${gameState.currentPickaxe}-pickaxe.png`}
+                            src={`/assets/${gameState.currentPickaxe === 'wooden' ? '' : gameState.currentPickaxe + '-'}pickaxe.png`}
                             alt="Pickaxe cursor"
                             className={isSwinging ? styles.swingAnimation : ''}
                         />
