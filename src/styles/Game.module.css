@@ -117,8 +117,8 @@
 
 .pickaxeCursor {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 100px;
+    height: 100px;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 10;
