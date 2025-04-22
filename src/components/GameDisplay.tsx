@@ -11,6 +11,8 @@ import {
     getPickaxeHealth,
     generateId
 } from '../utils/gameUtils';
+import ShopModal from './ShopModal';
+import GameOverModal from './GameOverModal';
 
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
@@ -346,80 +348,18 @@ const GameDisplay: React.FC = () => {
             </div>
 
             {/* Shop Modal */}
-            <div className={`${styles.modal} ${showShop ? styles.modalShow : ''}`}>
-                <div className={`${styles.modalContent} ${styles.shopModalContent}`}>
-                    <div className={styles.modalHeader}>
-                        <h2>Shop</h2>
-                        <button
-                            className={styles.closeBtn}
-                            onClick={toggleShop}
-                        >
-                            ×
-                        </button>
-                    </div>
-                    <div className={styles.shopItems}>
-                        <div className={styles.shopItem}>
-                            <img src="/assets/stone-pickaxe.png" alt="Stone Pickaxe" />
-                            <div className={styles.itemInfo}>
-                                <div className={styles.itemName}>Stone Pickaxe</div>
-                                <div className={styles.itemCost}>
-                                    5 <img src="/assets/gemstone.png" alt="gems" />
-                                </div>
-                            </div>
-                            <button
-                                className={styles.buyBtn}
-                                disabled={gameState.gemstones < 5}
-                                onClick={() => buyItem('stone-pickaxe', 5)}
-                            >
-                                Buy
-                            </button>
-                        </div>
-
-                        <div className={styles.shopItem}>
-                            <img src="/assets/iron-pickaxe.png" alt="Iron Pickaxe" />
-                            <div className={styles.itemInfo}>
-                                <div className={styles.itemName}>Iron Pickaxe</div>
-                                <div className={styles.itemCost}>
-                                    15 <img src="/assets/gemstone.png" alt="gems" />
-                                </div>
-                            </div>
-                            <button
-                                className={styles.buyBtn}
-                                disabled={gameState.gemstones < 15}
-                                onClick={() => buyItem('iron-pickaxe', 15)}
-                            >
-                                Buy
-                            </button>
-                        </div>
-
-                        <div className={styles.shopItem}>
-                            <img src="/assets/desert-biome-icon.png" alt="Desert Biome" />
-                            <div className={styles.itemInfo}>
-                                <div className={styles.itemName}>Desert Biome</div>
-                                <div className={styles.itemCost}>
-                                    10 <img src="/assets/gemstone.png" alt="gems" />
-                                </div>
-                            </div>
-                            <button
-                                className={styles.buyBtn}
-                                disabled={gameState.gemstones < 10 || gameState.biome === 'desert'}
-                                onClick={() => buyItem('desert-biome', 10)}
-                            >
-                                Buy
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ShopModal
+                isOpen={showShop}
+                onClose={toggleShop}
+                gameState={gameState}
+                onBuyItem={buyItem}
+            />
 
             {/* Game Over Modal */}
-            <div className={`${styles.modal} ${showGameOver ? styles.modalShow : ''}`}>
-                <div className={styles.modalContent}>
-                    <h2>Game Over!</h2>
-                    <p>You've lost all your pickaxes!</p>
-                    <button className={styles.restartBtn} onClick={resetGame}>Play Again</button>
-                </div>
-            </div>
+            <GameOverModal
+                isOpen={showGameOver}
+                onRestart={resetGame}
+            />
         </div>
     );
 };
