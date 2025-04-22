@@ -30,7 +30,9 @@ const GameDisplay: React.FC = () => {
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+    const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
+    const [showQuestion, setShowQuestion] = useState<boolean>(false);
 
     const biomeRef = useRef<HTMLDivElement>(null);
 
@@ -66,19 +68,19 @@ const GameDisplay: React.FC = () => {
         generateNewProblem();
         // Clear the answer field
         setAnswer('');
+        // Hide the question
+        setShowQuestion(false);
     };
 
     // Handle correct answer
     const handleCorrectAnswer = () => {
-        // Add crack to biome
+        // Add crack to biome at the click position
         if (biomeRef.current) {
-            const x = Math.floor(Math.random() * (biomeRef.current.offsetWidth - 200));
-            const y = Math.floor(Math.random() * (biomeRef.current.offsetHeight - 200));
-
+            // Adjust position to center the crack on the click point (offsetting by half the crack size)
             const newCrack: Crack = {
                 id: generateId(),
-                x,
-                y
+                x: clickPosition.x - 100, // Offset by half the crack width (200px)
+                y: clickPosition.y - 100  // Offset by half the crack height (200px)
             };
 
             setCracks(prev => [...prev, newCrack]);
@@ -152,8 +154,8 @@ const GameDisplay: React.FC = () => {
     // Reveal a gemstone
     const revealGemstone = () => {
         if (biomeRef.current) {
-            const x = Math.floor(Math.random() * (biomeRef.current.offsetWidth - 50));
-            const y = Math.floor(Math.random() * (biomeRef.current.offsetHeight - 50));
+            const x = Math.floor(Math.random() * (biomeRef.current.offsetWidth - 200));
+            const y = Math.floor(Math.random() * (biomeRef.current.offsetHeight - 200));
 
             const newGemstone: Gemstone = {
                 id: generateId(),
@@ -207,6 +209,29 @@ const GameDisplay: React.FC = () => {
         setTimeout(() => setIsSwinging(false), 300);
     };
 
+    // Handle biome click
+    const handleBiomeClick = (e: React.MouseEvent) => {
+        if (biomeRef.current) {
+            const rect = biomeRef.current.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Store click position for crack placement
+            setClickPosition({ x, y });
+
+            // Show the math question
+            setShowQuestion(true);
+
+            // Generate a new problem if one isn't already shown
+            if (!showQuestion) {
+                generateNewProblem();
+            }
+
+            // Play animation
+            animatePickaxeSwing();
+        }
+    };
+
     // Track mouse movement for pickaxe cursor
     const handleMouseMove = (e: React.MouseEvent) => {
         if (biomeRef.current) {
@@ -224,6 +249,7 @@ const GameDisplay: React.FC = () => {
         setCracks([]);
         setGemstones([]);
         setShowGameOver(false);
+        setShowQuestion(false);
         generateNewProblem();
     };
 
@@ -270,7 +296,7 @@ const GameDisplay: React.FC = () => {
                     ref={biomeRef}
                     className={`${styles.biome} ${gameState.biome === 'desert' ? styles.desert : ''}`}
                     onMouseMove={handleMouseMove}
-                    onClick={animatePickaxeSwing}
+                    onClick={handleBiomeClick}
                 >
                     {/* Pickaxe cursor */}
                     <div
@@ -304,48 +330,50 @@ const GameDisplay: React.FC = () => {
                     ))}
                 </div>
 
-                <form className={styles.mathProblem} onSubmit={handleSubmit}>
-                    <div className={styles.question}>
-                        {problem.num1} {problem.operator} {problem.num2} = ?
-                    </div>
-                    <div className={styles.answerArea}>
-                        <input
-                            type="number"
-                            className={styles.answer}
-                            value={answer}
-                            onChange={(e) => setAnswer(e.target.value)}
-                            autoFocus
-                        />
-                        <button type="submit" className={styles.submitBtn}>Mine!</button>
-                    </div>
+                {showQuestion && (
+                    <form className={styles.mathProblem} onSubmit={handleSubmit}>
+                        <div className={styles.question}>
+                            {problem.num1} {problem.operator} {problem.num2} = ?
+                        </div>
+                        <div className={styles.answerArea}>
+                            <input
+                                type="number"
+                                className={styles.answer}
+                                value={answer}
+                                onChange={(e) => setAnswer(e.target.value)}
+                                autoFocus
+                            />
+                            <button type="submit" className={styles.submitBtn}>Mine!</button>
+                        </div>
 
-                    <div className={styles.numpad}>
-                        {[7, 8, 9, 4, 5, 6, 1, 2, 3, 0].map((num) => (
+                        <div className={styles.numpad}>
+                            {[7, 8, 9, 4, 5, 6, 1, 2, 3, 0].map((num) => (
+                                <button
+                                    key={num}
+                                    type="button"
+                                    className={styles.numpadBtn}
+                                    onClick={() => setAnswer(prev => prev + num.toString())}
+                                >
+                                    {num}
+                                </button>
+                            ))}
                             <button
-                                key={num}
                                 type="button"
-                                className={styles.numpadBtn}
-                                onClick={() => setAnswer(prev => prev + num.toString())}
+                                className={`${styles.numpadBtn} ${styles.clearBtn}`}
+                                onClick={() => setAnswer('')}
                             >
-                                {num}
+                                Clear
                             </button>
-                        ))}
-                        <button
-                            type="button"
-                            className={`${styles.numpadBtn} ${styles.clearBtn}`}
-                            onClick={() => setAnswer('')}
-                        >
-                            Clear
-                        </button>
-                        <button
-                            type="button"
-                            className={`${styles.numpadBtn} ${styles.deleteBtn}`}
-                            onClick={() => setAnswer(prev => prev.slice(0, -1))}
-                        >
-                            ←
-                        </button>
-                    </div>
-                </form>
+                            <button
+                                type="button"
+                                className={`${styles.numpadBtn} ${styles.deleteBtn}`}
+                                onClick={() => setAnswer(prev => prev.slice(0, -1))}
+                            >
+                                ←
+                            </button>
+                        </div>
+                    </form>
+                )}
             </div>
 
             {/* Shop Modal */}
