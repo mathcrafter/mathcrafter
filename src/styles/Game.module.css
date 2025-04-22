@@ -11,8 +11,8 @@
 
 /* Game Header */
 .gameHeader {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -22,11 +22,52 @@
     color: #72CB3B;
     text-shadow: 2px 2px 0 #333;
     letter-spacing: 2px;
+    grid-column: 1;
+    justify-self: start;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 10px;
+    grid-column: 2;
+    justify-self: center;
+}
+
+.shopButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: #FECC33;
+    border: 3px solid #D4A929;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.shopButton:hover {
+    background-color: #D4A929;
+    transform: translateY(-2px);
+}
+
+.shopButton:active {
+    transform: translateY(1px);
+}
+
+.buttonIcon {
+    width: 20px;
+    height: 20px;
+    image-rendering: pixelated;
 }
 
 .stats {
     display: flex;
     gap: 20px;
+    grid-column: 3;
+    justify-self: end;
 }
 
 .statItem {
@@ -57,7 +98,7 @@
 
 .biome {
     width: 100%;
-    height: 300px;
+    height: 400px;
     background-color: #5B7C5B;
     background-image: url('/assets/plain-biome.png');
     background-size: contain;
@@ -218,8 +259,8 @@
 }
 
 .shopItem {
-    width: 150px;
-    padding: 10px;
+    width: 170px;
+    padding: 15px;
     background-color: #444;
     border: 3px solid #555;
     border-radius: 5px;
@@ -313,15 +354,45 @@
     max-width: 400px;
 }
 
-.modalContent h2 {
-    font-size: 2.5rem;
-    color: #FF6B6B;
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
 }
 
-.modalContent p {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+.modalHeader h2 {
+    font-size: 2.5rem;
+    color: #FECC33;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    color: #FECC33;
+    font-size: 2.5rem;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
+    line-height: 1;
+    margin-left: 15px;
+}
+
+.closeBtn:hover {
+    color: #D4A929;
+}
+
+.shopModalContent {
+    max-width: 600px;
+    text-align: left;
+}
+
+.shopItems {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .restartBtn {
@@ -338,4 +409,15 @@
 .restartBtn:hover {
     background-color: #5B9E2D;
     transform: scale(1.05);
+}
+
+.modalContent h2 {
+    font-size: 2.5rem;
+    color: #FF6B6B;
+    margin-bottom: 15px;
+}
+
+.modalContent p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }

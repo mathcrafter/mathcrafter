@@ -26,6 +26,7 @@ const GameDisplay: React.FC = () => {
     const [cracks, setCracks] = useState<Crack[]>([]);
     const [gemstones, setGemstones] = useState<Gemstone[]>([]);
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
+    const [showShop, setShowShop] = useState<boolean>(false);
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
 
@@ -222,6 +223,11 @@ const GameDisplay: React.FC = () => {
         generateNewProblem();
     };
 
+    // Toggle shop visibility
+    const toggleShop = () => {
+        setShowShop(prev => !prev);
+    };
+
     // Calculate total pickaxes
     const totalPickaxes = getTotalPickaxes(gameState.pickaxes);
 
@@ -234,6 +240,15 @@ const GameDisplay: React.FC = () => {
         <div className={styles.gameContainer}>
             <div className={styles.gameHeader}>
                 <h1>MathCrafter</h1>
+                <div className={styles.headerButtons}>
+                    <button
+                        className={styles.shopButton}
+                        onClick={toggleShop}
+                    >
+                        Shop
+                        <img src="/assets/gemstone.png" alt="" className={styles.buttonIcon} />
+                    </button>
+                </div>
                 <div className={styles.stats}>
                     <div className={styles.statItem}>
                         <img src="/assets/gemstone.png" alt="Gemstone" className={styles.statIcon} />
@@ -299,62 +314,74 @@ const GameDisplay: React.FC = () => {
                 </form>
             </div>
 
-            <div className={styles.shopPanel}>
-                <h2>Shop</h2>
-                <div className={styles.shopItems}>
-                    <div className={styles.shopItem}>
-                        <img src="/assets/stone-pickaxe.png" alt="Stone Pickaxe" />
-                        <div className={styles.itemInfo}>
-                            <div className={styles.itemName}>Stone Pickaxe</div>
-                            <div className={styles.itemCost}>
-                                5 <img src="/assets/gemstone.png" alt="gems" />
-                            </div>
-                        </div>
+            {/* Shop Modal */}
+            <div className={`${styles.modal} ${showShop ? styles.modalShow : ''}`}>
+                <div className={`${styles.modalContent} ${styles.shopModalContent}`}>
+                    <div className={styles.modalHeader}>
+                        <h2>Shop</h2>
                         <button
-                            className={styles.buyBtn}
-                            disabled={gameState.gemstones < 5}
-                            onClick={() => buyItem('stone-pickaxe', 5)}
+                            className={styles.closeBtn}
+                            onClick={toggleShop}
                         >
-                            Buy
+                            ×
                         </button>
                     </div>
-
-                    <div className={styles.shopItem}>
-                        <img src="/assets/iron-pickaxe.png" alt="Iron Pickaxe" />
-                        <div className={styles.itemInfo}>
-                            <div className={styles.itemName}>Iron Pickaxe</div>
-                            <div className={styles.itemCost}>
-                                15 <img src="/assets/gemstone.png" alt="gems" />
+                    <div className={styles.shopItems}>
+                        <div className={styles.shopItem}>
+                            <img src="/assets/stone-pickaxe.png" alt="Stone Pickaxe" />
+                            <div className={styles.itemInfo}>
+                                <div className={styles.itemName}>Stone Pickaxe</div>
+                                <div className={styles.itemCost}>
+                                    5 <img src="/assets/gemstone.png" alt="gems" />
+                                </div>
                             </div>
+                            <button
+                                className={styles.buyBtn}
+                                disabled={gameState.gemstones < 5}
+                                onClick={() => buyItem('stone-pickaxe', 5)}
+                            >
+                                Buy
+                            </button>
                         </div>
-                        <button
-                            className={styles.buyBtn}
-                            disabled={gameState.gemstones < 15}
-                            onClick={() => buyItem('iron-pickaxe', 15)}
-                        >
-                            Buy
-                        </button>
-                    </div>
 
-                    <div className={styles.shopItem}>
-                        <img src="/assets/desert-biome-icon.png" alt="Desert Biome" />
-                        <div className={styles.itemInfo}>
-                            <div className={styles.itemName}>Desert Biome</div>
-                            <div className={styles.itemCost}>
-                                10 <img src="/assets/gemstone.png" alt="gems" />
+                        <div className={styles.shopItem}>
+                            <img src="/assets/iron-pickaxe.png" alt="Iron Pickaxe" />
+                            <div className={styles.itemInfo}>
+                                <div className={styles.itemName}>Iron Pickaxe</div>
+                                <div className={styles.itemCost}>
+                                    15 <img src="/assets/gemstone.png" alt="gems" />
+                                </div>
                             </div>
+                            <button
+                                className={styles.buyBtn}
+                                disabled={gameState.gemstones < 15}
+                                onClick={() => buyItem('iron-pickaxe', 15)}
+                            >
+                                Buy
+                            </button>
                         </div>
-                        <button
-                            className={styles.buyBtn}
-                            disabled={gameState.gemstones < 10 || gameState.biome === 'desert'}
-                            onClick={() => buyItem('desert-biome', 10)}
-                        >
-                            Buy
-                        </button>
+
+                        <div className={styles.shopItem}>
+                            <img src="/assets/desert-biome-icon.png" alt="Desert Biome" />
+                            <div className={styles.itemInfo}>
+                                <div className={styles.itemName}>Desert Biome</div>
+                                <div className={styles.itemCost}>
+                                    10 <img src="/assets/gemstone.png" alt="gems" />
+                                </div>
+                            </div>
+                            <button
+                                className={styles.buyBtn}
+                                disabled={gameState.gemstones < 10 || gameState.biome === 'desert'}
+                                onClick={() => buyItem('desert-biome', 10)}
+                            >
+                                Buy
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            {/* Game Over Modal */}
             <div className={`${styles.modal} ${showGameOver ? styles.modalShow : ''}`}>
                 <div className={styles.modalContent}>
                     <h2>Game Over!</h2>
