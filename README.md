@@ -22,7 +22,7 @@ MathCrafter is a Minecraft-inspired educational game that helps kids practice th
 
 - HTML5
 - CSS3
-- JavaScript (Vanilla)
+- TypeScript
 - Pixel art assets generated with Python and Pillow
 
 ## Getting Started
@@ -30,8 +30,15 @@ MathCrafter is a Minecraft-inspired educational game that helps kids practice th
 To run the game locally:
 
 1. Clone this repository
-2. Open `index.html` in your browser
-3. Start mining and solving math problems!
+2. Install dependencies with `npm install`
+3. Build the TypeScript files with `npm run build`
+4. Open `index.html` in your browser or use `npm start` to start a local server
+5. Start mining and solving math problems!
+
+## Development
+
+- Run `npm run watch` to automatically compile TypeScript files when they change
+- Run `npm start` to start a local development server with live reload
 
 ## Future Enhancements
 
