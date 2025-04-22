@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathCrafter - Math Practice Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1>MathCrafter</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <img src="assets/gemstone.png" alt="Gemstone" class="stat-icon">
+                    <span id="gemstone-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <img src="assets/pickaxe.png" alt="Pickaxe" class="stat-icon">
+                    <span id="pickaxe-count">1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="biome" id="biome">
+                <div class="pickaxe-cursor" id="pickaxe-cursor">
+                    <img src="assets/pickaxe.png" alt="Pickaxe cursor">
+                </div>
+            </div>
+
+            <div class="math-problem">
+                <div id="question">5 + 7 = ?</div>
+                <input type="number" id="answer" placeholder="Enter answer">
+                <button id="submit-btn">Mine!</button>
+            </div>
+        </div>
+
+        <div class="shop-panel">
+            <h2>Shop</h2>
+            <div class="shop-items">
+                <div class="shop-item" data-item="stone-pickaxe" data-cost="5">
+                    <img src="assets/stone-pickaxe.png" alt="Stone Pickaxe">
+                    <div class="item-info">
+                        <div class="item-name">Stone Pickaxe</div>
+                        <div class="item-cost">5 <img src="assets/gemstone.png" alt="gems"></div>
+                    </div>
+                    <button class="buy-btn" disabled>Buy</button>
+                </div>
+                <div class="shop-item" data-item="iron-pickaxe" data-cost="15">
+                    <img src="assets/iron-pickaxe.png" alt="Iron Pickaxe">
+                    <div class="item-info">
+                        <div class="item-name">Iron Pickaxe</div>
+                        <div class="item-cost">15 <img src="assets/gemstone.png" alt="gems"></div>
+                    </div>
+                    <button class="buy-btn" disabled>Buy</button>
+                </div>
+                <div class="shop-item" data-item="desert-biome" data-cost="10">
+                    <img src="assets/desert-biome-icon.png" alt="Desert Biome">
+                    <div class="item-info">
+                        <div class="item-name">Desert Biome</div>
+                        <div class="item-cost">10 <img src="assets/gemstone.png" alt="gems"></div>
+                    </div>
+                    <button class="buy-btn" disabled>Buy</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-over" class="modal">
+            <div class="modal-content">
+                <h2>Game Over!</h2>
+                <p>You've lost all your pickaxes!</p>
+                <button id="restart-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
