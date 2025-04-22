@@ -270,6 +270,7 @@ const GameDisplay: React.FC = () => {
                     ref={biomeRef}
                     className={`${styles.biome} ${gameState.biome === 'desert' ? styles.desert : ''}`}
                     onMouseMove={handleMouseMove}
+                    onClick={animatePickaxeSwing}
                 >
                     {/* Pickaxe cursor */}
                     <div
