@@ -72,8 +72,8 @@ const GameDisplay: React.FC = () => {
     const handleCorrectAnswer = () => {
         // Add crack to biome
         if (biomeRef.current) {
-            const x = Math.floor(Math.random() * (biomeRef.current.offsetWidth - 40));
-            const y = Math.floor(Math.random() * (biomeRef.current.offsetHeight - 40));
+            const x = Math.floor(Math.random() * (biomeRef.current.offsetWidth - 60));
+            const y = Math.floor(Math.random() * (biomeRef.current.offsetHeight - 60));
 
             const newCrack: Crack = {
                 id: generateId(),
