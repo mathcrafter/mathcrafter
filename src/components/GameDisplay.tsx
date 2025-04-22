@@ -62,6 +62,8 @@ const GameDisplay: React.FC = () => {
 
         // Generate new problem
         generateNewProblem();
+        // Clear the answer field
+        setAnswer('');
     };
 
     // Handle correct answer
@@ -303,14 +305,43 @@ const GameDisplay: React.FC = () => {
                     <div className={styles.question}>
                         {problem.num1} {problem.operator} {problem.num2} = ?
                     </div>
-                    <input
-                        type="number"
-                        className={styles.answer}
-                        value={answer}
-                        onChange={(e) => setAnswer(e.target.value)}
-                        autoFocus
-                    />
-                    <button type="submit" className={styles.submitBtn}>Mine!</button>
+                    <div className={styles.answerArea}>
+                        <input
+                            type="number"
+                            className={styles.answer}
+                            value={answer}
+                            onChange={(e) => setAnswer(e.target.value)}
+                            autoFocus
+                        />
+                        <button type="submit" className={styles.submitBtn}>Mine!</button>
+                    </div>
+
+                    <div className={styles.numpad}>
+                        {[7, 8, 9, 4, 5, 6, 1, 2, 3, 0].map((num) => (
+                            <button
+                                key={num}
+                                type="button"
+                                className={styles.numpadBtn}
+                                onClick={() => setAnswer(prev => prev + num.toString())}
+                            >
+                                {num}
+                            </button>
+                        ))}
+                        <button
+                            type="button"
+                            className={`${styles.numpadBtn} ${styles.clearBtn}`}
+                            onClick={() => setAnswer('')}
+                        >
+                            Clear
+                        </button>
+                        <button
+                            type="button"
+                            className={`${styles.numpadBtn} ${styles.deleteBtn}`}
+                            onClick={() => setAnswer(prev => prev.slice(0, -1))}
+                        >
+                            ←
+                        </button>
+                    </div>
                 </form>
             </div>
 
