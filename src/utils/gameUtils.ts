@@ -1,6 +1,6 @@
 'use client';
 
-import { MathProblem } from './types';
+import { MathProblem } from '../models/mathProblem';
 import { GameState } from '../models/gameState';
 
 // Generate a random ID

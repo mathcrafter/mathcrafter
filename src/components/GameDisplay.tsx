@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
-import { MathProblem, Gemstone } from '../utils/types';
+import { Gemstone } from '../models/gemstone';
 import { GameState } from '../models/gameState';
+import { MathProblem } from '../models/mathProblem';
 import {
     generateMathProblem,
     getInitialGameState,
