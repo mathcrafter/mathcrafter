@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { hasSavedGame, clearSavedGame } from '../utils/gameUtils';
 import styles from '../styles/Home.module.css';
+import gameController from '../controllers/GameController';
 
 interface HomeScreenProps {
     onStartNewGame: () => void;
@@ -13,12 +13,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartNewGame, onContinueGame 
 
     useEffect(() => {
         setIsClient(true);
-        setSavedGameExists(hasSavedGame());
+        setSavedGameExists(gameController.hasSavedGame());
     }, []);
 
     const handleNewGame = () => {
         // Clear any existing saved game
-        clearSavedGame();
+        gameController.clearSavedGame();
         onStartNewGame();
     };
 

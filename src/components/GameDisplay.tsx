@@ -6,19 +6,14 @@ import { Gemstone } from '../models/Gemstone';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
 import {
-    generateMathProblem,
-    getInitialGameState,
     getTotalPickaxes,
     getNextAvailablePickaxe,
     getPickaxeHealth,
-    generateId,
-    saveGameState,
-    loadGameState
 } from '../utils/gameUtils';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
 import InventoryBar from './InventoryBar';
-
+import gameController, { generateId } from '../controllers/GameController';
 /**
  * MathCrafter Game with Grid-Based Mining System
  * 
@@ -40,7 +35,7 @@ interface Block {
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
     const [isClient, setIsClient] = useState(false);
-    const [gameState, setGameState] = useState<GameState>(getInitialGameState());
+    const [gameState, setGameState] = useState<GameState>(gameController.getGameState());
     const [problem, setProblem] = useState<MathProblem>({
         num1: 0,
         num2: 0,
@@ -62,18 +57,18 @@ const GameDisplay: React.FC = () => {
     // Initialize client-side only data after component mounts
     useEffect(() => {
         setIsClient(true);
-        setProblem(generateMathProblem());
+        setProblem(gameController.generateMathProblem());
 
         // Initialize game state - try to load from localStorage first
-        const savedState = loadGameState();
-        const initialState = savedState || getInitialGameState();
+        gameController.loadGameState();
+        const initialState = gameController.getGameState();
         setGameState(initialState);
     }, []);
 
     // Save game state to localStorage whenever it changes
     useEffect(() => {
         if (isClient && !showGameOver) {
-            saveGameState(gameState);
+            gameController.saveGameState(gameState);
         }
     }, [gameState, isClient, showGameOver]);
 
@@ -95,7 +90,7 @@ const GameDisplay: React.FC = () => {
 
     // Generate a new math problem
     const generateNewProblem = () => {
-        setProblem(generateMathProblem());
+        setProblem(gameController.generateMathProblem());
         setAnswer('');
     };
 
@@ -308,13 +303,14 @@ const GameDisplay: React.FC = () => {
 
     // Reset the game
     const resetGame = () => {
-        const newState = getInitialGameState();
+        const newState = gameController.getGameState();
         setGameState(newState);
         setGemstones([]);
         setShowGameOver(false);
         setShowQuestion(false);
         generateNewProblem();
-        saveGameState(newState);
+        // saveGameState(newState);
+        gameController.saveGameState(newState);
     };
 
     // Toggle shop visibility
