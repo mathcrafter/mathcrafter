@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
-import { GameState, MathProblem, Crack, Gemstone } from '../utils/types';
+import { GameState, MathProblem, Gemstone } from '../utils/types';
 import {
     generateMathProblem,
     getInitialGameState,
@@ -13,6 +13,24 @@ import {
 } from '../utils/gameUtils';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
+
+/**
+ * MathCrafter Game with Grid-Based Mining System
+ * 
+ * The game divides the biome into a configurable grid (default: 4x3)
+ * - Each grid block can be individually mined
+ * - Hovering over a block highlights its border
+ * - Clicking a block shows a math question
+ * - Answering correctly cracks the block
+ * - When all blocks are cracked, the biome is cleared and player is rewarded
+ * - Different biomes have different grid configurations
+ */
+
+// Define a Block interface for our grid system
+interface Block {
+    id: string;
+    cracked: boolean;
+}
 
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
@@ -25,14 +43,23 @@ const GameDisplay: React.FC = () => {
         answer: 0
     });
     const [answer, setAnswer] = useState<string>('');
-    const [cracks, setCracks] = useState<Crack[]>([]);
     const [gemstones, setGemstones] = useState<Gemstone[]>([]);
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-    const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
+    const [activeBlock, setActiveBlock] = useState<number | null>(null);
+    const [hoveredBlock, setHoveredBlock] = useState<number | null>(null);
+
+    // Grid configuration
+    const [gridConfig, setGridConfig] = useState({
+        rows: 3,
+        cols: 4
+    });
+
+    // Blocks in the grid
+    const [blocks, setBlocks] = useState<Block[]>([]);
 
     const biomeRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +67,29 @@ const GameDisplay: React.FC = () => {
     useEffect(() => {
         setIsClient(true);
         setProblem(generateMathProblem());
+
+        // Initialize game state
+        const initialState = getInitialGameState();
+        setGameState(initialState);
+
+        // Initialize blocks grid
+        initializeBlocks();
     }, []);
+
+    // Initialize the blocks grid
+    const initializeBlocks = () => {
+        const totalBlocks = gridConfig.rows * gridConfig.cols;
+        const newBlocks: Block[] = [];
+
+        for (let i = 0; i < totalBlocks; i++) {
+            newBlocks.push({
+                id: generateId(),
+                cracked: false
+            });
+        }
+
+        setBlocks(newBlocks);
+    };
 
     // Generate a new math problem
     const generateNewProblem = () => {
@@ -70,32 +119,30 @@ const GameDisplay: React.FC = () => {
         setAnswer('');
         // Hide the question
         setShowQuestion(false);
+        setActiveBlock(null);
     };
 
     // Handle correct answer
     const handleCorrectAnswer = () => {
-        // Add crack to biome at the click position
-        if (biomeRef.current) {
-            // Adjust position to center the crack on the click point (offsetting by half the crack size)
-            const newCrack: Crack = {
-                id: generateId(),
-                x: clickPosition.x - 100, // Offset by half the crack width (200px)
-                y: clickPosition.y - 100  // Offset by half the crack height (200px)
-            };
+        // Crack the active block
+        if (activeBlock !== null) {
+            setBlocks(prev => {
+                const newBlocks = [...prev];
+                newBlocks[activeBlock].cracked = true;
 
-            setCracks(prev => [...prev, newCrack]);
+                // Check if all blocks are cracked
+                const allCracked = newBlocks.every(block => block.cracked);
 
-            // Update crack count
-            setGameState(prev => {
-                const newCrackCount = prev.crackCount + 1;
-
-                // Check if biome is completely cracked
-                if (newCrackCount >= prev.biomeHealth) {
-                    revealGemstone();
-                    return { ...prev, crackCount: 0 };
+                if (allCracked) {
+                    // All blocks cracked, reward the player
+                    setTimeout(() => {
+                        revealGemstone();
+                        // Reset blocks for next round
+                        initializeBlocks();
+                    }, 300);
                 }
 
-                return { ...prev, crackCount: newCrackCount };
+                return newBlocks;
             });
         }
 
@@ -164,9 +211,6 @@ const GameDisplay: React.FC = () => {
             };
 
             setGemstones(prev => [...prev, newGemstone]);
-
-            // Clear all cracks
-            setCracks([]);
         }
     };
 
@@ -194,7 +238,9 @@ const GameDisplay: React.FC = () => {
                 } else if (item === 'desert-biome') {
                     newState.biome = 'desert';
                     newState.biomeHealth = 15; // Desert biome is harder
-                    setCracks([]);
+                    // Change grid configuration for desert biome - make it harder
+                    setGridConfig({ rows: 4, cols: 5 });
+                    initializeBlocks(); // Reset blocks when changing biome
                     setGemstones([]);
                 }
 
@@ -209,27 +255,32 @@ const GameDisplay: React.FC = () => {
         setTimeout(() => setIsSwinging(false), 300);
     };
 
-    // Handle biome click
-    const handleBiomeClick = (e: React.MouseEvent) => {
-        if (biomeRef.current) {
-            const rect = biomeRef.current.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+    // Handle block click
+    const handleBlockClick = (index: number) => {
+        // Don't allow clicking already cracked blocks
+        if (blocks[index].cracked) return;
 
-            // Store click position for crack placement
-            setClickPosition({ x, y });
+        setActiveBlock(index);
 
-            // Show the math question
-            setShowQuestion(true);
+        // Show the math question
+        setShowQuestion(true);
 
-            // Generate a new problem if one isn't already shown
-            if (!showQuestion) {
-                generateNewProblem();
-            }
-
-            // Play animation
-            animatePickaxeSwing();
+        // Generate a new problem if one isn't already shown
+        if (!showQuestion) {
+            generateNewProblem();
         }
+
+        // Play animation
+        animatePickaxeSwing();
+    };
+
+    // Handle block hover
+    const handleBlockHover = (index: number) => {
+        setHoveredBlock(index);
+    };
+
+    const handleBlockLeave = () => {
+        setHoveredBlock(null);
     };
 
     // Track mouse movement for pickaxe cursor
@@ -246,7 +297,8 @@ const GameDisplay: React.FC = () => {
     // Reset the game
     const resetGame = () => {
         setGameState(getInitialGameState());
-        setCracks([]);
+        setGridConfig({ rows: 3, cols: 4 }); // Reset to default grid config
+        initializeBlocks();
         setGemstones([]);
         setShowGameOver(false);
         setShowQuestion(false);
@@ -296,7 +348,6 @@ const GameDisplay: React.FC = () => {
                     ref={biomeRef}
                     className={`${styles.biome} ${gameState.biome === 'desert' ? styles.desert : ''}`}
                     onMouseMove={handleMouseMove}
-                    onClick={handleBiomeClick}
                 >
                     {/* Pickaxe cursor */}
                     <div
@@ -310,14 +361,26 @@ const GameDisplay: React.FC = () => {
                         />
                     </div>
 
-                    {/* Cracks */}
-                    {cracks.map(crack => (
-                        <div
-                            key={crack.id}
-                            className={styles.crack}
-                            style={{ left: `${crack.x}px`, top: `${crack.y}px` }}
-                        />
-                    ))}
+                    {/* Grid blocks */}
+                    <div
+                        className={styles.biomeGrid}
+                        style={{
+                            gridTemplateColumns: `repeat(${gridConfig.cols}, 1fr)`,
+                            gridTemplateRows: `repeat(${gridConfig.rows}, 1fr)`
+                        }}
+                    >
+                        {blocks.map((block, index) => (
+                            <div
+                                key={block.id}
+                                className={`${styles.biomeBlock} 
+                                           ${block.cracked ? styles.crackedBlock : ''} 
+                                           ${hoveredBlock === index ? styles.hoveredBlock : ''}`}
+                                onClick={() => handleBlockClick(index)}
+                                onMouseEnter={() => handleBlockHover(index)}
+                                onMouseLeave={handleBlockLeave}
+                            />
+                        ))}
+                    </div>
 
                     {/* Gemstones */}
                     {gemstones.map(gemstone => (
