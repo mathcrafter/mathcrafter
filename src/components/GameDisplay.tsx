@@ -9,7 +9,9 @@ import {
     getTotalPickaxes,
     getNextAvailablePickaxe,
     getPickaxeHealth,
-    generateId
+    generateId,
+    saveGameState,
+    loadGameState
 } from '../utils/gameUtils';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
@@ -52,15 +54,6 @@ const GameDisplay: React.FC = () => {
     const [activeBlock, setActiveBlock] = useState<number | null>(null);
     const [hoveredBlock, setHoveredBlock] = useState<number | null>(null);
 
-    // Grid configuration
-    const [gridConfig, setGridConfig] = useState({
-        rows: 3,
-        cols: 4
-    });
-
-    // Blocks in the grid
-    const [blocks, setBlocks] = useState<Block[]>([]);
-
     const biomeRef = useRef<HTMLDivElement>(null);
 
     // Initialize client-side only data after component mounts
@@ -68,27 +61,33 @@ const GameDisplay: React.FC = () => {
         setIsClient(true);
         setProblem(generateMathProblem());
 
-        // Initialize game state
-        const initialState = getInitialGameState();
+        // Initialize game state - try to load from localStorage first
+        const savedState = loadGameState();
+        const initialState = savedState || getInitialGameState();
         setGameState(initialState);
-
-        // Initialize blocks grid
-        initializeBlocks();
     }, []);
+
+    // Save game state to localStorage whenever it changes
+    useEffect(() => {
+        if (isClient && !showGameOver) {
+            saveGameState(gameState);
+        }
+    }, [gameState, isClient, showGameOver]);
 
     // Initialize the blocks grid
     const initializeBlocks = () => {
-        const totalBlocks = gridConfig.rows * gridConfig.cols;
-        const newBlocks: Block[] = [];
-
-        for (let i = 0; i < totalBlocks; i++) {
-            newBlocks.push({
+        setGameState(prev => {
+            const totalBlocks = prev.gridConfig.rows * prev.gridConfig.cols;
+            const newBlocks = Array.from({ length: totalBlocks }, () => ({
                 id: generateId(),
                 cracked: false
-            });
-        }
+            }));
 
-        setBlocks(newBlocks);
+            return {
+                ...prev,
+                blocks: newBlocks
+            };
+        });
     };
 
     // Generate a new math problem
@@ -126,8 +125,8 @@ const GameDisplay: React.FC = () => {
     const handleCorrectAnswer = () => {
         // Crack the active block
         if (activeBlock !== null) {
-            setBlocks(prev => {
-                const newBlocks = [...prev];
+            setGameState(prev => {
+                const newBlocks = [...prev.blocks];
                 newBlocks[activeBlock].cracked = true;
 
                 // Check if all blocks are cracked
@@ -142,7 +141,10 @@ const GameDisplay: React.FC = () => {
                     }, 300);
                 }
 
-                return newBlocks;
+                return {
+                    ...prev,
+                    blocks: newBlocks
+                };
             });
         }
 
@@ -239,8 +241,15 @@ const GameDisplay: React.FC = () => {
                     newState.biome = 'desert';
                     newState.biomeHealth = 15; // Desert biome is harder
                     // Change grid configuration for desert biome - make it harder
-                    setGridConfig({ rows: 4, cols: 5 });
-                    initializeBlocks(); // Reset blocks when changing biome
+                    newState.gridConfig = { rows: 4, cols: 5 };
+
+                    // Initialize new blocks according to new grid size
+                    const totalBlocks = newState.gridConfig.rows * newState.gridConfig.cols;
+                    newState.blocks = Array.from({ length: totalBlocks }, () => ({
+                        id: generateId(),
+                        cracked: false
+                    }));
+
                     setGemstones([]);
                 }
 
@@ -258,7 +267,7 @@ const GameDisplay: React.FC = () => {
     // Handle block click
     const handleBlockClick = (index: number) => {
         // Don't allow clicking already cracked blocks
-        if (blocks[index].cracked) return;
+        if (gameState.blocks[index].cracked) return;
 
         setActiveBlock(index);
 
@@ -296,13 +305,13 @@ const GameDisplay: React.FC = () => {
 
     // Reset the game
     const resetGame = () => {
-        setGameState(getInitialGameState());
-        setGridConfig({ rows: 3, cols: 4 }); // Reset to default grid config
-        initializeBlocks();
+        const newState = getInitialGameState();
+        setGameState(newState);
         setGemstones([]);
         setShowGameOver(false);
         setShowQuestion(false);
         generateNewProblem();
+        saveGameState(newState);
     };
 
     // Toggle shop visibility
@@ -365,11 +374,11 @@ const GameDisplay: React.FC = () => {
                     <div
                         className={styles.biomeGrid}
                         style={{
-                            gridTemplateColumns: `repeat(${gridConfig.cols}, 1fr)`,
-                            gridTemplateRows: `repeat(${gridConfig.rows}, 1fr)`
+                            gridTemplateColumns: `repeat(${gameState.gridConfig.cols}, 1fr)`,
+                            gridTemplateRows: `repeat(${gameState.gridConfig.rows}, 1fr)`
                         }}
                     >
-                        {blocks.map((block, index) => (
+                        {gameState.blocks.map((block, index) => (
                             <div
                                 key={block.id}
                                 className={`${styles.biomeBlock} 

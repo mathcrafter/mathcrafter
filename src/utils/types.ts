@@ -10,6 +10,14 @@ export interface GameState {
     biome: 'plain' | 'desert';
     biomeHealth: number;
     crackCount: number;
+    gridConfig: {
+        rows: number;
+        cols: number;
+    };
+    blocks: {
+        id: string;
+        cracked: boolean;
+    }[];
 }
 
 export interface MathProblem {

@@ -32,6 +32,19 @@ export const generateMathProblem = (): MathProblem => {
 
 // Get initial game state
 export const getInitialGameState = (): GameState => {
+    // Default grid configuration 
+    const gridConfig = {
+        rows: 3,
+        cols: 4
+    };
+
+    // Initialize blocks
+    const totalBlocks = gridConfig.rows * gridConfig.cols;
+    const blocks = Array.from({ length: totalBlocks }, () => ({
+        id: generateId(),
+        cracked: false
+    }));
+
     return {
         gemstones: 0,
         pickaxes: {
@@ -43,7 +56,9 @@ export const getInitialGameState = (): GameState => {
         pickaxeHealth: 5,
         biome: 'plain',
         biomeHealth: 10,
-        crackCount: 0
+        crackCount: 0,
+        gridConfig,
+        blocks
     };
 };
 
@@ -73,5 +88,43 @@ export const getPickaxeHealth = (type: 'wooden' | 'stone' | 'iron'): number => {
             return 10;
         case 'iron':
             return 15;
+    }
+};
+
+// Save game state to localStorage
+export const saveGameState = (state: GameState): void => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('mathCrafterGameState', JSON.stringify(state));
+    }
+};
+
+// Load game state from localStorage
+export const loadGameState = (): GameState | null => {
+    if (typeof window !== 'undefined') {
+        const savedState = localStorage.getItem('mathCrafterGameState');
+        if (savedState) {
+            try {
+                return JSON.parse(savedState) as GameState;
+            } catch (e) {
+                console.error('Failed to parse saved game state', e);
+                return null;
+            }
+        }
+    }
+    return null;
+};
+
+// Check if a saved game exists
+export const hasSavedGame = (): boolean => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('mathCrafterGameState') !== null;
+    }
+    return false;
+};
+
+// Clear saved game state
+export const clearSavedGame = (): void => {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('mathCrafterGameState');
     }
 }; 
