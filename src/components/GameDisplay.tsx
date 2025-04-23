@@ -74,6 +74,24 @@ const GameDisplay: React.FC = () => {
         }
     }, [gameState, isClient, showGameOver]);
 
+    // Add keyboard event listener for inventory slot shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Only process if we're not in the math question input
+            if (!showQuestion) {
+                // Number keys 1-3 for pickaxe selection
+                if (e.key === '1') handlePickaxeSelect('wooden');
+                if (e.key === '2') handlePickaxeSelect('stone');
+                if (e.key === '3') handlePickaxeSelect('iron');
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [showQuestion, gameState.pickaxes]);
+
     // Initialize the blocks grid
     const initializeBlocks = () => {
         setGameState(prev => {
@@ -322,6 +340,32 @@ const GameDisplay: React.FC = () => {
     // Calculate total pickaxes
     const totalPickaxes = getTotalPickaxes(gameState.pickaxes);
 
+    // Handle pickaxe selection
+    const handlePickaxeSelect = (pickaxeType: 'wooden' | 'stone' | 'iron') => {
+        // Only select if we have at least one of this pickaxe
+        if (gameState.pickaxes[pickaxeType] > 0) {
+            setGameState(prev => ({
+                ...prev,
+                currentPickaxe: pickaxeType,
+                pickaxeHealth: getPickaxeHealth(pickaxeType)
+            }));
+        }
+    };
+
+    // Calculate durability percentage for the current pickaxe
+    const getDurabilityPercentage = () => {
+        const maxHealth = getPickaxeHealth(gameState.currentPickaxe);
+        return (gameState.pickaxeHealth / maxHealth) * 100;
+    };
+
+    // Get durability class based on health percentage
+    const getDurabilityClass = () => {
+        const percentage = getDurabilityPercentage();
+        if (percentage <= 33) return styles.low;
+        if (percentage <= 66) return styles.medium;
+        return '';
+    };
+
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {
         return <div className={styles.gameContainer}>Loading...</div>;
@@ -399,6 +443,86 @@ const GameDisplay: React.FC = () => {
                             style={{ left: `${gemstone.x}px`, top: `${gemstone.y}px` }}
                             onClick={() => collectGemstone(gemstone.id)}
                         />
+                    ))}
+                </div>
+
+                {/* Minecraft-style inventory row - moved outside of biome */}
+                <div className={styles.inventoryRow}>
+                    {/* Wooden Pickaxe */}
+                    <div
+                        className={`${styles.inventorySlot} ${gameState.currentPickaxe === 'wooden' ? styles.selected : ''}`}
+                        onClick={() => handlePickaxeSelect('wooden')}
+                    >
+                        <img
+                            src="/assets/pickaxe.svg"
+                            alt="Wooden Pickaxe"
+                            className={styles.inventoryItem}
+                        />
+                        {gameState.pickaxes.wooden > 0 && (
+                            <div className={styles.itemCount}>{gameState.pickaxes.wooden}</div>
+                        )}
+                        <div className={styles.slotNumber}>1</div>
+                        {gameState.currentPickaxe === 'wooden' && (
+                            <div className={styles.durabilityBar}>
+                                <div
+                                    className={`${styles.durabilityFill} ${getDurabilityClass()}`}
+                                    style={{ width: `${getDurabilityPercentage()}%` }}
+                                ></div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Stone Pickaxe */}
+                    <div
+                        className={`${styles.inventorySlot} ${gameState.currentPickaxe === 'stone' ? styles.selected : ''}`}
+                        onClick={() => handlePickaxeSelect('stone')}
+                    >
+                        <img
+                            src="/assets/stone-pickaxe.svg"
+                            alt="Stone Pickaxe"
+                            className={styles.inventoryItem}
+                        />
+                        {gameState.pickaxes.stone > 0 && (
+                            <div className={styles.itemCount}>{gameState.pickaxes.stone}</div>
+                        )}
+                        <div className={styles.slotNumber}>2</div>
+                        {gameState.currentPickaxe === 'stone' && (
+                            <div className={styles.durabilityBar}>
+                                <div
+                                    className={`${styles.durabilityFill} ${getDurabilityClass()}`}
+                                    style={{ width: `${getDurabilityPercentage()}%` }}
+                                ></div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Iron Pickaxe */}
+                    <div
+                        className={`${styles.inventorySlot} ${gameState.currentPickaxe === 'iron' ? styles.selected : ''}`}
+                        onClick={() => handlePickaxeSelect('iron')}
+                    >
+                        <img
+                            src="/assets/iron-pickaxe.svg"
+                            alt="Iron Pickaxe"
+                            className={styles.inventoryItem}
+                        />
+                        {gameState.pickaxes.iron > 0 && (
+                            <div className={styles.itemCount}>{gameState.pickaxes.iron}</div>
+                        )}
+                        <div className={styles.slotNumber}>3</div>
+                        {gameState.currentPickaxe === 'iron' && (
+                            <div className={styles.durabilityBar}>
+                                <div
+                                    className={`${styles.durabilityFill} ${getDurabilityClass()}`}
+                                    style={{ width: `${getDurabilityPercentage()}%` }}
+                                ></div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Empty slots to complete the inventory row */}
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className={styles.inventorySlot}></div>
                     ))}
                 </div>
 
