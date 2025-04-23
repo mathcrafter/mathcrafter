@@ -1,5 +1,6 @@
 import { GameState } from "@/models/GameState";
 import { MathProblem } from "@/models/MathProblem";
+import { pickaxes } from "@/models/Pickaxe";
 
 interface IGameStateStorage {
     getGameState(): GameState | null;
@@ -66,13 +67,10 @@ const getInitialGameState = (): GameState => {
 
     return {
         gemstones: 0,
-        pickaxes: {
-            wooden: 1,
-            stone: 0,
-            iron: 0
-        },
-        currentPickaxe: 'wooden',
-        pickaxeHealth: 5,
+        pickaxes: [
+            pickaxes[0],
+        ],
+        currentPickaxe: 0,
         biome: 'plain',
         biomeHealth: 10,
         crackCount: 0,

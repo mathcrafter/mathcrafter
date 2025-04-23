@@ -1,12 +1,9 @@
+import { Pickaxe } from './Pickaxe';
+
 export interface GameState {
     gemstones: number;
-    pickaxes: {
-        wooden: number;
-        stone: number;
-        iron: number;
-    };
-    currentPickaxe: 'wooden' | 'stone' | 'iron';
-    pickaxeHealth: number;
+    pickaxes: Pickaxe[];
+    currentPickaxe: number;
     biome: 'plain' | 'desert';
     biomeHealth: number;
     crackCount: number;

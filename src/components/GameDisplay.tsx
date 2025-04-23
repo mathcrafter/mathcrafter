@@ -5,14 +5,8 @@ import styles from '../styles/Game.module.css';
 import { Gemstone } from '../models/Gemstone';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
-import {
-    getTotalPickaxes,
-    getNextAvailablePickaxe,
-    getPickaxeHealth,
-} from '../utils/gameUtils';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
-import InventoryBar from './InventoryBar';
 import gameController, { generateId } from '../controllers/GameController';
 /**
  * MathCrafter Game with Grid-Based Mining System
@@ -153,14 +147,15 @@ const GameDisplay: React.FC = () => {
     const handleWrongAnswer = () => {
         // Reduce pickaxe health
         setGameState(prev => {
-            const newHealth = prev.pickaxeHealth - 1;
+            const currentPickaxe = prev.pickaxes[prev.currentPickaxe];
+            const newHealth = currentPickaxe.health - 1;
 
             // Check if pickaxe is broken
             if (newHealth <= 0) {
                 return breakPickaxe(prev);
             }
 
-            return { ...prev, pickaxeHealth: newHealth };
+            return { ...prev, pickaxes: [...prev.pickaxes, { ...currentPickaxe, health: newHealth }] };
         });
 
         // Play animation
@@ -173,12 +168,12 @@ const GameDisplay: React.FC = () => {
         const newState = { ...state };
         const pickaxes = { ...state.pickaxes };
 
-        // Reduce pickaxe count
-        pickaxes[state.currentPickaxe]--;
+        // Remove the current pickaxe from the array
+        pickaxes.splice(state.currentPickaxe, 1);
         newState.pickaxes = pickaxes;
 
         // Check if there are any pickaxes left
-        const totalPickaxes = getTotalPickaxes(pickaxes);
+        const totalPickaxes = newState.pickaxes.length;
 
         if (totalPickaxes === 0) {
             // Game over
@@ -187,11 +182,10 @@ const GameDisplay: React.FC = () => {
         }
 
         // Find the next available pickaxe
-        const nextPickaxe = getNextAvailablePickaxe(pickaxes);
+        const nextPickaxe = newState.pickaxes[0]
 
         if (nextPickaxe) {
-            newState.currentPickaxe = nextPickaxe;
-            newState.pickaxeHealth = getPickaxeHealth(nextPickaxe);
+            newState.currentPickaxe = 0;
         }
 
         return newState;
@@ -230,25 +224,25 @@ const GameDisplay: React.FC = () => {
             setGameState(prev => {
                 const newState = { ...prev, gemstones: prev.gemstones - cost };
 
-                if (item === 'stone-pickaxe') {
-                    newState.pickaxes = { ...prev.pickaxes, stone: prev.pickaxes.stone + 1 };
-                } else if (item === 'iron-pickaxe') {
-                    newState.pickaxes = { ...prev.pickaxes, iron: prev.pickaxes.iron + 1 };
-                } else if (item === 'desert-biome') {
-                    newState.biome = 'desert';
-                    newState.biomeHealth = 15; // Desert biome is harder
-                    // Change grid configuration for desert biome - make it harder
-                    newState.gridConfig = { rows: 4, cols: 5 };
+                // if (item === 'stone-pickaxe') {
+                //     newState.pickaxes = { ...prev.pickaxes, stone: prev.pickaxes.stone + 1 };
+                // } else if (item === 'iron-pickaxe') {
+                //     newState.pickaxes = { ...prev.pickaxes, iron: prev.pickaxes.iron + 1 };
+                // } else if (item === 'desert-biome') {
+                //     newState.biome = 'desert';
+                //     newState.biomeHealth = 15; // Desert biome is harder
+                //     // Change grid configuration for desert biome - make it harder
+                //     newState.gridConfig = { rows: 4, cols: 5 };
 
-                    // Initialize new blocks according to new grid size
-                    const totalBlocks = newState.gridConfig.rows * newState.gridConfig.cols;
-                    newState.blocks = Array.from({ length: totalBlocks }, () => ({
-                        id: generateId(),
-                        cracked: false
-                    }));
+                //     // Initialize new blocks according to new grid size
+                //     const totalBlocks = newState.gridConfig.rows * newState.gridConfig.cols;
+                //     newState.blocks = Array.from({ length: totalBlocks }, () => ({
+                //         id: generateId(),
+                //         cracked: false
+                //     }));
 
-                    setGemstones([]);
-                }
+                //     setGemstones([]);
+                // }
 
                 return newState;
             });
@@ -317,19 +311,7 @@ const GameDisplay: React.FC = () => {
     };
 
     // Calculate total pickaxes
-    const totalPickaxes = getTotalPickaxes(gameState.pickaxes);
-
-    // Handle pickaxe selection
-    const handlePickaxeSelect = (pickaxeType: 'wooden' | 'stone' | 'iron') => {
-        // Only select if we have at least one of this pickaxe
-        if (gameState.pickaxes[pickaxeType] > 0) {
-            setGameState(prev => ({
-                ...prev,
-                currentPickaxe: pickaxeType,
-                pickaxeHealth: getPickaxeHealth(pickaxeType)
-            }));
-        }
-    };
+    const totalPickaxes = gameState.pickaxes.length;
 
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {
@@ -373,7 +355,7 @@ const GameDisplay: React.FC = () => {
                         style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
                     >
                         <img
-                            src={`/assets/${gameState.currentPickaxe === 'wooden' ? '' : gameState.currentPickaxe + '-'}pickaxe.svg`}
+                            src={`/assets/pickaxes/${gameState.pickaxes[gameState.currentPickaxe].name.toLowerCase()}.webp`}
                             alt="Pickaxe cursor"
                             className={isSwinging ? styles.swingAnimation : ''}
                         />
@@ -410,12 +392,6 @@ const GameDisplay: React.FC = () => {
                         />
                     ))}
                 </div>
-
-                {/* Replace the inline inventory with the InventoryBar component */}
-                <InventoryBar
-                    gameState={gameState}
-                    onPickaxeSelect={handlePickaxeSelect}
-                />
 
                 {showQuestion && (
                     <form className={styles.mathProblem} onSubmit={handleSubmit}>
