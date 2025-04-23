@@ -1,0 +1,66 @@
+.homeScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 40px;
+    background-color: #222;
+    border: 5px solid #555;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.title {
+    margin-bottom: 50px;
+}
+
+.title h1 {
+    font-size: 3rem;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin: 0;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.buttonPrimary,
+.buttonSecondary {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.buttonPrimary {
+    background-color: #2a9d8f;
+    color: white;
+}
+
+.buttonPrimary:hover {
+    background-color: #237c6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.buttonSecondary {
+    background-color: #e9c46a;
+    color: #333;
+}
+
+.buttonSecondary:hover {
+    background-color: #f4a261;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
