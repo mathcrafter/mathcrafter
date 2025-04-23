@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '../styles/Game.module.css';
-import { GameState } from '../utils/types';
+import { GameState } from '../models/gameState';
 
 interface ShopModalProps {
     isOpen: boolean;

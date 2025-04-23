@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
-import { GameState, MathProblem, Gemstone } from '../utils/types';
+import { MathProblem, Gemstone } from '../utils/types';
+import { GameState } from '../models/gameState';
 import {
     generateMathProblem,
     getInitialGameState,
@@ -74,24 +75,6 @@ const GameDisplay: React.FC = () => {
             saveGameState(gameState);
         }
     }, [gameState, isClient, showGameOver]);
-
-    // Add keyboard event listener for inventory slot shortcuts
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            // Only process if we're not in the math question input
-            if (!showQuestion) {
-                // Number keys 1-3 for pickaxe selection
-                if (e.key === '1') handlePickaxeSelect('wooden');
-                if (e.key === '2') handlePickaxeSelect('stone');
-                if (e.key === '3') handlePickaxeSelect('iron');
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [showQuestion, gameState.pickaxes]);
 
     // Initialize the blocks grid
     const initializeBlocks = () => {

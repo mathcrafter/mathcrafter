@@ -1,6 +1,7 @@
 'use client';
 
-import { MathProblem, GameState } from './types';
+import { MathProblem } from './types';
+import { GameState } from '../models/gameState';
 
 // Generate a random ID
 export const generateId = (): string => {
