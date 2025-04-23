@@ -82,38 +82,29 @@ const getInitialGameState = (): GameState => {
 };
 
 export class GameController {
-    private gameState: GameState;
     private storage: IGameStateStorage;
 
     constructor(storage: IGameStateStorage) {
-        this.gameState = getInitialGameState();
         this.storage = storage;
     }
 
-    public loadGameState() {
+    public loadGameState(): GameState {
         const savedState = this.storage.getGameState();
         if (savedState) {
             console.log('Loaded game state from localStorage');
-            this.gameState = savedState;
+            return savedState;
         } else {
             console.log('No saved game state found, creating new game state');
-            this.saveGameState(getInitialGameState());
+            return getInitialGameState();
         }
     }
 
-    public saveGameState(gameState: GameState | null) {
-        if (gameState != null) {
-            this.gameState = gameState;
-        }
-        this.storage.setGameState(this.gameState);
+    public saveGameState(gameState: GameState) {
+        this.storage.setGameState(gameState);
     }
 
     public hasSavedGame(): boolean {
         return this.storage.getGameState() !== null;
-    }
-
-    public getGameState(): GameState {
-        return this.gameState;
     }
 
     public clearSavedGame(): void {

@@ -35,7 +35,7 @@ interface Block {
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
     const [isClient, setIsClient] = useState(false);
-    const [gameState, setGameState] = useState<GameState>(gameController.getGameState());
+    const [gameState, setGameState] = useState<GameState>(gameController.loadGameState());
     const [problem, setProblem] = useState<MathProblem>({
         num1: 0,
         num2: 0,
@@ -60,8 +60,7 @@ const GameDisplay: React.FC = () => {
         setProblem(gameController.generateMathProblem());
 
         // Initialize game state - try to load from localStorage first
-        gameController.loadGameState();
-        const initialState = gameController.getGameState();
+        const initialState = gameController.loadGameState();
         setGameState(initialState);
     }, []);
 
@@ -303,13 +302,12 @@ const GameDisplay: React.FC = () => {
 
     // Reset the game
     const resetGame = () => {
-        const newState = gameController.getGameState();
+        const newState = gameController.loadGameState();
         setGameState(newState);
         setGemstones([]);
         setShowGameOver(false);
         setShowQuestion(false);
         generateNewProblem();
-        // saveGameState(newState);
         gameController.saveGameState(newState);
     };
 
