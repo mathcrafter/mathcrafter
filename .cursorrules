@@ -1,0 +1,1 @@
+* Place all supporting scripts under scripts/ folder.  Use `uv` to manage dependencies for that folder.
