@@ -33,6 +33,10 @@ export class GameState implements IGameState {
     public increaseScore(amount: number): GameState {
         return new GameState({ ...this, score: this.score + amount });
     }
+
+    public withCurrentBiome(currentBiome: PlayerBiome): GameState {
+        return new GameState({ ...this, currentBiome });
+    }
 }
 
 
@@ -41,6 +45,6 @@ export const getInitialGameState = (): IGameState => {
         pickaxeInventory: new PickaxeInventory({ items: [new PlayerPickaxe({ id: null, type: "wood", health: null })], currentItem: null }), // Start with wooden pickaxe
         score: 0,
         unlockedBiomes: ["plains"],
-        currentBiome: new PlayerBiome({ id: null, type: "plains" })
+        currentBiome: new PlayerBiome({ id: null, type: "plains", currentHealth: null })
     };
 };

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
+import { PlayerBiome } from '../models/Biome';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
@@ -83,7 +84,44 @@ const GameDisplay: React.FC = () => {
     const handleCorrectAnswer = () => {
         // Damage the biome
         setGameState(prev => {
-            return prev.increaseScore(100);
+            // Increase score first
+            const withScore = prev.increaseScore(100);
+
+            // Then damage the biome (10 points of damage per correct answer)
+            const damagedBiome = prev.currentBiome.damage(10);
+            const updatedState = withScore.withCurrentBiome(damagedBiome);
+
+            // Check if biome is completely damaged and needs to be rewarded
+            if (damagedBiome.currentHealth <= 0) {
+                // Give reward and reset biome health in next tick to avoid
+                // state update during render
+                setTimeout(() => handleBiomeDefeated(), 100);
+            }
+
+            return updatedState;
+        });
+    };
+
+    // Handle when biome is completely mined
+    const handleBiomeDefeated = () => {
+        // Get reward based on biome type (add more complex rewards later)
+        const rewardAmount = 500;
+
+        // Show alert for now, could be replaced with a nicer UI later
+        alert(`Biome mined! You received ${rewardAmount} points!`);
+
+        // Update game state with reward and reset biome health
+        setGameState(prev => {
+            const withReward = prev.increaseScore(rewardAmount);
+
+            // Reset biome health
+            const resetBiome = new PlayerBiome({
+                id: prev.currentBiome.id,
+                type: prev.currentBiome.type,
+                currentHealth: null // This will reset to max health
+            });
+
+            return withReward.withCurrentBiome(resetBiome);
         });
     };
 
@@ -112,7 +150,7 @@ const GameDisplay: React.FC = () => {
 
     // Break pickaxe
     const breakPickaxe = (state: GameState): GameState => {
-        if (state.pickaxeInventory.length() === 0) {
+        if (state.pickaxeInventory.length === 0) {
             setShowGameOver(true);
             return state;
         }
@@ -151,7 +189,7 @@ const GameDisplay: React.FC = () => {
     };
 
     // Calculate total pickaxes
-    const totalPickaxes = gameState.pickaxeInventory.length();
+    const totalPickaxes = gameState.pickaxeInventory.length;
 
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {

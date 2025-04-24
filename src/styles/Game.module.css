@@ -114,19 +114,57 @@
     margin-bottom: 20px;
 }
 
-.biome {
+/* Biome container with health bar */
+.biomeContainer {
     position: relative;
+    display: flex;
     width: 100%;
-    height: 400px;
-    background-color: #5B7C5B;
-    background-image: url('/assets/plain-biome.png');
-    background-size: contain;
-    background-repeat: repeat;
+}
+
+.biome {
+    flex: 1;
+    min-height: 200px;
+    border-radius: 10px;
+    position: relative;
+    cursor: url('/assets/pickaxe.png'), pointer;
+    overflow: hidden;
+    background-color: #222;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     image-rendering: pixelated;
-    border: 4px solid #333;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-    cursor: none;
-    margin-bottom: 8px;
+    /* For crisp pixel art */
+    background-image: url('/assets/plain-biome.png');
+    transition: transform 0.1s;
+}
+
+/* Shake animation for biome damage */
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
 
 .desert {
@@ -202,36 +240,117 @@
     /* Hide cracked effect */
 }
 
-/* Biome health bar */
-.biomeHealthContainer {
+/* Impact spots to show damage points */
+.damageSpot {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 70%);
+    pointer-events: none;
+    z-index: 3;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
+    }
+}
+
+/* Crack overlay for biome */
+.crackOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    pointer-events: none;
+    /* Allow clicks to pass through */
+    z-index: 2;
+    transition: all 0.5s ease;
+    mix-blend-mode: overlay;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+    transform-origin: center;
+}
+
+/* Secondary crack overlay for more severe damage */
+.secondaryCracks {
+    mix-blend-mode: multiply;
+    z-index: 3;
+    background-size: 120% 120%;
+    animation: pulse 2s infinite alternate;
+}
+
+/* Critical crack overlay for severe damage */
+.criticalCracks {
+    mix-blend-mode: color-burn;
+    z-index: 4;
+    background-size: 150% 150%;
+    filter: saturate(200%) brightness(120%);
+    animation: pulseCritical 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        filter: brightness(100%);
+    }
+
+    100% {
+        filter: brightness(130%);
+    }
+}
+
+@keyframes pulseCritical {
+    0% {
+        filter: brightness(110%) saturate(150%);
+    }
+
+    100% {
+        filter: brightness(150%) saturate(250%);
+    }
+}
+
+/* Vertical health bar styles */
+.verticalHealthContainer {
+    width: 30px;
+    height: 200px;
+    margin-left: 10px;
     background-color: rgba(0, 0, 0, 0.5);
     border: 3px solid #333;
     border-radius: 10px;
     overflow: hidden;
-    z-index: 5;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
-.biomeHealthBar {
-    height: 100%;
+.verticalHealthBar {
+    width: 100%;
     background-color: #72CB3B;
-    transition: width 0.3s ease-out;
+    transition: height 0.3s ease-out;
 }
 
-.biomeHealthText {
+.verticalHealthText {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(-90deg);
     color: white;
     font-size: 0.9rem;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-    z-index: 6;
     white-space: nowrap;
 }
 

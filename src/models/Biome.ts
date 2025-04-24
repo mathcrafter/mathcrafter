@@ -5,15 +5,18 @@ export interface Biome {
     name: string;
     description: string;
     availableBlocks: string[];
+    maxHealth: number;
 }
 
 export class PlayerBiome {
     id: string;
     type: string;
+    currentHealth: number;
 
-    constructor({ id, type }: { id: string | null, type: string }) {
+    constructor({ id, type, currentHealth }: { id: string | null, type: string, currentHealth: number | null }) {
         this.id = id || generateId();
         this.type = type;
+        this.currentHealth = currentHealth || this.getBiome().maxHealth;
     }
 
     public getBiome(): Biome {
@@ -22,5 +25,13 @@ export class PlayerBiome {
 
     public getImageUrl(): string {
         return `/assets/biomes/${this.getBiome().name.toLowerCase()}.webp`;
+    }
+
+    public damage(amount: number): PlayerBiome {
+        return new PlayerBiome({ id: this.id, type: this.type, currentHealth: this.currentHealth - amount });
+    }
+
+    public get damagePercent(): number {
+        return 100 * this.currentHealth / this.getBiome().maxHealth;
     }
 }

@@ -34,11 +34,11 @@ export class PickaxeInventory {
         return new PickaxeInventory({ items: items, currentItem: items.length > 0 ? items[0].id : null });
     }
 
-    public length(): number {
-        return this.items.length;
-    }
-
     public withCurrentItem(playerPickaxe: PlayerPickaxe): PickaxeInventory {
         return new PickaxeInventory({ items: this.items.map(item => item.id === this.currentItem ? playerPickaxe : item), currentItem: playerPickaxe.id });
+    }
+
+    public get length(): number {
+        return this.items.length;
     }
 }
