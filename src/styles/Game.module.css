@@ -40,6 +40,30 @@
     gap: 5px;
     font-family: 'VT323', monospace;
     font-size: 1.3rem;
+    background-color: #888888;
+    border: 3px solid #666666;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pickaxesButton:hover {
+    background-color: #666666;
+    transform: translateY(-2px);
+}
+
+.pickaxesButton:active {
+    transform: translateY(1px);
+}
+
+.inventoryButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
     background-color: #FECC33;
     border: 3px solid #D4A929;
     border-radius: 5px;
@@ -49,12 +73,12 @@
     transition: all 0.2s;
 }
 
-.pickaxesButton:hover {
+.inventoryButton:hover {
     background-color: #D4A929;
     transform: translateY(-2px);
 }
 
-.pickaxesButton:active {
+.inventoryButton:active {
     transform: translateY(1px);
 }
 
@@ -1053,4 +1077,86 @@
         opacity: 0;
         transform: translate(-50%, -20px);
     }
+}
+
+.unlockBiomesButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: #72CB3B;
+    border: 3px solid #5B9E2D;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.unlockBiomesButton:hover {
+    background-color: #5B9E2D;
+    transform: translateY(-2px);
+}
+
+.unlockBiomesButton:active {
+    transform: translateY(1px);
+}
+
+.biomesModalContent {
+    max-width: 600px;
+    text-align: left;
+}
+
+.biomesSection {
+    margin-bottom: 20px;
+}
+
+.biomesSection h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #72CB3B;
+}
+
+.biomesGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.biomeItem {
+    width: 150px;
+    padding: 15px;
+    background-color: #444;
+    border: 3px solid #555;
+    border-radius: 5px;
+    text-align: center;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.biomeItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.biomeItemImg {
+    width: 100px;
+    height: 100px;
+    image-rendering: pixelated;
+    margin-bottom: 10px;
+    transition: transform 0.2s;
+    border-radius: 8px;
+    border: 2px solid #555;
+}
+
+.biomeItem:hover .biomeItemImg {
+    transform: scale(1.05);
+}
+
+.itemDescription {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-top: 5px;
 }

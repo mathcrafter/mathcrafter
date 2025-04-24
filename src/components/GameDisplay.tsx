@@ -9,6 +9,7 @@ import ShopPickaxesModal from './ShopPickaxesModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
 import InventoryModal from './InventoryModal';
+import BiomesModal from './BiomesModal';
 import QuickInventory from './QuickInventory';
 import gameController, { generateId } from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
@@ -36,6 +37,7 @@ const GameDisplay: React.FC = () => {
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [showInventory, setShowInventory] = useState<boolean>(false);
+    const [showBiomes, setShowBiomes] = useState<boolean>(false);
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
     const [pickaxeBroken, setPickaxeBroken] = useState<boolean>(false);
     const [brokenPickaxeType, setBrokenPickaxeType] = useState<string>('');
@@ -223,6 +225,11 @@ const GameDisplay: React.FC = () => {
         setShowInventory(prev => !prev);
     };
 
+    // Toggle biomes modal visibility
+    const toggleBiomes = () => {
+        setShowBiomes(prev => !prev);
+    };
+
     // Handle buying a pickaxe
     const handleBuyPickaxe = (itemType: string, cost: number) => {
         // Create a new pickaxe
@@ -282,10 +289,6 @@ const GameDisplay: React.FC = () => {
                 </div>
                 <div className={styles.stats}>
                     <div className={styles.statItem}>
-                        <img src="/assets/pickaxe.png" alt="Pickaxe" className={styles.statIcon} />
-                        <span>{totalPickaxes}</span>
-                    </div>
-                    <div className={styles.statItem}>
                         <span>Score:</span>
                         <span>{gameState.score}</span>
                     </div>
@@ -299,7 +302,14 @@ const GameDisplay: React.FC = () => {
                         Pickaxes
                     </button>
                     <button
-                        className={styles.pickaxesButton}
+                        className={styles.unlockBiomesButton}
+                        onClick={toggleBiomes}
+                    >
+                        <img src="/assets/unlock_biome.png" alt="Biomes" className={styles.buttonIcon} />
+                        Biomes
+                    </button>
+                    <button
+                        className={styles.inventoryButton}
                         onClick={toggleInventory}
                     >
                         <img src="/assets/inventory.png" alt="Inventory" className={styles.buttonIcon} />
@@ -380,6 +390,13 @@ const GameDisplay: React.FC = () => {
                 onClose={toggleInventory}
                 gameState={gameState}
                 onSelectPickaxe={handleSelectPickaxe}
+            />
+
+            {/* Biomes Modal */}
+            <BiomesModal
+                isOpen={showBiomes}
+                onClose={toggleBiomes}
+                gameState={gameState}
             />
 
             {/* Game Over Modal */}
