@@ -5,7 +5,7 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
 import { PlayerBiome } from '../models/Biome';
-import ShopModal from './ShopModal';
+import ShopPickaxesModal from './ShopPickaxesModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
 import InventoryModal from './InventoryModal';
@@ -277,21 +277,6 @@ const GameDisplay: React.FC = () => {
         <div className={styles.gameContainer}>
             <div className={styles.gameHeader}>
                 <h1>MathCrafter</h1>
-                <div className={styles.headerButtons}>
-                    <button
-                        className={styles.shopButton}
-                        onClick={toggleShop}
-                    >
-                        Shop
-                    </button>
-                    <button
-                        className={styles.shopButton}
-                        onClick={toggleInventory}
-                    >
-                        <img src="/assets/inventory.png" alt="Inventory" className={styles.buttonIcon} />
-                        Inventory
-                    </button>
-                </div>
                 <div className={styles.avatar}>
                     <img src="/assets/avatars/avatar.png" alt="Player Avatar" className={styles.avatarImage} />
                 </div>
@@ -304,6 +289,21 @@ const GameDisplay: React.FC = () => {
                         <span>Score:</span>
                         <span>{gameState.score}</span>
                     </div>
+                </div>
+                <div className={styles.headerButtons}>
+                    <button
+                        className={styles.pickaxesButton}
+                        onClick={toggleShop}
+                    >
+                        Pickaxes
+                    </button>
+                    <button
+                        className={styles.pickaxesButton}
+                        onClick={toggleInventory}
+                    >
+                        <img src="/assets/inventory.png" alt="Inventory" className={styles.buttonIcon} />
+                        Inventory
+                    </button>
                 </div>
             </div>
 
@@ -366,7 +366,7 @@ const GameDisplay: React.FC = () => {
             </div>
 
             {/* Shop Modal */}
-            <ShopModal
+            <ShopPickaxesModal
                 isOpen={showShop}
                 onClose={toggleShop}
                 gameState={gameState}

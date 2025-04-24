@@ -5,21 +5,21 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { pickaxeStore } from '@/stores/PickaxeStore';
 
-interface ShopModalProps {
+interface ShopPickaxesModalProps {
     isOpen: boolean;
     onClose: () => void;
     gameState: GameState;
     onBuyItem: (item: string, cost: number) => void;
 }
 
-const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
+const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
     const [hoveredPickaxe, setHoveredPickaxe] = useState<string | null>(null);
 
     return (
         <div className={`${styles.modal} ${isOpen ? styles.modalShow : ''}`}>
-            <div className={`${styles.modalContent} ${styles.shopModalContent}`}>
+            <div className={`${styles.modalContent} ${styles.pickaxesModalContent}`}>
                 <div className={styles.modalHeader}>
-                    <h2>Shop</h2>
+                    <h2>Pickaxes</h2>
                     <button
                         className={styles.closeBtn}
                         onClick={onClose}
@@ -27,11 +27,11 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
                         ×
                     </button>
                 </div>
-                <div className={styles.shopItems}>
+                <div className={styles.pickaxesItems}>
                     {pickaxeStore.items.map((pickaxe) => (
                         <div
                             key={pickaxe.name}
-                            className={styles.shopItem}
+                            className={styles.pickaxesItem}
                             onMouseEnter={() => setHoveredPickaxe(pickaxe.name)}
                             onMouseLeave={() => setHoveredPickaxe(null)}
                         >
@@ -71,4 +71,4 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
     );
 };
 
-export default ShopModal; 
+export default ShopPickaxesModal; 
