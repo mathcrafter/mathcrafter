@@ -118,12 +118,13 @@
 .biomeContainer {
     position: relative;
     display: flex;
+    flex-direction: column;
     width: 100%;
 }
 
 .biome {
     flex: 1;
-    min-height: 200px;
+    min-height: 300px;
     border-radius: 10px;
     position: relative;
     cursor: none;
@@ -322,7 +323,7 @@
     }
 }
 
-/* Vertical health bar styles */
+/* Vertical health bar styles - keeping for reference */
 .verticalHealthContainer {
     width: 30px;
     height: 200px;
@@ -348,6 +349,37 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(-90deg);
+    color: white;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+}
+
+/* Horizontal health bar styles */
+.horizontalHealthContainer {
+    height: 30px;
+    width: 100%;
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 3px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.horizontalHealthBar {
+    height: 100%;
+    background-color: #72CB3B;
+    transition: width 0.3s ease-out;
+}
+
+.horizontalHealthText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
     font-size: 0.9rem;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);

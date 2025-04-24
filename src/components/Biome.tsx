@@ -137,16 +137,16 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                 </div>
             </div>
 
-            {/* Vertical health bar */}
-            <div className={styles.verticalHealthContainer}>
+            {/* Horizontal health bar at bottom */}
+            <div className={styles.horizontalHealthContainer}>
                 <div
-                    className={styles.verticalHealthBar}
+                    className={styles.horizontalHealthBar}
                     style={{
-                        height: `${healthPercentage}%`,
+                        width: `${healthPercentage}%`,
                         backgroundColor: getHealthColor()
                     }}
                 />
-                <div className={styles.verticalHealthText}>{Math.ceil(healthPercentage)}%</div>
+                <div className={styles.horizontalHealthText}>{Math.ceil(healthPercentage)}%</div>
             </div>
         </div>
     );
