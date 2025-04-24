@@ -232,7 +232,7 @@ const GameDisplay: React.FC = () => {
                         className={styles.shopButton}
                         onClick={toggleInventory}
                     >
-                        <img src="/assets/pickaxe.png" alt="Pickaxe" className={styles.buttonIcon} />
+                        <img src="/assets/inventory.png" alt="Inventory" className={styles.buttonIcon} />
                         Inventory
                     </button>
                 </div>
