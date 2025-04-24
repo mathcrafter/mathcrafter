@@ -903,3 +903,66 @@
     font-size: 1.1rem;
     margin-bottom: 5px;
 }
+
+/* Quick Inventory */
+.quickInventoryContainer {
+    margin-top: 8px;
+}
+
+.quickInventoryLabel {
+    font-size: 1.1rem;
+    color: #72CB3B;
+    text-align: center;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+}
+
+.quickInventory {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    border: 3px solid #555;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.quickInventory .inventorySlot {
+    width: 48px;
+    height: 48px;
+    margin: 0 5px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.quickInventory .inventorySlot:hover {
+    transform: translateY(-3px);
+}
+
+.quickInventory .inventorySlot.selected {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 6px rgba(255, 255, 255, 0.2);
+}
+
+.pickaxeHealth {
+    position: absolute;
+    bottom: 8px;
+    right: 2px;
+    font-size: 0.7rem;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    z-index: 2;
+}
+
+.lowHealth {
+    color: #ff4d4d;
+}
+
+.mediumHealth {
+    color: #ffcc00;
+}
+
+.goodHealth {
+    color: #72CB3B;
+}

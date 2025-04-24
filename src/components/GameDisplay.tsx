@@ -9,6 +9,7 @@ import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
 import InventoryModal from './InventoryModal';
+import QuickInventory from './QuickInventory';
 import gameController, { generateId } from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
 import { PickaxeInventory } from '@/models/Inventory';
@@ -332,6 +333,11 @@ const GameDisplay: React.FC = () => {
                         </div>
                     </form>
                 )}
+
+                <QuickInventory
+                    gameState={gameState}
+                    onSelectPickaxe={handleSelectPickaxe}
+                />
             </div>
 
             {/* Shop Modal */}
