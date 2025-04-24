@@ -6,8 +6,12 @@ export class PickaxeInventory {
 
     constructor({ items, currentItem }: { items: PlayerPickaxe[], currentItem: string | null }) {
         this.items = items;
+
         if (currentItem === null && items.length > 0) {
             this.currentItem = items[0].id;
+        } else if (currentItem !== null && items.length > 0) {
+            const itemExists = items.some(item => item.id === currentItem);
+            this.currentItem = itemExists ? currentItem : items[0].id;
         } else {
             this.currentItem = null;
         }
@@ -35,7 +39,26 @@ export class PickaxeInventory {
     }
 
     public withCurrentItem(playerPickaxe: PlayerPickaxe): PickaxeInventory {
-        return new PickaxeInventory({ items: this.items.map(item => item.id === this.currentItem ? playerPickaxe : item), currentItem: playerPickaxe.id });
+        const updatedItems = this.items.map(item =>
+            item.id === playerPickaxe.id ? playerPickaxe : item
+        );
+
+        return new PickaxeInventory({
+            items: updatedItems,
+            currentItem: playerPickaxe.id
+        });
+    }
+
+    public withCurrentItemId(pickaxeId: string): PickaxeInventory {
+        if (!this.items.some(item => item.id === pickaxeId)) {
+            console.log("pickaxeId not found in items", pickaxeId);
+            return this;
+        }
+
+        return new PickaxeInventory({
+            items: [...this.items],
+            currentItem: pickaxeId
+        });
     }
 
     public get length(): number {

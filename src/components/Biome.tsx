@@ -10,11 +10,21 @@ interface BiomeProps {
 }
 
 const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome }) => {
+    console.log("currentPickaxe", currentPickaxe);
+
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [lastHealth, setLastHealth] = useState<number>(currentBiome?.currentHealth || 0);
+    const [pickaxeImageUrl, setPickaxeImageUrl] = useState<string>('/assets/pickaxes/wood.webp');
 
     const biomeRef = useRef<HTMLDivElement>(null);
+
+    // Update pickaxe image URL when currentPickaxe changes
+    useEffect(() => {
+        if (currentPickaxe) {
+            setPickaxeImageUrl(currentPickaxe.getImageUrl());
+        }
+    }, [currentPickaxe]);
 
     // Track health changes to add shaking effect
     useEffect(() => {
@@ -130,7 +140,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                     style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
                 >
                     <img
-                        src={currentPickaxe?.getImageUrl()}
+                        src={pickaxeImageUrl}
                         alt="Pickaxe cursor"
                         className={isSwinging ? styles.swingAnimation : ''}
                     />

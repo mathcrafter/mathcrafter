@@ -8,13 +8,21 @@ interface InventoryModalProps {
     isOpen: boolean;
     onClose: () => void;
     gameState: GameState;
+    onSelectPickaxe?: (pickaxeId: string) => void;
 }
 
-const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameState }) => {
+const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameState, onSelectPickaxe }) => {
     const modalClass = isOpen ? `${styles.modal} ${styles.modalShow}` : styles.modal;
     const pickaxeInventory = gameState.pickaxeInventory;
     const currentPickaxeId = pickaxeInventory.currentItem;
     const currentPickaxe = pickaxeInventory.getCurrentItem();
+
+    const handlePickaxeSelect = (pickaxeId: string) => {
+        console.log("handlePickaxeSelect", pickaxeId);
+        if (onSelectPickaxe) {
+            onSelectPickaxe(pickaxeId);
+        }
+    };
 
     return (
         <div className={modalClass}>
@@ -35,6 +43,7 @@ const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameSt
                                 <div
                                     key={pickaxe.id}
                                     className={`${styles.inventorySlot} ${pickaxe.id === currentPickaxeId ? styles.selected : ''}`}
+                                    onClick={() => handlePickaxeSelect(pickaxe.id)}
                                 >
                                     <img
                                         src={pickaxe.getImageUrl()}

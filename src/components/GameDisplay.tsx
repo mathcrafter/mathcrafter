@@ -11,6 +11,7 @@ import Biome from './Biome';
 import InventoryModal from './InventoryModal';
 import gameController, { generateId } from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
+import { PickaxeInventory } from '@/models/Inventory';
 /**
  * MathCrafter Game
  * 
@@ -209,6 +210,35 @@ const GameDisplay: React.FC = () => {
         setGameState(newState);
     };
 
+    // Handle selecting a different pickaxe
+    const handleSelectPickaxe = (pickaxeId: string) => {
+        // Find the selected pickaxe in the inventory
+        const selectedPickaxe = gameState.pickaxeInventory.items.find(item => item.id === pickaxeId);
+
+        if (!selectedPickaxe) {
+            console.error("Selected pickaxe not found in inventory");
+            return;
+        }
+
+        // Use the new setCurrentItem method
+        const updatedInventory = gameState.pickaxeInventory.withCurrentItemId(pickaxeId);
+
+        // Update the game state with the new inventory
+        setGameState(prevState => {
+            const newState = prevState.withPickaxeInventory(updatedInventory);
+
+            // Force saving to ensure consistency
+            setTimeout(() => {
+                gameController.saveGameState(newState);
+            }, 0);
+
+            return newState;
+        });
+
+        // Close the inventory modal after selection
+        setShowInventory(false);
+    };
+
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
@@ -317,6 +347,7 @@ const GameDisplay: React.FC = () => {
                 isOpen={showInventory}
                 onClose={toggleInventory}
                 gameState={gameState}
+                onSelectPickaxe={handleSelectPickaxe}
             />
 
             {/* Game Over Modal */}
