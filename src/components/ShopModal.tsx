@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
+import { pickaxeStore } from '@/stores/PickaxeStore';
 
 interface ShopModalProps {
     isOpen: boolean;
@@ -12,6 +13,8 @@ interface ShopModalProps {
 }
 
 const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
+    const [hoveredPickaxe, setHoveredPickaxe] = useState<string | null>(null);
+
     return (
         <div className={`${styles.modal} ${isOpen ? styles.modalShow : ''}`}>
             <div className={`${styles.modalContent} ${styles.shopModalContent}`}>
@@ -25,45 +28,43 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
                     </button>
                 </div>
                 <div className={styles.shopItems}>
-                    <div className={styles.shopItem}>
-                        <img src="/assets/stone-pickaxe.png" alt="Stone Pickaxe" />
-                        <div className={styles.itemInfo}>
-                            <div className={styles.itemName}>Stone Pickaxe</div>
-                        </div>
-                        <button
-                            className={styles.buyBtn}
-                            onClick={() => onBuyItem('stone-pickaxe', 0)}
+                    {pickaxeStore.items.map((pickaxe) => (
+                        <div
+                            key={pickaxe.name}
+                            className={styles.shopItem}
+                            onMouseEnter={() => setHoveredPickaxe(pickaxe.name)}
+                            onMouseLeave={() => setHoveredPickaxe(null)}
                         >
-                            Get
-                        </button>
-                    </div>
+                            <img
+                                src={`/assets/pickaxes/${pickaxe.name.toLowerCase()}.webp`}
+                                alt={`${pickaxe.name} Pickaxe`}
+                                className={styles.shopItemImg}
+                            />
 
-                    <div className={styles.shopItem}>
-                        <img src="/assets/iron-pickaxe.png" alt="Iron Pickaxe" />
-                        <div className={styles.itemInfo}>
-                            <div className={styles.itemName}>Iron Pickaxe</div>
-                        </div>
-                        <button
-                            className={styles.buyBtn}
-                            onClick={() => onBuyItem('iron-pickaxe', 0)}
-                        >
-                            Get
-                        </button>
-                    </div>
+                            {hoveredPickaxe === pickaxe.name && (
+                                <div className={styles.itemTooltip}>
+                                    <div className={styles.itemName}>{pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1)} Pickaxe</div>
+                                    <div className={styles.itemStats}>
+                                        <div>Strength: {pickaxe.strength}</div>
+                                        <div>Durability: {pickaxe.maxHealth}</div>
+                                        <div>Crit: {pickaxe.critical * 100}%</div>
+                                    </div>
+                                    <div className={styles.itemCost}>
+                                        <span>{pickaxe.cost.amount}</span>
+                                        <span>{pickaxe.cost.itemType}</span>
+                                    </div>
+                                </div>
+                            )}
 
-                    <div className={styles.shopItem}>
-                        <img src="/assets/desert-biome-icon.png" alt="Desert Biome" />
-                        <div className={styles.itemInfo}>
-                            <div className={styles.itemName}>Desert Biome</div>
+                            <button
+                                className={styles.buyBtn}
+                                onClick={() => onBuyItem(pickaxe.name, pickaxe.cost.amount)}
+                                disabled={gameState.score < pickaxe.cost.amount}
+                            >
+                                {gameState.score < pickaxe.cost.amount ? 'Not enough' : 'Buy'}
+                            </button>
                         </div>
-                        <button
-                            className={styles.buyBtn}
-                            disabled={true}
-                            onClick={() => onBuyItem('desert-biome', 0)}
-                        >
-                            Get
-                        </button>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ import GameOverModal from './GameOverModal';
 import Biome from './Biome';
 import InventoryModal from './InventoryModal';
 import gameController, { generateId } from '../controllers/GameController';
+import { PlayerPickaxe } from '@/models/Pickaxe';
 /**
  * MathCrafter Game
  * 
@@ -195,6 +196,19 @@ const GameDisplay: React.FC = () => {
         setShowInventory(prev => !prev);
     };
 
+    // Handle buying a pickaxe
+    const handleBuyPickaxe = (itemType: string, cost: number) => {
+        // Create a new pickaxe
+        const newPickaxe = new PlayerPickaxe({ id: null, type: itemType, health: null });
+
+        // Add to inventory and deduct score
+        const newState = gameState
+            .withPickaxeInventory(gameState.pickaxeInventory.add(newPickaxe))
+            .withScore(gameState.score - cost);
+
+        setGameState(newState);
+    };
+
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
@@ -295,7 +309,7 @@ const GameDisplay: React.FC = () => {
                 isOpen={showShop}
                 onClose={toggleShop}
                 gameState={gameState}
-                onBuyItem={() => { }}
+                onBuyItem={handleBuyPickaxe}
             />
 
             {/* Inventory Modal */}
