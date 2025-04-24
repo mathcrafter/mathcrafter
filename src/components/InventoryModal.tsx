@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
+import PickaxeButton from './PickaxeButton';
 
 interface InventoryModalProps {
     isOpen: boolean;
@@ -17,10 +18,24 @@ const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameSt
     const currentPickaxeId = pickaxeInventory.currentItem;
     const currentPickaxe = pickaxeInventory.getCurrentItem();
 
-    const handlePickaxeSelect = (pickaxeId: string) => {
-        console.log("handlePickaxeSelect", pickaxeId);
-        if (onSelectPickaxe) {
-            onSelectPickaxe(pickaxeId);
+    // State to track which pickaxe is being previewed (not yet selected)
+    const [previewPickaxeId, setPreviewPickaxeId] = useState<string | null>(currentPickaxeId);
+
+    // Get the preview pickaxe object
+    const previewPickaxe = previewPickaxeId
+        ? pickaxeInventory.items.find(p => p.id === previewPickaxeId)
+        : currentPickaxe;
+
+    const handlePickaxePreview = (pickaxeId: string) => {
+        console.log("handlePickaxePreview", pickaxeId);
+        setPreviewPickaxeId(pickaxeId);
+    };
+
+    const handlePickaxeSelect = () => {
+        if (previewPickaxeId && onSelectPickaxe) {
+            console.log("handlePickaxeSelect", previewPickaxeId);
+            onSelectPickaxe(previewPickaxeId);
+            onClose(); // Close the modal after selection
         }
     };
 
@@ -35,41 +50,38 @@ const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameSt
                 <div className={styles.inventorySection}>
                     <h3>Pickaxes</h3>
                     <div className={styles.pickaxeGrid}>
-                        {pickaxeInventory.items.map((pickaxe) => {
-                            const maxHealth = pickaxe.getPickaxe().maxHealth;
-                            const healthPercentage = (pickaxe.health / maxHealth) * 100;
-
-                            return (
-                                <div
-                                    key={pickaxe.id}
-                                    className={`${styles.inventorySlot} ${pickaxe.id === currentPickaxeId ? styles.selected : ''}`}
-                                    onClick={() => handlePickaxeSelect(pickaxe.id)}
-                                >
-                                    <img
-                                        src={pickaxe.getImageUrl()}
-                                        alt={pickaxe.type}
-                                        className={styles.inventoryItem}
-                                    />
-                                    <div className={styles.durabilityBar}>
-                                        <div
-                                            className={`${styles.durabilityFill} ${pickaxe.health < 30 ? styles.low :
-                                                pickaxe.health < 70 ? styles.medium : ''
-                                                }`}
-                                            style={{ width: `${healthPercentage}%` }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                        {pickaxeInventory.items.map((pickaxe) => (
+                            <PickaxeButton
+                                key={pickaxe.id}
+                                pickaxe={pickaxe}
+                                isSelected={pickaxe.id === previewPickaxeId}
+                                onClick={handlePickaxePreview}
+                            />
+                        ))}
                     </div>
                 </div>
 
-                {currentPickaxe && (
+                {previewPickaxe && (
                     <div className={styles.inventoryDetails}>
                         <div className={styles.selectedItemDetails}>
-                            <h4>{currentPickaxe.type} Pickaxe</h4>
-                            <p>Health: {currentPickaxe.health} / {currentPickaxe.getPickaxe().maxHealth}</p>
-                            <p>Strength: {currentPickaxe.getPickaxe().strength}</p>
+                            <h4>{previewPickaxe.type} Pickaxe</h4>
+                            <p>Health: {previewPickaxe.health} / {previewPickaxe.getPickaxe().maxHealth}</p>
+                            <p>Strength: {previewPickaxe.getPickaxe().strength}</p>
+
+                            {previewPickaxeId !== currentPickaxeId && (
+                                <button
+                                    className={styles.selectButton}
+                                    onClick={handlePickaxeSelect}
+                                >
+                                    Select Pickaxe
+                                </button>
+                            )}
+
+                            {previewPickaxeId === currentPickaxeId && (
+                                <div className={styles.currentlyEquipped}>
+                                    Currently Equipped
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
