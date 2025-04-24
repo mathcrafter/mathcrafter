@@ -1,6 +1,4 @@
-import { Biome, biomes } from './Biome';
 import { PlayerPickaxe, PickaxeInventory } from './Inventory';
-import { Pickaxe, pickaxes } from './Pickaxe';
 
 export interface IGameState {
     score: number;

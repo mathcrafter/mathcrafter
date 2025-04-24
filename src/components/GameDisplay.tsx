@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
+import Biome from './Biome';
 import gameController, { generateId } from '../controllers/GameController';
 /**
  * MathCrafter Game
@@ -29,11 +30,7 @@ const GameDisplay: React.FC = () => {
     const [answer, setAnswer] = useState<string>('');
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
-    const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-    const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
-
-    const biomeRef = useRef<HTMLDivElement>(null);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -88,20 +85,7 @@ const GameDisplay: React.FC = () => {
         setGameState(prev => {
             return prev.increaseScore(100);
         });
-
-        // Play animation
-        animatePickaxeSwing();
-        // TODO: Animate biome crack
-
     };
-
-    // Reset the biome
-    // const resetBiome = () => {
-    //     setGameState(prev => ({
-    //         ...prev,
-    //         biomeHealth: prev.biome === 'desert' ? 15 : 10
-    //     }));
-    // };
 
     // Handle wrong answer
     const handleWrongAnswer = () => {
@@ -124,9 +108,6 @@ const GameDisplay: React.FC = () => {
 
             return newGameState;
         });
-
-        // Play animation
-        animatePickaxeSwing();
     };
 
     // Break pickaxe
@@ -140,12 +121,6 @@ const GameDisplay: React.FC = () => {
         return state.withPickaxeInventory(newPickaxeInventory);
     };
 
-    // Animate pickaxe swing
-    const animatePickaxeSwing = () => {
-        setIsSwinging(true);
-        setTimeout(() => setIsSwinging(false), 300);
-    };
-
     // Handle biome click
     const handleBiomeClick = () => {
         // Don't allow clicking if biome health is already zero
@@ -157,20 +132,6 @@ const GameDisplay: React.FC = () => {
         // Generate a new problem if one isn't already shown
         if (!showQuestion) {
             generateNewProblem();
-        }
-
-        // Play animation
-        animatePickaxeSwing();
-    };
-
-    // Track mouse movement for pickaxe cursor
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (biomeRef.current) {
-            const rect = biomeRef.current.getBoundingClientRect();
-            setCursorPosition({
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
-            });
         }
     };
 
@@ -221,24 +182,10 @@ const GameDisplay: React.FC = () => {
             </div>
 
             <div className={styles.gameArea}>
-                <div
-                    ref={biomeRef}
-                    className={`${styles.biome}`}
-                    onMouseMove={handleMouseMove}
-                    onClick={handleBiomeClick}
-                >
-                    {/* Pickaxe cursor */}
-                    <div
-                        className={styles.pickaxeCursor}
-                        style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
-                    >
-                        <img
-                            src={gameState.pickaxeInventory.getCurrentItem()?.getImageUrl()}
-                            alt="Pickaxe cursor"
-                            className={isSwinging ? styles.swingAnimation : ''}
-                        />
-                    </div>
-                </div>
+                <Biome
+                    onBiomeClick={handleBiomeClick}
+                    currentPickaxe={gameState.pickaxeInventory.getCurrentItem()}
+                />
 
                 {showQuestion && (
                     <form className={styles.mathProblem} onSubmit={handleSubmit}>
