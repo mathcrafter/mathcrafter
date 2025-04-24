@@ -1,4 +1,5 @@
 import { generateId } from "@/controllers/GameController";
+import { biomeStore } from "@/stores/BiomeStore";
 
 export interface Biome {
     name: string;
@@ -13,5 +14,13 @@ export class PlayerBiome {
     constructor({ id, type }: { id: string | null, type: string }) {
         this.id = id || generateId();
         this.type = type;
+    }
+
+    public getBiome(): Biome {
+        return biomeStore.getItemByName(this.type);
+    }
+
+    public getImageUrl(): string {
+        return `/assets/biomes/${this.getBiome().name.toLowerCase()}.webp`;
     }
 }

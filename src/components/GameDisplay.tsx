@@ -189,6 +189,7 @@ const GameDisplay: React.FC = () => {
                 <Biome
                     onBiomeClick={handleBiomeClick}
                     currentPickaxe={gameState.pickaxeInventory.getCurrentItem()}
+                    currentBiome={gameState.currentBiome}
                 />
 
                 {showQuestion && (

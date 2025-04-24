@@ -5,9 +5,10 @@ import { PlayerPickaxe } from '../models/Pickaxe';
 interface BiomeProps {
     onBiomeClick: () => void;
     currentPickaxe: PlayerPickaxe | null;
+    currentBiome: any;
 }
 
-const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe }) => {
+const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome }) => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
 
@@ -42,6 +43,11 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe }) => {
             className={`${styles.biome}`}
             onMouseMove={handleMouseMove}
             onClick={handleClick}
+            style={{
+                backgroundImage: `url(${currentBiome?.getImageUrl()})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            }}
         >
             {/* Pickaxe cursor */}
             <div

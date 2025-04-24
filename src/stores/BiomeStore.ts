@@ -10,12 +10,12 @@ export class BiomeStore extends Store<Biome> {
 
 const biomes: Biome[] = [
     {
-        name: "Plains",
+        name: "plains",
         description: "A flat, grassy biome.",
         availableBlocks: ["dirt", "wood", "clay", "pumpkin"]
     },
     {
-        name: "Desert",
+        name: "desert",
         description: "A dry, sandy biome.",
         availableBlocks: ["sand", "glass", "sandstone", "cactus"]
     },
