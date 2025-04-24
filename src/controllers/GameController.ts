@@ -52,19 +52,6 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
 }
 
 const getInitialGameState = (): GameState => {
-    // Default grid configuration 
-    const gridConfig = {
-        rows: 3,
-        cols: 4
-    };
-
-    // Initialize blocks
-    const totalBlocks = gridConfig.rows * gridConfig.cols;
-    const blocks = Array.from({ length: totalBlocks }, () => ({
-        id: generateId(),
-        cracked: false
-    }));
-
     return {
         gemstones: 0,
         pickaxes: [
@@ -73,9 +60,7 @@ const getInitialGameState = (): GameState => {
         currentPickaxe: 0,
         biome: 'plain',
         biomeHealth: 10,
-        crackCount: 0,
-        gridConfig,
-        blocks
+        crackCount: 0
     };
 };
 

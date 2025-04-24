@@ -183,31 +183,56 @@
 
 /* Grid layout for biome */
 .biomeGrid {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-gap: 2px;
-    position: relative;
-    z-index: 1;
+    display: none;
+    /* Hide grid */
 }
 
 .biomeBlock {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
+    display: none;
+    /* Hide blocks */
 }
 
 .hoveredBlock {
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+    display: none;
+    /* Hide hover effect */
 }
 
 .crackedBlock {
-    background-image: url('/assets/crack.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-    opacity: 0.8;
+    display: none;
+    /* Hide cracked effect */
+}
+
+/* Biome health bar */
+.biomeHealthContainer {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 3px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.biomeHealthBar {
+    height: 100%;
+    background-color: #72CB3B;
+    transition: width 0.3s ease-out;
+}
+
+.biomeHealthText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    z-index: 6;
+    white-space: nowrap;
 }
 
 .gemstone {

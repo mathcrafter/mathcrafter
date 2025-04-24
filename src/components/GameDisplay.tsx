@@ -9,22 +9,13 @@ import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
 import gameController, { generateId } from '../controllers/GameController';
 /**
- * MathCrafter Game with Grid-Based Mining System
+ * MathCrafter Game
  * 
- * The game divides the biome into a configurable grid (default: 4x3)
- * - Each grid block can be individually mined
- * - Hovering over a block highlights its border
- * - Clicking a block shows a math question
- * - Answering correctly cracks the block
- * - When all blocks are cracked, the biome is cleared and player is rewarded
- * - Different biomes have different grid configurations
+ * - Clicking on the biome shows a math question
+ * - Answering correctly damages the biome
+ * - When biome health reaches zero, player is rewarded
+ * - Different biomes have different health levels
  */
-
-// Define a Block interface for our grid system
-interface Block {
-    id: string;
-    cracked: boolean;
-}
 
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
@@ -43,8 +34,6 @@ const GameDisplay: React.FC = () => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
-    const [activeBlock, setActiveBlock] = useState<number | null>(null);
-    const [hoveredBlock, setHoveredBlock] = useState<number | null>(null);
 
     const biomeRef = useRef<HTMLDivElement>(null);
 
@@ -64,22 +53,6 @@ const GameDisplay: React.FC = () => {
             gameController.saveGameState(gameState);
         }
     }, [gameState, isClient, showGameOver]);
-
-    // Initialize the blocks grid
-    const initializeBlocks = () => {
-        setGameState(prev => {
-            const totalBlocks = prev.gridConfig.rows * prev.gridConfig.cols;
-            const newBlocks = Array.from({ length: totalBlocks }, () => ({
-                id: generateId(),
-                cracked: false
-            }));
-
-            return {
-                ...prev,
-                blocks: newBlocks
-            };
-        });
-    };
 
     // Generate a new math problem
     const generateNewProblem = () => {
@@ -109,38 +82,42 @@ const GameDisplay: React.FC = () => {
         setAnswer('');
         // Hide the question
         setShowQuestion(false);
-        setActiveBlock(null);
     };
 
     // Handle correct answer
     const handleCorrectAnswer = () => {
-        // Crack the active block
-        if (activeBlock !== null) {
-            setGameState(prev => {
-                const newBlocks = [...prev.blocks];
-                newBlocks[activeBlock].cracked = true;
+        // Damage the biome
+        setGameState(prev => {
+            const newBiomeHealth = prev.biomeHealth - 1;
+            const newCrackCount = prev.crackCount + 1;
 
-                // Check if all blocks are cracked
-                const allCracked = newBlocks.every(block => block.cracked);
+            // Check if biome is cleared
+            if (newBiomeHealth <= 0) {
+                // Biome cleared, reward the player
+                setTimeout(() => {
+                    revealGemstone();
+                    // Reset biome health for next round
+                    resetBiome();
+                }, 300);
+            }
 
-                if (allCracked) {
-                    // All blocks cracked, reward the player
-                    setTimeout(() => {
-                        revealGemstone();
-                        // Reset blocks for next round
-                        initializeBlocks();
-                    }, 300);
-                }
-
-                return {
-                    ...prev,
-                    blocks: newBlocks
-                };
-            });
-        }
+            return {
+                ...prev,
+                biomeHealth: Math.max(0, newBiomeHealth),
+                crackCount: newCrackCount
+            };
+        });
 
         // Play animation
         animatePickaxeSwing();
+    };
+
+    // Reset the biome
+    const resetBiome = () => {
+        setGameState(prev => ({
+            ...prev,
+            biomeHealth: prev.biome === 'desert' ? 15 : 10
+        }));
     };
 
     // Handle wrong answer
@@ -155,7 +132,9 @@ const GameDisplay: React.FC = () => {
                 return breakPickaxe(prev);
             }
 
-            return { ...prev, pickaxes: [...prev.pickaxes, { ...currentPickaxe, health: newHealth }] };
+            const updatedPickaxes = [...prev.pickaxes];
+            updatedPickaxes[prev.currentPickaxe] = { ...currentPickaxe, health: newHealth };
+            return { ...prev, pickaxes: updatedPickaxes };
         });
 
         // Play animation
@@ -166,7 +145,7 @@ const GameDisplay: React.FC = () => {
     const breakPickaxe = (state: GameState): GameState => {
         // Create a deep copy of the state to avoid mutation
         const newState = { ...state };
-        const pickaxes = { ...state.pickaxes };
+        const pickaxes = [...state.pickaxes];
 
         // Remove the current pickaxe from the array
         pickaxes.splice(state.currentPickaxe, 1);
@@ -182,11 +161,7 @@ const GameDisplay: React.FC = () => {
         }
 
         // Find the next available pickaxe
-        const nextPickaxe = newState.pickaxes[0]
-
-        if (nextPickaxe) {
-            newState.currentPickaxe = 0;
-        }
+        newState.currentPickaxe = 0;
 
         return newState;
     };
@@ -224,25 +199,11 @@ const GameDisplay: React.FC = () => {
             setGameState(prev => {
                 const newState = { ...prev, gemstones: prev.gemstones - cost };
 
-                // if (item === 'stone-pickaxe') {
-                //     newState.pickaxes = { ...prev.pickaxes, stone: prev.pickaxes.stone + 1 };
-                // } else if (item === 'iron-pickaxe') {
-                //     newState.pickaxes = { ...prev.pickaxes, iron: prev.pickaxes.iron + 1 };
-                // } else if (item === 'desert-biome') {
-                //     newState.biome = 'desert';
-                //     newState.biomeHealth = 15; // Desert biome is harder
-                //     // Change grid configuration for desert biome - make it harder
-                //     newState.gridConfig = { rows: 4, cols: 5 };
-
-                //     // Initialize new blocks according to new grid size
-                //     const totalBlocks = newState.gridConfig.rows * newState.gridConfig.cols;
-                //     newState.blocks = Array.from({ length: totalBlocks }, () => ({
-                //         id: generateId(),
-                //         cracked: false
-                //     }));
-
-                //     setGemstones([]);
-                // }
+                if (item === 'desert-biome') {
+                    newState.biome = 'desert';
+                    newState.biomeHealth = 15; // Desert biome is harder
+                    setGemstones([]);
+                }
 
                 return newState;
             });
@@ -255,12 +216,10 @@ const GameDisplay: React.FC = () => {
         setTimeout(() => setIsSwinging(false), 300);
     };
 
-    // Handle block click
-    const handleBlockClick = (index: number) => {
-        // Don't allow clicking already cracked blocks
-        if (gameState.blocks[index].cracked) return;
-
-        setActiveBlock(index);
+    // Handle biome click
+    const handleBiomeClick = () => {
+        // Don't allow clicking if biome health is already zero
+        if (gameState.biomeHealth <= 0) return;
 
         // Show the math question
         setShowQuestion(true);
@@ -272,15 +231,6 @@ const GameDisplay: React.FC = () => {
 
         // Play animation
         animatePickaxeSwing();
-    };
-
-    // Handle block hover
-    const handleBlockHover = (index: number) => {
-        setHoveredBlock(index);
-    };
-
-    const handleBlockLeave = () => {
-        setHoveredBlock(null);
     };
 
     // Track mouse movement for pickaxe cursor
@@ -318,6 +268,10 @@ const GameDisplay: React.FC = () => {
         return <div className={styles.gameContainer}>Loading...</div>;
     }
 
+    // Calculate biome health percentage
+    const biomeHealthMax = gameState.biome === 'desert' ? 15 : 10;
+    const biomeHealthPercent = (gameState.biomeHealth / biomeHealthMax) * 100;
+
     return (
         <div className={styles.gameContainer}>
             <div className={styles.gameHeader}>
@@ -351,6 +305,7 @@ const GameDisplay: React.FC = () => {
                     ref={biomeRef}
                     className={`${styles.biome} ${gameState.biome === 'desert' ? styles.desert : ''}`}
                     onMouseMove={handleMouseMove}
+                    onClick={handleBiomeClick}
                 >
                     {/* Pickaxe cursor */}
                     <div
@@ -358,31 +313,21 @@ const GameDisplay: React.FC = () => {
                         style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
                     >
                         <img
-                            src={`/assets/pickaxes/${gameState.pickaxes[gameState.currentPickaxe].name.toLowerCase()}.webp`}
+                            src={`/assets/pickaxes/${gameState.pickaxes[gameState.currentPickaxe]?.name.toLowerCase() || 'wooden'}.webp`}
                             alt="Pickaxe cursor"
                             className={isSwinging ? styles.swingAnimation : ''}
                         />
                     </div>
 
-                    {/* Grid blocks */}
-                    <div
-                        className={styles.biomeGrid}
-                        style={{
-                            gridTemplateColumns: `repeat(${gameState.gridConfig.cols}, 1fr)`,
-                            gridTemplateRows: `repeat(${gameState.gridConfig.rows}, 1fr)`
-                        }}
-                    >
-                        {gameState.blocks.map((block, index) => (
-                            <div
-                                key={block.id}
-                                className={`${styles.biomeBlock} 
-                                           ${block.cracked ? styles.crackedBlock : ''} 
-                                           ${hoveredBlock === index ? styles.hoveredBlock : ''}`}
-                                onClick={() => handleBlockClick(index)}
-                                onMouseEnter={() => handleBlockHover(index)}
-                                onMouseLeave={handleBlockLeave}
-                            />
-                        ))}
+                    {/* Biome health indicator */}
+                    <div className={styles.biomeHealthContainer}>
+                        <div
+                            className={styles.biomeHealthBar}
+                            style={{ width: `${biomeHealthPercent}%` }}
+                        ></div>
+                        <span className={styles.biomeHealthText}>
+                            Health: {gameState.biomeHealth}/{biomeHealthMax}
+                        </span>
                     </div>
 
                     {/* Gemstones */}

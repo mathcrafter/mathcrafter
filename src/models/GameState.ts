@@ -1,18 +1,11 @@
-import { Pickaxe } from './Pickaxe';
+import { Biome, biomes } from './Biome';
+import { Pickaxe, pickaxes } from './Pickaxe';
 
 export interface GameState {
     gemstones: number;
     pickaxes: Pickaxe[];
     currentPickaxe: number;
-    biome: 'plain' | 'desert';
+    biome: string;
     biomeHealth: number;
     crackCount: number;
-    gridConfig: {
-        rows: number;
-        cols: number;
-    };
-    blocks: {
-        id: string;
-        cracked: boolean;
-    }[];
 }
