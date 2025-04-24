@@ -53,7 +53,6 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
 
 const getInitialGameState = (): GameState => {
     return {
-        gemstones: 0,
         pickaxes: [
             pickaxes[2],
         ],

@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
-import { Gemstone } from '../models/Gemstone';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
 import ShopModal from './ShopModal';
@@ -28,7 +27,6 @@ const GameDisplay: React.FC = () => {
         answer: 0
     });
     const [answer, setAnswer] = useState<string>('');
-    const [gemstones, setGemstones] = useState<Gemstone[]>([]);
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
@@ -93,9 +91,8 @@ const GameDisplay: React.FC = () => {
 
             // Check if biome is cleared
             if (newBiomeHealth <= 0) {
-                // Biome cleared, reward the player
+                // Biome cleared
                 setTimeout(() => {
-                    revealGemstone();
                     // Reset biome health for next round
                     resetBiome();
                 }, 300);
@@ -166,50 +163,6 @@ const GameDisplay: React.FC = () => {
         return newState;
     };
 
-    // Reveal a gemstone
-    const revealGemstone = () => {
-        if (biomeRef.current) {
-            const x = Math.floor(Math.random() * (biomeRef.current.offsetWidth - 200));
-            const y = Math.floor(Math.random() * (biomeRef.current.offsetHeight - 200));
-
-            const newGemstone: Gemstone = {
-                id: generateId(),
-                x,
-                y
-            };
-
-            setGemstones(prev => [...prev, newGemstone]);
-        }
-    };
-
-    // Collect a gemstone
-    const collectGemstone = (id: string) => {
-        setGemstones(prev => prev.filter(gemstone => gemstone.id !== id));
-
-        // Increment gemstone count
-        setGameState(prev => ({
-            ...prev,
-            gemstones: prev.gemstones + 1
-        }));
-    };
-
-    // Buy an item from the shop
-    const buyItem = (item: string, cost: number) => {
-        if (gameState.gemstones >= cost) {
-            setGameState(prev => {
-                const newState = { ...prev, gemstones: prev.gemstones - cost };
-
-                if (item === 'desert-biome') {
-                    newState.biome = 'desert';
-                    newState.biomeHealth = 15; // Desert biome is harder
-                    setGemstones([]);
-                }
-
-                return newState;
-            });
-        }
-    };
-
     // Animate pickaxe swing
     const animatePickaxeSwing = () => {
         setIsSwinging(true);
@@ -248,7 +201,6 @@ const GameDisplay: React.FC = () => {
     const resetGame = () => {
         const newState = gameController.loadGameState();
         setGameState(newState);
-        setGemstones([]);
         setShowGameOver(false);
         setShowQuestion(false);
         generateNewProblem();
@@ -258,6 +210,17 @@ const GameDisplay: React.FC = () => {
     // Toggle shop visibility
     const toggleShop = () => {
         setShowShop(prev => !prev);
+    };
+
+    // Buy an item from the shop
+    const buyItem = (item: string, cost: number) => {
+        if (item === 'desert-biome') {
+            setGameState(prev => ({
+                ...prev,
+                biome: 'desert',
+                biomeHealth: 15 // Desert biome is harder
+            }));
+        }
     };
 
     // Calculate total pickaxes
@@ -282,17 +245,12 @@ const GameDisplay: React.FC = () => {
                         onClick={toggleShop}
                     >
                         Shop
-                        <img src="/assets/gemstone.png" alt="" className={styles.buttonIcon} />
                     </button>
                 </div>
                 <div className={styles.avatar}>
                     <img src="/assets/avatars/avatar.png" alt="Player Avatar" className={styles.avatarImage} />
                 </div>
                 <div className={styles.stats}>
-                    <div className={styles.statItem}>
-                        <img src="/assets/gemstone.png" alt="Gemstone" className={styles.statIcon} />
-                        <span>{gameState.gemstones}</span>
-                    </div>
                     <div className={styles.statItem}>
                         <img src="/assets/pickaxe.png" alt="Pickaxe" className={styles.statIcon} />
                         <span>{totalPickaxes}</span>
@@ -329,16 +287,6 @@ const GameDisplay: React.FC = () => {
                             Health: {gameState.biomeHealth}/{biomeHealthMax}
                         </span>
                     </div>
-
-                    {/* Gemstones */}
-                    {gemstones.map(gemstone => (
-                        <div
-                            key={gemstone.id}
-                            className={styles.gemstone}
-                            style={{ left: `${gemstone.x}px`, top: `${gemstone.y}px` }}
-                            onClick={() => collectGemstone(gemstone.id)}
-                        />
-                    ))}
                 </div>
 
                 {showQuestion && (

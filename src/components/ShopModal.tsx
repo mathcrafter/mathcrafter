@@ -29,16 +29,12 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
                         <img src="/assets/stone-pickaxe.png" alt="Stone Pickaxe" />
                         <div className={styles.itemInfo}>
                             <div className={styles.itemName}>Stone Pickaxe</div>
-                            <div className={styles.itemCost}>
-                                5 <img src="/assets/gemstone.png" alt="gems" />
-                            </div>
                         </div>
                         <button
                             className={styles.buyBtn}
-                            disabled={gameState.gemstones < 5}
-                            onClick={() => onBuyItem('stone-pickaxe', 5)}
+                            onClick={() => onBuyItem('stone-pickaxe', 0)}
                         >
-                            Buy
+                            Get
                         </button>
                     </div>
 
@@ -46,16 +42,12 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
                         <img src="/assets/iron-pickaxe.png" alt="Iron Pickaxe" />
                         <div className={styles.itemInfo}>
                             <div className={styles.itemName}>Iron Pickaxe</div>
-                            <div className={styles.itemCost}>
-                                15 <img src="/assets/gemstone.png" alt="gems" />
-                            </div>
                         </div>
                         <button
                             className={styles.buyBtn}
-                            disabled={gameState.gemstones < 15}
-                            onClick={() => onBuyItem('iron-pickaxe', 15)}
+                            onClick={() => onBuyItem('iron-pickaxe', 0)}
                         >
-                            Buy
+                            Get
                         </button>
                     </div>
 
@@ -63,16 +55,13 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
                         <img src="/assets/desert-biome-icon.png" alt="Desert Biome" />
                         <div className={styles.itemInfo}>
                             <div className={styles.itemName}>Desert Biome</div>
-                            <div className={styles.itemCost}>
-                                10 <img src="/assets/gemstone.png" alt="gems" />
-                            </div>
                         </div>
                         <button
                             className={styles.buyBtn}
-                            disabled={gameState.gemstones < 10 || gameState.biome === 'desert'}
-                            onClick={() => onBuyItem('desert-biome', 10)}
+                            disabled={gameState.biome === 'desert'}
+                            onClick={() => onBuyItem('desert-biome', 0)}
                         >
-                            Buy
+                            Get
                         </button>
                     </div>
                 </div>
