@@ -68,7 +68,7 @@ const getInitialGameState = (): GameState => {
     return {
         gemstones: 0,
         pickaxes: [
-            pickaxes[0],
+            pickaxes[2],
         ],
         currentPickaxe: 0,
         biome: 'plain',

@@ -1,10 +1,15 @@
+export interface Cost {
+    amount: number;
+    itemType: string;
+}
+
 export interface Pickaxe {
     name: string;
     strength: number;
     critical: number;
-    cost: number;
+    cost: Cost;
     power: string;
-    rarity: string;
+    rarity: "Common" | "Uncommon" | "Rare" | "Legendary";
     description: string;
     notes: string;
     health: number;
@@ -13,10 +18,13 @@ export interface Pickaxe {
 
 export const pickaxes: Pickaxe[] = [
     {
-        "name": "Wood",
+        "name": "wood",
         "strength": 1,
         "critical": 0.01,
-        "cost": 25,
+        "cost": {
+            "amount": 25,
+            "itemType": "wood"
+        },
         "power": "On Fire",
         "rarity": "Common",
         "description": "Pickaxe carved fromWood.And so it begins.",
@@ -25,10 +33,13 @@ export const pickaxes: Pickaxe[] = [
         "health": 5
     },
     {
-        "name": "Clay",
+        "name": "clay",
         "strength": 2,
         "critical": 0.01,
-        "cost": 100,
+        "cost": {
+            "amount": 100,
+            "itemType": "clay"
+        },
         "power": "On Fire",
         "rarity": "Common",
         "description": "Pickaxe molded fromClay.",
@@ -37,15 +48,78 @@ export const pickaxes: Pickaxe[] = [
         "health": 10
     },
     {
-        "name": "Pumpkin",
+        "name": "pumpkin",
         "strength": 3,
         "critical": 0.02,
-        "cost": 250,
+        "cost": {
+            "amount": 250,
+            "itemType": "pumpkin"
+        },
         "power": "Spooky Flame",
         "rarity": "Rare",
         "description": "Tormented Pickaxe carved fromPumpkin.",
         "notes": "Very Spooky,Can be found inChests.",
         "maxHealth": 15,
         "health": 15
+    },
+    {
+        "name": "cactus",
+        "strength": 3,
+        "critical": 0.02,
+        "cost": {
+            "amount": 250,
+            "itemType": "cactus"
+        },
+        "power": "On Fire",
+        "rarity": "Common",
+        "description": "Prickly Pickaxe carefully crafted fromCactus.",
+        "notes": "Hurts to touch.",
+        "maxHealth": 15,
+        "health": 15
+    },
+    {
+        "name": "Sandstone",
+        "strength": 4,
+        "critical": 0.025,
+        "cost": {
+            "amount": 500,
+            "itemType": "sandstone"
+        },
+        "power": "On Fire",
+        "rarity": "Common",
+        "description": "Pickaxe masoned fromSandstone.",
+        "notes": "Feels rough against your hands.",
+        "maxHealth": 20,
+        "health": 20
+    },
+    {
+        "name": "glass",
+        "strength": 4,
+        "critical": 0.025,
+        "cost": {
+            "amount": 100,
+            "itemType": "glass"
+        },
+        "power": "Shatter",
+        "rarity": "Rare",
+        "description": "Fragile Pickaxe cut fromGlass.",
+        "notes": "Might break at any moment,Can be found inChests.",
+        "maxHealth": 25,
+        "health": 25
+    },
+    {
+        "name": "birchwood",
+        "strength": 5,
+        "critical": 0.025,
+        "cost": {
+            "amount": 500,
+            "itemType": "birchwood"
+        },
+        "power": "On Fire",
+        "rarity": "Common",
+        "description": "Pickaxe carved fromBirchwood.",
+        "notes": "Created by RockShield.",
+        "maxHealth": 30,
+        "health": 30
     },
 ]
