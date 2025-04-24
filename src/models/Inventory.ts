@@ -1,6 +1,4 @@
-import { generateId } from "@/controllers/GameController";
-import { Pickaxe, PlayerPickaxe } from "./Pickaxe";
-import { pickaxeStore } from "@/stores/PickaxeStore";
+import { PlayerPickaxe } from "./Pickaxe";
 
 export class PickaxeInventory {
     items: PlayerPickaxe[];
