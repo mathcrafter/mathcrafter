@@ -126,7 +126,7 @@
     min-height: 200px;
     border-radius: 10px;
     position: relative;
-    cursor: url('/assets/pickaxe.png'), pointer;
+    cursor: none;
     overflow: hidden;
     background-color: #222;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
