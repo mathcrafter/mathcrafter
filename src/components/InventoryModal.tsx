@@ -44,7 +44,7 @@ const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameSt
                                     <div className={styles.durabilityBar}>
                                         <div
                                             className={`${styles.durabilityFill} ${pickaxe.health < 30 ? styles.low :
-                                                    pickaxe.health < 70 ? styles.medium : ''
+                                                pickaxe.health < 70 ? styles.medium : ''
                                                 }`}
                                             style={{ width: `${healthPercentage}%` }}
                                         ></div>

@@ -1,5 +1,8 @@
 import { GameState, getInitialGameState, IGameState } from "@/models/GameState";
 import { MathProblem } from "@/models/MathProblem";
+import { PickaxeInventory } from "@/models/Inventory";
+import { PlayerPickaxe } from "@/models/Pickaxe";
+import { PlayerBiome } from "@/models/Biome";
 
 interface IGameStateStorage {
     getGameState(): GameState | null;
@@ -24,7 +27,35 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
         const savedState = localStorage.getItem(this.key);
         if (savedState) {
             try {
-                return new GameState(JSON.parse(savedState) as IGameState);
+                const parsedState = JSON.parse(savedState) as IGameState;
+
+                // Properly reconstruct class instances
+                const pickaxeItems = parsedState.pickaxeInventory.items.map(item =>
+                    new PlayerPickaxe({
+                        id: item.id,
+                        type: item.type,
+                        health: item.health
+                    })
+                );
+
+                const currentItem = parsedState.pickaxeInventory.currentItem;
+                const pickaxeInventory = new PickaxeInventory({
+                    items: pickaxeItems,
+                    currentItem: currentItem
+                });
+
+                const currentBiome = new PlayerBiome({
+                    id: parsedState.currentBiome.id,
+                    type: parsedState.currentBiome.type,
+                    currentHealth: parsedState.currentBiome.currentHealth
+                });
+
+                return new GameState({
+                    score: parsedState.score,
+                    pickaxeInventory: pickaxeInventory,
+                    unlockedBiomes: parsedState.unlockedBiomes,
+                    currentBiome: currentBiome
+                });
             } catch (e) {
                 console.error('Failed to parse saved game state', e);
                 return null;
