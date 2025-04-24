@@ -331,6 +331,9 @@ const GameDisplay: React.FC = () => {
                         <img src="/assets/gemstone.png" alt="" className={styles.buttonIcon} />
                     </button>
                 </div>
+                <div className={styles.avatar}>
+                    <img src="/assets/avatars/avatar.png" alt="Player Avatar" className={styles.avatarImage} />
+                </div>
                 <div className={styles.stats}>
                     <div className={styles.statItem}>
                         <img src="/assets/gemstone.png" alt="Gemstone" className={styles.statIcon} />
