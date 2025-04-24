@@ -8,6 +8,7 @@ import { PlayerBiome } from '../models/Biome';
 import ShopModal from './ShopModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
+import InventoryModal from './InventoryModal';
 import gameController, { generateId } from '../controllers/GameController';
 /**
  * MathCrafter Game
@@ -31,6 +32,7 @@ const GameDisplay: React.FC = () => {
     const [answer, setAnswer] = useState<string>('');
     const [showGameOver, setShowGameOver] = useState<boolean>(false);
     const [showShop, setShowShop] = useState<boolean>(false);
+    const [showInventory, setShowInventory] = useState<boolean>(false);
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
 
     // Initialize client-side only data after component mounts
@@ -188,6 +190,11 @@ const GameDisplay: React.FC = () => {
         setShowShop(prev => !prev);
     };
 
+    // Toggle inventory visibility
+    const toggleInventory = () => {
+        setShowInventory(prev => !prev);
+    };
+
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
@@ -206,6 +213,13 @@ const GameDisplay: React.FC = () => {
                         onClick={toggleShop}
                     >
                         Shop
+                    </button>
+                    <button
+                        className={styles.shopButton}
+                        onClick={toggleInventory}
+                    >
+                        <img src="/assets/pickaxe.png" alt="Pickaxe" className={styles.buttonIcon} />
+                        Inventory
                     </button>
                 </div>
                 <div className={styles.avatar}>
@@ -282,6 +296,13 @@ const GameDisplay: React.FC = () => {
                 onClose={toggleShop}
                 gameState={gameState}
                 onBuyItem={() => { }}
+            />
+
+            {/* Inventory Modal */}
+            <InventoryModal
+                isOpen={showInventory}
+                onClose={toggleInventory}
+                gameState={gameState}
             />
 
             {/* Game Over Modal */}

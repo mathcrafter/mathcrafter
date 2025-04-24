@@ -1,5 +1,6 @@
 # Inventory panel
 [ ] Open the inventory panel to show pickaxes and blocks
+[ ] Button for gears
 
 # Pickaxes
 [ ] Show the health of the pickaxe on the sidebar

@@ -29,7 +29,7 @@ export class PlayerPickaxe {
         this.health = health || this.getPickaxe().maxHealth;
     }
 
-    private getPickaxe(): Pickaxe {
+    public getPickaxe(): Pickaxe {
         return pickaxeStore.getItemByName(this.type)
     }
 
