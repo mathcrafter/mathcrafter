@@ -91,7 +91,6 @@ export class GameController {
     public loadGameState(): GameState {
         const savedState = this.storage.getGameState();
         if (savedState) {
-            console.log('Loaded game state from localStorage');
             return savedState;
         } else {
             console.log('No saved game state found, creating new game state');

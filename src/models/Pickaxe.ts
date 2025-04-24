@@ -26,7 +26,13 @@ export class PlayerPickaxe {
     constructor({ id, type, health }: { id: string | null, type: string, health: number | null }) {
         this.id = id || generateId();
         this.type = type;
-        this.health = health || this.getPickaxe().maxHealth;
+
+        // If health is null, set to max health from pickaxe definition
+        if (health === null) {
+            this.health = this.getPickaxe().maxHealth;
+        } else {
+            this.health = health;
+        }
     }
 
     public getPickaxe(): Pickaxe {
@@ -38,11 +44,10 @@ export class PlayerPickaxe {
     }
 
     public damage(amount: number): PlayerPickaxe {
-        var health = this.health -= amount;
-        if (health <= 0) {
-            health = 0;
-        }
+        // Calculate new health without modifying the original object
+        const newHealth = Math.max(0, this.health - amount);
 
-        return new PlayerPickaxe({ id: this.id, type: this.type, health: health });
+        // Return a new PlayerPickaxe instance with the updated health
+        return new PlayerPickaxe({ id: this.id, type: this.type, health: newHealth });
     }
 }

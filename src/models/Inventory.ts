@@ -34,11 +34,18 @@ export class PickaxeInventory {
     }
 
     public removeCurrentItem(): PickaxeInventory {
-        const items = this.items.filter(item => item.id !== this.currentItem)
-        return new PickaxeInventory({ items: items, currentItem: items.length > 0 ? items[0].id : null });
+        // Filter out the current item
+        const items = this.items.filter(item => item.id !== this.currentItem);
+
+        // Create new inventory with the item removed
+        return new PickaxeInventory({
+            items: items,
+            currentItem: items.length > 0 ? items[0].id : null
+        });
     }
 
     public withCurrentItem(playerPickaxe: PlayerPickaxe): PickaxeInventory {
+        // Create a new array with the updated item
         const updatedItems = this.items.map(item =>
             item.id === playerPickaxe.id ? playerPickaxe : item
         );
@@ -51,7 +58,6 @@ export class PickaxeInventory {
 
     public withCurrentItemId(pickaxeId: string): PickaxeInventory {
         if (!this.items.some(item => item.id === pickaxeId)) {
-            console.log("pickaxeId not found in items", pickaxeId);
             return this;
         }
 

@@ -10,8 +10,6 @@ interface BiomeProps {
 }
 
 const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome }) => {
-    console.log("currentPickaxe", currentPickaxe);
-
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [lastHealth, setLastHealth] = useState<number>(currentBiome?.currentHealth || 0);

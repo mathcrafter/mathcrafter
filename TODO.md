@@ -4,12 +4,16 @@
 [ ] Button for gears
 
 # Pickaxes
-[ ] Show the health of the pickaxe on the sidebar
+[x] Show the health of the pickaxe on the sidebar
 
 # Biomes
 [ ] Biome panel that shows all the locked and unlocked biomes
-[ ] Add health to the player biome damage the biome when the player answers correctly
-[ ] Show cracks of the biome
+[x] Add health to the player biome damage the biome when the player answers correctly
+[x] Show cracks of the biome
 [ ] Unlock the biomes with the inventory
 
 # Blocks
+
+
+# Bugs
+[ ] When a pickaxe loses all its health points, it does not break but the health bar is back to 100%

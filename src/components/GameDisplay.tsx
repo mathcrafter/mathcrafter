@@ -37,6 +37,8 @@ const GameDisplay: React.FC = () => {
     const [showShop, setShowShop] = useState<boolean>(false);
     const [showInventory, setShowInventory] = useState<boolean>(false);
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
+    const [pickaxeBroken, setPickaxeBroken] = useState<boolean>(false);
+    const [brokenPickaxeType, setBrokenPickaxeType] = useState<string>('');
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -136,30 +138,53 @@ const GameDisplay: React.FC = () => {
         setGameState(prev => {
             const currentPickaxe = prev.pickaxeInventory.getCurrentItem();
             if (currentPickaxe === null) {
-                console.log('No pickaxe found');
                 return prev;
             }
 
-            const newCurrentPickaxe = currentPickaxe.damage(1);
+            // Damage the current pickaxe
+            const damagedPickaxe = currentPickaxe.damage(1);
 
-            if (newCurrentPickaxe.health <= 0) {
+            // IMPORTANT: Force re-creation of the damaged pickaxe to ensure clean state
+            const freshDamagedPickaxe = new PlayerPickaxe({
+                id: damagedPickaxe.id,
+                type: damagedPickaxe.type,
+                health: damagedPickaxe.health
+            });
+
+            // If health is now zero, break the pickaxe
+            if (freshDamagedPickaxe.health <= 0) {
                 return breakPickaxe(prev);
             }
 
-            const newPickaxeInventory = prev.pickaxeInventory.withCurrentItem(newCurrentPickaxe);
-            const newGameState = prev.withPickaxeInventory(newPickaxeInventory);
-
-            return newGameState;
+            // Otherwise update the inventory with the damaged pickaxe
+            const newPickaxeInventory = prev.pickaxeInventory.withCurrentItem(freshDamagedPickaxe);
+            return prev.withPickaxeInventory(newPickaxeInventory);
         });
     };
 
     // Break pickaxe
     const breakPickaxe = (state: GameState): GameState => {
-        if (state.pickaxeInventory.length === 0) {
+        const currentPickaxe = state.pickaxeInventory.getCurrentItem();
+        if (!currentPickaxe) {
+            return state;
+        }
+
+        // Store information about the broken pickaxe for display
+        setBrokenPickaxeType(currentPickaxe.type);
+        setPickaxeBroken(true);
+
+        // Auto-hide the broken pickaxe notification after 3 seconds
+        setTimeout(() => {
+            setPickaxeBroken(false);
+        }, 3000);
+
+        if (state.pickaxeInventory.length <= 1) {
+            // This was the last pickaxe
             setShowGameOver(true);
             return state;
         }
 
+        // Remove the current pickaxe and switch to another one
         const newPickaxeInventory = state.pickaxeInventory.removeCurrentItem();
         return state.withPickaxeInventory(newPickaxeInventory);
     };
@@ -361,6 +386,14 @@ const GameDisplay: React.FC = () => {
                 isOpen={showGameOver}
                 onRestart={resetGame}
             />
+
+            {/* Broken Pickaxe Notification */}
+            {pickaxeBroken && (
+                <div className={styles.brokenPickaxeNotification}>
+                    <h3>Pickaxe Destroyed!</h3>
+                    <p>Your {brokenPickaxeType} Pickaxe has broken.</p>
+                </div>
+            )}
         </div>
     );
 };
