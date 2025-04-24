@@ -86,52 +86,43 @@ const GameDisplay: React.FC = () => {
     const handleCorrectAnswer = () => {
         // Damage the biome
         setGameState(prev => {
-            const newBiomeHealth = prev.biomeHealth - 1;
-            const newCrackCount = prev.crackCount + 1;
-
-            // Check if biome is cleared
-            if (newBiomeHealth <= 0) {
-                // Biome cleared
-                setTimeout(() => {
-                    // Reset biome health for next round
-                    resetBiome();
-                }, 300);
-            }
-
-            return {
-                ...prev,
-                biomeHealth: Math.max(0, newBiomeHealth),
-                crackCount: newCrackCount
-            };
+            return prev.increaseScore(100);
         });
 
         // Play animation
         animatePickaxeSwing();
+        // TODO: Animate biome crack
+
     };
 
     // Reset the biome
-    const resetBiome = () => {
-        setGameState(prev => ({
-            ...prev,
-            biomeHealth: prev.biome === 'desert' ? 15 : 10
-        }));
-    };
+    // const resetBiome = () => {
+    //     setGameState(prev => ({
+    //         ...prev,
+    //         biomeHealth: prev.biome === 'desert' ? 15 : 10
+    //     }));
+    // };
 
     // Handle wrong answer
     const handleWrongAnswer = () => {
         // Reduce pickaxe health
         setGameState(prev => {
-            const currentPickaxe = prev.pickaxes[prev.currentPickaxe];
-            const newHealth = currentPickaxe.health - 1;
+            const currentPickaxe = prev.pickaxeInventory.getCurrentItem();
+            if (currentPickaxe === null) {
+                console.log('No pickaxe found');
+                return prev;
+            }
 
-            // Check if pickaxe is broken
-            if (newHealth <= 0) {
+            const newCurrentPickaxe = currentPickaxe.damage(1);
+
+            if (newCurrentPickaxe.health <= 0) {
                 return breakPickaxe(prev);
             }
 
-            const updatedPickaxes = [...prev.pickaxes];
-            updatedPickaxes[prev.currentPickaxe] = { ...currentPickaxe, health: newHealth };
-            return { ...prev, pickaxes: updatedPickaxes };
+            const newPickaxeInventory = prev.pickaxeInventory.withCurrentItem(newCurrentPickaxe);
+            const newGameState = prev.withPickaxeInventory(newPickaxeInventory);
+
+            return newGameState;
         });
 
         // Play animation
@@ -140,27 +131,13 @@ const GameDisplay: React.FC = () => {
 
     // Break pickaxe
     const breakPickaxe = (state: GameState): GameState => {
-        // Create a deep copy of the state to avoid mutation
-        const newState = { ...state };
-        const pickaxes = [...state.pickaxes];
-
-        // Remove the current pickaxe from the array
-        pickaxes.splice(state.currentPickaxe, 1);
-        newState.pickaxes = pickaxes;
-
-        // Check if there are any pickaxes left
-        const totalPickaxes = newState.pickaxes.length;
-
-        if (totalPickaxes === 0) {
-            // Game over
+        if (state.pickaxeInventory.length() === 0) {
             setShowGameOver(true);
-            return newState;
+            return state;
         }
 
-        // Find the next available pickaxe
-        newState.currentPickaxe = 0;
-
-        return newState;
+        const newPickaxeInventory = state.pickaxeInventory.removeCurrentItem();
+        return state.withPickaxeInventory(newPickaxeInventory);
     };
 
     // Animate pickaxe swing
@@ -172,7 +149,7 @@ const GameDisplay: React.FC = () => {
     // Handle biome click
     const handleBiomeClick = () => {
         // Don't allow clicking if biome health is already zero
-        if (gameState.biomeHealth <= 0) return;
+        // if (gameState.biomeHealth <= 0) return;
 
         // Show the math question
         setShowQuestion(true);
@@ -212,28 +189,13 @@ const GameDisplay: React.FC = () => {
         setShowShop(prev => !prev);
     };
 
-    // Buy an item from the shop
-    const buyItem = (item: string, cost: number) => {
-        if (item === 'desert-biome') {
-            setGameState(prev => ({
-                ...prev,
-                biome: 'desert',
-                biomeHealth: 15 // Desert biome is harder
-            }));
-        }
-    };
-
     // Calculate total pickaxes
-    const totalPickaxes = gameState.pickaxes.length;
+    const totalPickaxes = gameState.pickaxeInventory.length();
 
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {
         return <div className={styles.gameContainer}>Loading...</div>;
     }
-
-    // Calculate biome health percentage
-    const biomeHealthMax = gameState.biome === 'desert' ? 15 : 10;
-    const biomeHealthPercent = (gameState.biomeHealth / biomeHealthMax) * 100;
 
     return (
         <div className={styles.gameContainer}>
@@ -261,7 +223,7 @@ const GameDisplay: React.FC = () => {
             <div className={styles.gameArea}>
                 <div
                     ref={biomeRef}
-                    className={`${styles.biome} ${gameState.biome === 'desert' ? styles.desert : ''}`}
+                    className={`${styles.biome}`}
                     onMouseMove={handleMouseMove}
                     onClick={handleBiomeClick}
                 >
@@ -271,21 +233,10 @@ const GameDisplay: React.FC = () => {
                         style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
                     >
                         <img
-                            src={`/assets/pickaxes/${gameState.pickaxes[gameState.currentPickaxe]?.name.toLowerCase() || 'wooden'}.webp`}
+                            src={gameState.pickaxeInventory.getCurrentItem()?.getImageUrl()}
                             alt="Pickaxe cursor"
                             className={isSwinging ? styles.swingAnimation : ''}
                         />
-                    </div>
-
-                    {/* Biome health indicator */}
-                    <div className={styles.biomeHealthContainer}>
-                        <div
-                            className={styles.biomeHealthBar}
-                            style={{ width: `${biomeHealthPercent}%` }}
-                        ></div>
-                        <span className={styles.biomeHealthText}>
-                            Health: {gameState.biomeHealth}/{biomeHealthMax}
-                        </span>
                     </div>
                 </div>
 
@@ -340,7 +291,7 @@ const GameDisplay: React.FC = () => {
                 isOpen={showShop}
                 onClose={toggleShop}
                 gameState={gameState}
-                onBuyItem={buyItem}
+                onBuyItem={() => { }}
             />
 
             {/* Game Over Modal */}

@@ -12,7 +12,6 @@ export interface Pickaxe {
     rarity: "Common" | "Uncommon" | "Rare" | "Legendary";
     description: string;
     notes: string;
-    health: number;
     maxHealth: number;
 }
 
@@ -29,8 +28,7 @@ export const pickaxes: Pickaxe[] = [
         "rarity": "Common",
         "description": "Pickaxe carved fromWood.And so it begins.",
         "notes": "Not very good, moving up pickaxes is highly advised.",
-        "maxHealth": 5,
-        "health": 5
+        "maxHealth": 5
     },
     {
         "name": "clay",
@@ -45,7 +43,6 @@ export const pickaxes: Pickaxe[] = [
         "description": "Pickaxe molded fromClay.",
         "notes": "The first pickaxe to usually be crafted.",
         "maxHealth": 10,
-        "health": 10
     },
     {
         "name": "pumpkin",
@@ -60,7 +57,6 @@ export const pickaxes: Pickaxe[] = [
         "description": "Tormented Pickaxe carved fromPumpkin.",
         "notes": "Very Spooky,Can be found inChests.",
         "maxHealth": 15,
-        "health": 15
     },
     {
         "name": "cactus",
@@ -75,7 +71,6 @@ export const pickaxes: Pickaxe[] = [
         "description": "Prickly Pickaxe carefully crafted fromCactus.",
         "notes": "Hurts to touch.",
         "maxHealth": 15,
-        "health": 15
     },
     {
         "name": "Sandstone",
@@ -90,7 +85,6 @@ export const pickaxes: Pickaxe[] = [
         "description": "Pickaxe masoned fromSandstone.",
         "notes": "Feels rough against your hands.",
         "maxHealth": 20,
-        "health": 20
     },
     {
         "name": "glass",
@@ -105,7 +99,6 @@ export const pickaxes: Pickaxe[] = [
         "description": "Fragile Pickaxe cut fromGlass.",
         "notes": "Might break at any moment,Can be found inChests.",
         "maxHealth": 25,
-        "health": 25
     },
     {
         "name": "birchwood",
@@ -120,6 +113,5 @@ export const pickaxes: Pickaxe[] = [
         "description": "Pickaxe carved fromBirchwood.",
         "notes": "Created by RockShield.",
         "maxHealth": 30,
-        "health": 30
     },
 ]

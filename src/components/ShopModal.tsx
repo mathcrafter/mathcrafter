@@ -58,7 +58,7 @@ const ShopModal: React.FC<ShopModalProps> = ({ isOpen, onClose, gameState, onBuy
                         </div>
                         <button
                             className={styles.buyBtn}
-                            disabled={gameState.biome === 'desert'}
+                            disabled={true}
                             onClick={() => onBuyItem('desert-biome', 0)}
                         >
                             Get

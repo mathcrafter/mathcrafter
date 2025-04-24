@@ -1,6 +1,5 @@
-import { GameState } from "@/models/GameState";
+import { GameState, getInitialGameState, IGameState } from "@/models/GameState";
 import { MathProblem } from "@/models/MathProblem";
-import { pickaxes } from "@/models/Pickaxe";
 
 interface IGameStateStorage {
     getGameState(): GameState | null;
@@ -25,7 +24,7 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
         const savedState = localStorage.getItem(this.key);
         if (savedState) {
             try {
-                return JSON.parse(savedState) as GameState;
+                return new GameState(JSON.parse(savedState) as IGameState);
             } catch (e) {
                 console.error('Failed to parse saved game state', e);
                 return null;
@@ -51,18 +50,6 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
     }
 }
 
-const getInitialGameState = (): GameState => {
-    return {
-        pickaxes: [
-            pickaxes[2],
-        ],
-        currentPickaxe: 0,
-        biome: 'plain',
-        biomeHealth: 10,
-        crackCount: 0
-    };
-};
-
 export class GameController {
     private storage: IGameStateStorage;
 
@@ -77,7 +64,7 @@ export class GameController {
             return savedState;
         } else {
             console.log('No saved game state found, creating new game state');
-            return getInitialGameState();
+            return new GameState(getInitialGameState());
         }
     }
 
