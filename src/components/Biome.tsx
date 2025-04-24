@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styles from '../styles/Game.module.css';
-import { PlayerPickaxe } from '../models/Inventory';
+import { PlayerPickaxe } from '../models/Pickaxe';
 
 interface BiomeProps {
     onBiomeClick: () => void;

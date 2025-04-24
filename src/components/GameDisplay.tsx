@@ -178,6 +178,10 @@ const GameDisplay: React.FC = () => {
                         <img src="/assets/pickaxe.png" alt="Pickaxe" className={styles.statIcon} />
                         <span>{totalPickaxes}</span>
                     </div>
+                    <div className={styles.statItem}>
+                        <span>Score:</span>
+                        <span>{gameState.score}</span>
+                    </div>
                 </div>
             </div>
 

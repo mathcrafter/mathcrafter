@@ -1,24 +1,13 @@
 import { Pickaxe } from "@/models/Pickaxe";
+import { Store } from "./Store";
 
-class PickaxeStore {
-    pickaxes: Pickaxe[]
-    pickaxeMap: Map<string, Pickaxe>
-
+class PickaxeStore extends Store<Pickaxe> {
     constructor(pickaxes: Pickaxe[]) {
-        this.pickaxes = pickaxes;
-        this.pickaxeMap = new Map(pickaxes.map(p => [p.name, p]));
-    }
-
-    public getByName(name: string): Pickaxe {
-        const pickaxe = this.pickaxeMap.get(name);
-        if (!pickaxe) {
-            throw new Error(`Pickaxe with name ${name} not found`);
-        }
-        return pickaxe;
+        super(pickaxes);
     }
 }
 
-export const pickaxes: Pickaxe[] = [
+const pickaxes: Pickaxe[] = [
     {
         "name": "wood",
         "strength": 1,

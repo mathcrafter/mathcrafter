@@ -1,18 +1,17 @@
+import { generateId } from "@/controllers/GameController";
+
 export interface Biome {
     name: string;
     description: string;
     availableBlocks: string[];
 }
 
-export const biomes: Biome[] = [
-    {
-        name: "Plains",
-        description: "A flat, grassy biome.",
-        availableBlocks: ["dirt", "wood", "clay", "pumpkin"]
-    },
-    {
-        name: "Desert",
-        description: "A dry, sandy biome.",
-        availableBlocks: ["sand", "glass", "sandstone", "cactus"]
-    },
-]
+export class PlayerBiome {
+    id: string;
+    type: string;
+
+    constructor({ id, type }: { id: string | null, type: string }) {
+        this.id = id || generateId();
+        this.type = type;
+    }
+}

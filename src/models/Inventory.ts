@@ -1,35 +1,6 @@
 import { generateId } from "@/controllers/GameController";
-import { Pickaxe } from "./Pickaxe";
+import { Pickaxe, PlayerPickaxe } from "./Pickaxe";
 import { pickaxeStore } from "@/stores/PickaxeStore";
-
-export class PlayerPickaxe {
-    id: string;
-    type: string;
-    health: number;
-
-    constructor({ id, type, health }: { id: string | null, type: string, health: number | null }) {
-        this.id = id || generateId();
-        this.type = type;
-        this.health = health || this.getPickaxe().maxHealth;
-    }
-
-    private getPickaxe(): Pickaxe {
-        return pickaxeStore.getByName(this.type)
-    }
-
-    public getImageUrl(): string {
-        return `/assets/pickaxes/${this.getPickaxe().name.toLowerCase()}.webp`;
-    }
-
-    public damage(amount: number): PlayerPickaxe {
-        var health = this.health -= amount;
-        if (health <= 0) {
-            health = 0;
-        }
-
-        return new PlayerPickaxe({ id: this.id, type: this.type, health: health });
-    }
-}
 
 export class PickaxeInventory {
     items: PlayerPickaxe[];
