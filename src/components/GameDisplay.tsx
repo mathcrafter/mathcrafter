@@ -295,6 +295,7 @@ const GameDisplay: React.FC = () => {
                         className={styles.pickaxesButton}
                         onClick={toggleShop}
                     >
+                        <img src="/assets/shop_pickaxe.png" alt="Pickaxes" className={styles.buttonIcon} />
                         Pickaxes
                     </button>
                     <button
