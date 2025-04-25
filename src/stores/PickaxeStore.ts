@@ -13,7 +13,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 1,
         "critical": 0.10,
         "cost": {
-            "amount": 25,
+            "amount": 5,
             "itemType": "wood"
         },
         "power": "On Fire",
@@ -27,7 +27,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 2,
         "critical": 0.10,
         "cost": {
-            "amount": 100,
+            "amount": 10,
             "itemType": "clay"
         },
         "power": "On Fire",
@@ -41,7 +41,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 3,
         "critical": 0.20,
         "cost": {
-            "amount": 250,
+            "amount": 25,
             "itemType": "pumpkin"
         },
         "power": "Spooky Flame",
@@ -55,7 +55,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 3,
         "critical": 0.20,
         "cost": {
-            "amount": 250,
+            "amount": 25,
             "itemType": "cactus"
         },
         "power": "On Fire",
@@ -69,7 +69,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 4,
         "critical": 0.25,
         "cost": {
-            "amount": 500,
+            "amount": 5,
             "itemType": "sandstone"
         },
         "power": "On Fire",
@@ -83,7 +83,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 4,
         "critical": 0.25,
         "cost": {
-            "amount": 100,
+            "amount": 10,
             "itemType": "glass"
         },
         "power": "Shatter",
@@ -97,7 +97,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 5,
         "critical": 0.25,
         "cost": {
-            "amount": 500,
+            "amount": 5,
             "itemType": "birchwood"
         },
         "power": "On Fire",

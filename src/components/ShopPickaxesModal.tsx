@@ -9,11 +9,29 @@ interface ShopPickaxesModalProps {
     isOpen: boolean;
     onClose: () => void;
     gameState: GameState;
-    onBuyItem: (item: string, cost: number) => void;
+    // The cost parameter is maintained for API compatibility but the actual cost
+    // will be calculated from the pickaxe's cost property in the handler
+    onBuyItem: (itemType: string, cost: number) => void;
 }
 
 const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
     const [hoveredPickaxe, setHoveredPickaxe] = useState<string | null>(null);
+
+    // Function to check if user has enough blocks to buy a pickaxe
+    const canBuyPickaxe = (itemType: string, amount: number): boolean => {
+        return gameState.blockInventory.hasBlock(itemType, amount);
+    };
+
+    // Function to generate button text based on availability
+    const getBuyButtonText = (pickaxe: any): string => {
+        const { itemType, amount } = pickaxe.cost;
+        const availableBlocks = gameState.blockInventory.getBlockQuantity(itemType);
+
+        if (availableBlocks < amount) {
+            return `Need ${amount - availableBlocks} more ${itemType}`;
+        }
+        return 'Buy';
+    };
 
     return (
         <div className={`${styles.modal} ${isOpen ? styles.modalShow : ''}`}>
@@ -51,17 +69,20 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                                     </div>
                                     <div className={styles.itemCost}>
                                         <span>{pickaxe.cost.amount}</span>
-                                        <span>{pickaxe.cost.itemType}</span>
+                                        <span> {pickaxe.cost.itemType}</span>
+                                        <div className={canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount) ? styles.affordableCost : styles.unaffordableCost}>
+                                            (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
+                                        </div>
                                     </div>
                                 </div>
                             )}
 
                             <button
                                 className={styles.buyBtn}
-                                onClick={() => onBuyItem(pickaxe.name, pickaxe.cost.amount)}
-                                disabled={gameState.picks < pickaxe.cost.amount}
+                                onClick={() => onBuyItem(pickaxe.name, 0)}
+                                disabled={!canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount)}
                             >
-                                {gameState.picks < pickaxe.cost.amount ? 'Not enough' : 'Buy'}
+                                {getBuyButtonText(pickaxe)}
                             </button>
                         </div>
                     ))}

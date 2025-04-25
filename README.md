@@ -18,6 +18,7 @@ A math learning game where players solve math problems to mine resources, craft 
 - Block mining with configurable chance (25% by default)
 - Score calculation based on pickaxe strength and critical values
 - Quick inventory showing both pickaxes and blocks
+- Craft pickaxes using blocks collected from biomes
 
 ## Block Mining
 
@@ -32,6 +33,14 @@ Each biome has its own set of available blocks:
 - Plains: dirt, wood, clay, pumpkin
 - Desert: sand, glass, sandstone, cactus
 - More biomes to be added...
+
+## Crafting Pickaxes
+
+In the pickaxe shop, players can craft new pickaxes using blocks they've collected:
+
+1. Each pickaxe requires a specific type and amount of blocks (e.g., wood pickaxe requires 25 wood)
+2. The buy button is disabled if the player doesn't have enough blocks
+3. When purchasing, the required blocks are consumed from the inventory
 
 ## Score Calculation
 

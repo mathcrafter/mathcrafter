@@ -687,6 +687,16 @@
     cursor: not-allowed;
 }
 
+.affordableCost {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.unaffordableCost {
+    color: #F44336;
+    font-weight: bold;
+}
+
 /* Modal */
 .modal {
     display: none;
@@ -1265,16 +1275,6 @@
     margin-top: 8px;
     font-size: 0.9rem;
     text-align: center;
-}
-
-.affordableCost {
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-.unaffordableCost {
-    color: #F44336;
-    font-weight: bold;
 }
 
 .unlockButtonDisabled {

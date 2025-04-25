@@ -16,9 +16,7 @@ import { PlayerPickaxe } from '@/models/Pickaxe';
 import soundManager from '@/utils/SoundManager';
 import { PickaxeInventory } from '@/models/Inventory';
 import { PlayerBlock } from '@/models/Block';
-
-// Block mining chance configuration (25% by default)
-const BLOCK_MINING_CHANCE = 0.25;
+import { pickaxeStore } from '@/stores/PickaxeStore';
 
 /**
  * MathCrafter Game
@@ -164,8 +162,7 @@ const GameDisplay: React.FC = () => {
     // Attempt to mine a block with the configured chance
     const attemptToMineBlock = () => {
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
-        // Check if we should mine a block based on the configured chance (25%)
-        if (currentPickaxe && Math.random() < BLOCK_MINING_CHANCE) {
+        if (currentPickaxe && Math.random() < currentPickaxe.getPickaxe().critical) {
             const currentBiome = gameState.currentBiome;
             if (!currentBiome) return;
 
@@ -338,14 +335,35 @@ const GameDisplay: React.FC = () => {
     };
 
     // Handle buying a pickaxe
-    const handleBuyPickaxe = (itemType: string, cost: number) => {
-        // Create a new pickaxe
-        const newPickaxe = new PlayerPickaxe({ id: null, type: itemType, health: null });
+    const handleBuyPickaxe = (pickaxeName: string, _unused: number) => {
+        // Get the pickaxe details to determine which block to use
+        const pickaxe = pickaxeStore.getItemByName(pickaxeName);
+        if (!pickaxe) {
+            console.error(`Pickaxe with name ${pickaxeName} not found`);
+            return;
+        }
 
-        // Add to inventory and deduct picks
+        const requiredBlockType = pickaxe.cost.itemType;
+        const requiredAmount = pickaxe.cost.amount;
+
+        // Check if player has enough of the required block
+        if (!gameState.blockInventory.hasBlock(requiredBlockType, requiredAmount)) {
+            console.error(`Not enough ${requiredBlockType} to craft ${pickaxeName} pickaxe`);
+            return;
+        }
+
+        // Create a new pickaxe
+        const newPickaxe = new PlayerPickaxe({ id: null, type: pickaxeName, health: null });
+
+        // Remove the blocks from inventory
+        let updatedBlockInventory = gameState.blockInventory;
+        // Add negative quantity to reduce the amount
+        updatedBlockInventory = updatedBlockInventory.addBlock(requiredBlockType, -requiredAmount);
+
+        // Add pickaxe to inventory and update block inventory
         const newState = gameState
             .withPickaxeInventory(gameState.pickaxeInventory.add(newPickaxe) as PickaxeInventory)
-            .withPicks(gameState.picks - cost);
+            .withBlockInventory(updatedBlockInventory);
 
         setGameState(newState);
     };
