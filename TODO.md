@@ -1,6 +1,10 @@
+# New Game Screen
+[ ] Allow user to choose avatar
+[ ] Allow user to choose starting pickaxe
+
 # Inventory panel
 [x] Open the inventory panel to show pickaxes
-[ ] Inventory panel to show blocks
+[x] Inventory panel to show blocks
 [ ] Button for gears
 
 # Pickaxes
@@ -13,6 +17,8 @@
 [x] Unlock the biomes with the inventory
 
 # Blocks
+[x] Buy blocks
+[x] Blocks panel in inventory
 
 
 # Bugs

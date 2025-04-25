@@ -1613,18 +1613,17 @@
     gap: 5px;
     font-family: 'VT323', monospace;
     font-size: 1.3rem;
-    background-color: #4a8e4a;
-    border: 3px solid #397239;
+    background-color: #FECC33;
+    border: 3px solid #D4A929;
     border-radius: 5px;
     color: #333;
     padding: 5px 12px;
     cursor: pointer;
-    margin-left: 8px;
     transition: all 0.2s;
 }
 
 .buyBlocksButton:hover {
-    background-color: #397239;
+    background-color: #D4A929;
     transform: translateY(-2px);
 }
 
