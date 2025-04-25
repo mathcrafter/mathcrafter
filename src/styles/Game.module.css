@@ -1177,8 +1177,9 @@
 
 .biomesDrawerContent .biomeItem {
     width: 100%;
+    height: auto;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     padding: 10px;
     margin-bottom: 10px;
     box-sizing: border-box;
@@ -1197,22 +1198,16 @@
 }
 
 .biomesDrawerContent .availableBlocks {
-    width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    display: none;
 }
 
 .biomesDrawerContent .blockImagesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    max-width: 100%;
-    justify-content: flex-start;
+    display: none;
 }
 
 .biomeItem {
-    width: 150px;
+    width: 250px;
+    height: 120px;
     padding: 15px;
     background-color: #444;
     border: 3px solid #555;
@@ -1220,6 +1215,9 @@
     text-align: center;
     transition: all 0.2s;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .biomeItem:hover {
@@ -1228,10 +1226,11 @@
 }
 
 .biomeItemImg {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     image-rendering: pixelated;
-    margin-bottom: 10px;
+    margin-bottom: 0;
+    margin-right: 10px;
     transition: transform 0.2s;
     border-radius: 8px;
     border: 2px solid #555;
@@ -1241,76 +1240,18 @@
     transform: scale(1.05);
 }
 
-.itemDescription {
-    margin-top: 4px;
-    font-size: 0.9rem;
-    color: #AAA;
+.itemInfo {
+    flex: 1;
+    text-align: left;
 }
 
+/* Hide available blocks section */
 .availableBlocks {
-    margin-top: 8px;
-    font-size: 0.9rem;
-    color: #88cc88;
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 4px 8px;
-    border-radius: 4px;
-    border-left: 3px solid #72CB3B;
-}
-
-.availableBlocks span {
-    font-weight: bold;
-    margin-right: 4px;
+    display: none;
 }
 
 .blockImagesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 8px;
-    justify-content: center;
-}
-
-.blockImageWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    width: 40px;
-}
-
-.blockImage {
-    width: 32px;
-    height: 32px;
-    image-rendering: pixelated;
-    border-radius: 4px;
-    border: 1px solid #555;
-}
-
-.blockName {
-    font-size: 0.7rem;
-    word-break: break-word;
-    text-align: center;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.availableBlocks span {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.itemDescription {
-    font-size: 0.85rem;
-    margin-bottom: 8px;
-    overflow-wrap: break-word;
-}
-
-.itemName {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-    width: 100%;
+    display: none;
 }
 
 /* Biome Item Styles */

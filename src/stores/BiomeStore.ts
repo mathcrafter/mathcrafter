@@ -26,6 +26,16 @@ const biomes: Biome[] = [
             itemType: "pumpkin"
         }
     },
+    {
+        name: "tundra",
+        description: "A cold, snowy biome.",
+        availableBlocks: ["snow", "ice", "birchwood", "sapphire", "winter_candy"],
+        maxHealth: 31,
+        cost: {
+            amount: 1,
+            itemType: "sandstone"
+        },
+    }
 ]
 
 export const biomeStore = new BiomeStore(biomes);

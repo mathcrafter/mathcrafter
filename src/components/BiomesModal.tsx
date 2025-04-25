@@ -113,23 +113,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                                 {isCurrentBiome && <span className={styles.currentIndicator}> (Current)</span>}
                                             </div>
                                             <div className={styles.itemDescription}>{biome.description}</div>
-                                            {biome.availableBlocks && biome.availableBlocks.length > 0 && (
-                                                <div className={styles.availableBlocks}>
-                                                    <span>Available blocks: </span>
-                                                    <div className={styles.blockImagesContainer}>
-                                                        {biome.availableBlocks.map(block => (
-                                                            <div key={block} className={styles.blockImageWrapper}>
-                                                                <img
-                                                                    src={`/assets/blocks/${block}.png`}
-                                                                    alt={block}
-                                                                    className={styles.blockImage}
-                                                                />
-                                                                <span className={styles.blockName}>{block}</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
+
                                             {!isUnlocked && (
                                                 <>
                                                     <div className={styles.unlockCost}>
