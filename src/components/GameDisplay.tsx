@@ -50,7 +50,7 @@ const GameDisplay: React.FC = () => {
     const [destroyedBiomeType, setDestroyedBiomeType] = useState<string>('');
     const [wrongAnswer, setWrongAnswer] = useState<boolean>(false);
     const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
-    const [scoreToShow, setScoreToShow] = useState<number | null>(null);
+    const [picksToShow, setPicksToShow] = useState<number | null>(null);
     const [minedBlock, setMinedBlock] = useState<{ name: string; imageUrl: string } | null>(null);
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
@@ -127,19 +127,18 @@ const GameDisplay: React.FC = () => {
     const handleCorrectAnswer = () => {
         // Get current pickaxe to calculate score
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
-        let scoreAmount = 100; // Default score
+
+        var picks = 0;
 
         if (currentPickaxe) {
-            const pickaxeDef = currentPickaxe.getPickaxe();
-            // Calculate score based on pickaxe strength and critical values
-            scoreAmount = Math.round(pickaxeDef.strength * 10 + 1000 * pickaxeDef.critical);
+            picks = currentPickaxe.getPicks();
 
             // Flash the score display
-            setScoreToShow(scoreAmount);
+            setPicksToShow(picks);
 
             // Reset score display after animation time
             setTimeout(() => {
-                setScoreToShow(null);
+                setPicksToShow(null);
             }, 2000);
         }
 
@@ -149,7 +148,7 @@ const GameDisplay: React.FC = () => {
         // Damage the biome
         setGameState(prev => {
             // Increase picks with calculated score
-            const withPicks = prev.increasePicks(scoreAmount);
+            const withPicks = prev.increasePicks(picks);
 
             // Then damage the biome (10 points of damage per correct answer)
             const damagedBiome = prev.currentBiome.withDamage(10);
@@ -494,13 +493,6 @@ const GameDisplay: React.FC = () => {
                         <img src="/assets/blocks.png" alt="Blocks" className={styles.buttonIcon} />
                         Blocks
                     </button>
-                    {/* <button
-                        className={styles.inventoryButton}
-                        onClick={toggleInventory}
-                    >
-                        <img src="/assets/inventory.png" alt="Inventory" className={styles.buttonIcon} />
-                        Inventory
-                    </button> */}
                 </div>
             </div>
 
@@ -509,7 +501,7 @@ const GameDisplay: React.FC = () => {
                     onBiomeClick={handleBiomeClick}
                     currentPickaxe={gameState.pickaxeInventory.getCurrentItem()}
                     currentBiome={gameState.currentBiome}
-                    scoreToShow={scoreToShow}
+                    picksToShow={picksToShow}
                     minedBlock={minedBlock}
                 />
 

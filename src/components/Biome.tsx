@@ -7,17 +7,17 @@ interface BiomeProps {
     onBiomeClick: () => void;
     currentPickaxe: PlayerPickaxe | null;
     currentBiome: any;
-    scoreToShow?: number | null;
+    picksToShow?: number | null;
     minedBlock?: { name: string; imageUrl: string } | null;
 }
 
-const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome, scoreToShow, minedBlock }) => {
+const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome, picksToShow, minedBlock }) => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [lastHealth, setLastHealth] = useState<number>(currentBiome?.currentHealth || 0);
     const [pickaxeImageUrl, setPickaxeImageUrl] = useState<string>('/assets/pickaxes/wood.webp');
-    const [showScore, setShowScore] = useState<boolean>(false);
-    const [scoreValue, setScoreValue] = useState<number | null>(null);
+    const [showPicks, setShowPicks] = useState<boolean>(false);
+    const [picksValue, setPicksValue] = useState<number | null>(null);
     const [showBlock, setShowBlock] = useState<boolean>(false);
     const [blockData, setBlockData] = useState<{ name: string; imageUrl: string } | null>(null);
 
@@ -32,18 +32,18 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
 
     // Handle score display
     useEffect(() => {
-        if (scoreToShow) {
-            setScoreValue(scoreToShow);
-            setShowScore(true);
+        if (picksToShow) {
+            setPicksValue(picksToShow);
+            setShowPicks(true);
 
             // Hide score after animation completes
             const timer = setTimeout(() => {
-                setShowScore(false);
+                setShowPicks(false);
             }, 1500);
 
             return () => clearTimeout(timer);
         }
-    }, [scoreToShow]);
+    }, [picksToShow]);
 
     // Handle mined block display
     useEffect(() => {
@@ -123,9 +123,9 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                 }}
             >
                 {/* Score flash display */}
-                {showScore && scoreValue && (
+                {showPicks && picksValue && (
                     <div className={styles.scoreFlash}>
-                        +{scoreValue}
+                        +{picksValue}
                     </div>
                 )}
 
