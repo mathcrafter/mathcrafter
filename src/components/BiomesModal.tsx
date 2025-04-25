@@ -120,7 +120,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                                     onClick={() => handleUnlock(biome.name)}
                                                     disabled={!canUnlock}
                                                 >
-                                                    {canUnlock ? 'Unlock' : 'Not enough score'}
+                                                    {canUnlock ? 'Unlock' : 'Not enough picks'}
                                                 </button>
                                             </>
                                         )}

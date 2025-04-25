@@ -119,61 +119,18 @@ const GameDisplay: React.FC = () => {
     const handleCorrectAnswer = () => {
         // Damage the biome
         setGameState(prev => {
-            // Increase score first
-            const withScore = prev.increaseScore(100);
+            // Increase picks first
+            const withPicks = prev.increasePicks(100);
 
             // Then damage the biome (10 points of damage per correct answer)
             const damagedBiome = prev.currentBiome.withDamage(10);
             console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
 
-            // // Check if biome is completely damaged and needs to be rewarded
-            // if (damagedBiome.currentHealth <= 0) {
-            //     console.log("Biome destroyed! Opening selection modal...");
-            //     // Handle biome defeated immediately instead of using setTimeout
-            //     // Store the destroyed biome type for display
-            //     setDestroyedBiomeType(prev.currentBiome.type);
-            //     setBiomeDestroyed(true);
-
-            //     // Auto-hide notification after 3 seconds
-            //     setTimeout(() => {
-            //         setBiomeDestroyed(false);
-            //     }, 3000);
-
-            //     // Show biomes modal for selection of next biome
-            //     setShowBiomes(true);
-
-            //     // Return state with additional reward
-            //     return withScore.increaseScore(500); // Add reward for defeating biome
-            // }
-
-            const updatedState = withScore.withCurrentBiome(damagedBiome);
+            const updatedState = withPicks.withCurrentBiome(damagedBiome);
 
             return updatedState;
         });
     };
-
-    // // Handle when biome is completely mined (keeping this for reference, but now inline in handleCorrectAnswer)
-    // const handleBiomeDefeated = () => {
-    //     // Get reward based on biome type (add more complex rewards later)
-    //     const rewardAmount = 500;
-
-    //     // Update game state with reward
-    //     setGameState(prev => {
-    //         // Store the destroyed biome type for display
-    //         setDestroyedBiomeType(prev.currentBiome.type);
-    //         setBiomeDestroyed(true);
-
-    //         // Auto-hide notification after 3 seconds
-    //         setTimeout(() => {
-    //             setBiomeDestroyed(false);
-    //         }, 3000);
-
-    //         return prev.increaseScore(rewardAmount);
-    //     });
-
-    //     // Show biomes modal for selection of next biome instead of automatically resetting
-    //     setShowBiomes(true);
-    // };
 
     // Handle wrong answer
     const handleWrongAnswer = () => {
@@ -313,10 +270,10 @@ const GameDisplay: React.FC = () => {
         // Create a new pickaxe
         const newPickaxe = new PlayerPickaxe({ id: null, type: itemType, health: null });
 
-        // Add to inventory and deduct score
+        // Add to inventory and deduct picks
         const newState = gameState
             .withPickaxeInventory(gameState.pickaxeInventory.add(newPickaxe) as PickaxeInventory)
-            .withScore(gameState.score - cost);
+            .withPicks(gameState.picks - cost);
 
         setGameState(newState);
     };
@@ -381,8 +338,8 @@ const GameDisplay: React.FC = () => {
                 </div>
                 <div className={styles.stats}>
                     <div className={styles.statItem}>
-                        <span>Score:</span>
-                        <span>{gameState.score}</span>
+                        <span>Picks:</span>
+                        <span>{gameState.picks}</span>
                     </div>
                 </div>
                 <div className={styles.headerButtons}>

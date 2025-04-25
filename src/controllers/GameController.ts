@@ -63,7 +63,7 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
                 });
 
                 return new GameState({
-                    score: parsedState.score,
+                    picks: parsedState.picks,
                     pickaxeInventory: pickaxeInventory,
                     blockInventory: blockInventory,
                     unlockedBiomes: parsedState.unlockedBiomes,

@@ -3,7 +3,7 @@ import { BlockInventory, Inventory, PickaxeInventory } from './Inventory';
 import { PlayerPickaxe } from './Pickaxe';
 
 export interface IGameState {
-    score: number;
+    picks: number;
     pickaxeInventory: PickaxeInventory;
     unlockedBiomes: string[];
     currentBiome: PlayerBiome;
@@ -13,14 +13,14 @@ export interface IGameState {
 export class GameState implements IGameState {
     pickaxeInventory: PickaxeInventory;
     blockInventory: BlockInventory;
-    score: number;
+    picks: number;
     unlockedBiomes: string[];
     currentBiome: PlayerBiome;
 
-    constructor({ pickaxeInventory, blockInventory, score, unlockedBiomes, currentBiome }: IGameState) {
+    constructor({ pickaxeInventory, blockInventory, picks, unlockedBiomes, currentBiome }: IGameState) {
         this.pickaxeInventory = pickaxeInventory;
         this.blockInventory = blockInventory;
-        this.score = score;
+        this.picks = picks;
         this.unlockedBiomes = unlockedBiomes;
         this.currentBiome = currentBiome;
     }
@@ -33,12 +33,12 @@ export class GameState implements IGameState {
         return new GameState({ ...this, blockInventory });
     }
 
-    public withScore(score: number): GameState {
-        return new GameState({ ...this, score });
+    public withPicks(picks: number): GameState {
+        return new GameState({ ...this, picks });
     }
 
-    public increaseScore(amount: number): GameState {
-        return new GameState({ ...this, score: this.score + amount });
+    public increasePicks(amount: number): GameState {
+        return new GameState({ ...this, picks: this.picks + amount });
     }
 
     public withCurrentBiome(currentBiome: PlayerBiome): GameState {
@@ -56,7 +56,7 @@ export const getInitialGameState = (): IGameState => {
             ], currentItem: null
         }),
         blockInventory: new BlockInventory({ items: [] }),
-        score: 0,
+        picks: 0,
         unlockedBiomes: ["plains"],
         currentBiome: new PlayerBiome({ id: null, type: "plains", currentHealth: null })
     };

@@ -59,9 +59,9 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                             <button
                                 className={styles.buyBtn}
                                 onClick={() => onBuyItem(pickaxe.name, pickaxe.cost.amount)}
-                                disabled={gameState.score < pickaxe.cost.amount}
+                                disabled={gameState.picks < pickaxe.cost.amount}
                             >
-                                {gameState.score < pickaxe.cost.amount ? 'Not enough' : 'Buy'}
+                                {gameState.picks < pickaxe.cost.amount ? 'Not enough' : 'Buy'}
                             </button>
                         </div>
                     ))}
