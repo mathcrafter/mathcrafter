@@ -96,17 +96,30 @@ export class BlockInventory extends Inventory<PlayerBlock> {
         const existingBlock = this.items.find(item => item.name === blockName);
 
         if (existingBlock) {
-            // If exists, update its quantity
+            // Calculate the new quantity
+            const newQuantity = existingBlock.quantity + quantity;
+
+            // If the new quantity is 0 or less, remove the block from inventory
+            if (newQuantity <= 0) {
+                const filteredItems = this.items.filter(item => item.name !== blockName);
+                return new BlockInventory({ items: filteredItems });
+            }
+
+            // Otherwise update its quantity
             const updatedItems = this.items.map(item =>
                 item.name === blockName
-                    ? new PlayerBlock({ name: item.name, quantity: item.quantity + quantity })
+                    ? new PlayerBlock({ name: item.name, quantity: newQuantity })
                     : item
             );
             return new BlockInventory({ items: updatedItems });
         } else {
-            // If not exists, add a new block entry
-            const newBlock = new PlayerBlock({ name: blockName, quantity });
-            return new BlockInventory({ items: [...this.items, newBlock] });
+            // If not exists and trying to add a positive quantity, add a new block entry
+            if (quantity > 0) {
+                const newBlock = new PlayerBlock({ name: blockName, quantity });
+                return new BlockInventory({ items: [...this.items, newBlock] });
+            }
+            // If trying to remove a non-existent block, just return the current inventory
+            return this;
         }
     }
 

@@ -1,5 +1,6 @@
 import { generateId } from "@/controllers/GameController";
 import { pickaxeStore } from "@/stores/PickaxeStore";
+import { Biome } from "./Biome";
 
 export interface Cost {
     amount: number;
@@ -50,6 +51,14 @@ export class PlayerPickaxe {
             picks += 1000 * pickaxeDef.critical;
         }
         return Math.round(picks);
+    }
+
+    public getDamageToBiome(biome: Biome): number {
+        const pickaxeDef = this.getPickaxe();
+        if (Math.random() < pickaxeDef.critical) {
+            return 2 * pickaxeDef.strength;
+        }
+        return pickaxeDef.strength;
     }
 
     public withDamage(amount: number): PlayerPickaxe {

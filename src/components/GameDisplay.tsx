@@ -112,16 +112,18 @@ const GameDisplay: React.FC = () => {
 
         if (userAnswer === problem.answer) {
             handleCorrectAnswer();
+            // Generate new problem
+            generateNewProblem();
+            // Clear the answer field
+            setAnswer('');
+            // Hide the question
+            setShowQuestion(false);
         } else {
             handleWrongAnswer();
+            // Just clear the answer field, but keep the same problem
+            setAnswer('');
+            // Keep the question panel open so player can try again
         }
-
-        // Generate new problem
-        generateNewProblem();
-        // Clear the answer field
-        setAnswer('');
-        // Hide the question
-        setShowQuestion(false);
     };
 
     // Handle correct answer
@@ -152,12 +154,16 @@ const GameDisplay: React.FC = () => {
             const withPicks = prev.increasePicks(picks);
 
             // Then damage the biome (10 points of damage per correct answer)
-            const damagedBiome = prev.currentBiome.withDamage(10);
-            console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
+            if (currentPickaxe) {
+                const damagedBiome = prev.currentBiome.withDamage(currentPickaxe.getDamageToBiome(prev.currentBiome.getBiome()));
+                console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
 
-            const updatedState = withPicks.withCurrentBiome(damagedBiome);
+                const updatedState = withPicks.withCurrentBiome(damagedBiome);
 
-            return updatedState;
+                return updatedState;
+            }
+            console.log("No current pickaxe found");
+            return prev;
         });
     };
 

@@ -1,32 +1,37 @@
 #!/bin/bash
 
-# Script to install dependencies for the scripts folder using uv
-# This follows the custom instructions to use uv for dependency management
+# This script sets up the dependencies needed for the scripts folder
 
-# Check if uv is installed
-if ! command -v uv &> /dev/null; then
-    echo "Installing uv package manager..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+# Create a virtual environment if it doesn't exist
+if [ ! -d ".venv" ]; then
+    echo "Creating virtual environment..."
+    python -m venv .venv
 fi
 
-# Navigate to the scripts directory
-cd "$(dirname "$0")"
+# Activate the virtual environment
+source .venv/bin/activate
 
-# Create a requirements.txt file if it doesn't exist
-if [ ! -f "requirements.txt" ]; then
-    echo "Creating requirements.txt file..."
-    cat > requirements.txt << EOF
-pillow==10.0.0  # For image manipulation
-EOF
-fi
-
-# Create a virtual environment and install dependencies
-echo "Setting up virtual environment and installing dependencies..."
-uv venv
+# Install Python dependencies with uv
+echo "Installing Python dependencies with uv..."
 uv pip install -r requirements.txt
 
-echo "Dependencies setup complete!"
+# Installing TypeScript support
+echo "Installing TypeScript support..."
+uv pip install mypy-extensions typing-extensions
+
+# Check if TypeScript is installed globally, install if not
+if ! command -v tsc &> /dev/null; then
+    echo "TypeScript compiler not found, installing TypeScript locally..."
+    uv npm install typescript
+    uv npm install ts-node
+fi
+
+echo "Dependencies installed successfully!"
 echo "To activate the virtual environment, run:"
-echo "source .venv/bin/activate  # On Linux/Mac"
-echo "or"
-echo ".venv\\Scripts\\activate  # On Windows" 
+echo "  source .venv/bin/activate"
+echo ""
+echo "To run TypeScript scripts, use ts-node:"
+echo "  npx ts-node scripts/inventory_cleanup.ts"
+
+# Deactivate the virtual environment
+deactivate 
