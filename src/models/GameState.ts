@@ -1,5 +1,5 @@
 import { PlayerBiome } from './Biome';
-import { PickaxeInventory } from './Inventory';
+import { BlockInventory, PickaxeInventory } from './Inventory';
 import { PlayerPickaxe } from './Pickaxe';
 
 export interface IGameState {
@@ -7,16 +7,19 @@ export interface IGameState {
     pickaxeInventory: PickaxeInventory;
     unlockedBiomes: string[];
     currentBiome: PlayerBiome;
+    blockInventory: BlockInventory;
 }
 
 export class GameState implements IGameState {
     pickaxeInventory: PickaxeInventory;
+    blockInventory: BlockInventory;
     score: number;
     unlockedBiomes: string[];
     currentBiome: PlayerBiome;
 
-    constructor({ pickaxeInventory, score, unlockedBiomes, currentBiome }: IGameState) {
+    constructor({ pickaxeInventory, blockInventory, score, unlockedBiomes, currentBiome }: IGameState) {
         this.pickaxeInventory = pickaxeInventory;
+        this.blockInventory = blockInventory;
         this.score = score;
         this.unlockedBiomes = unlockedBiomes;
         this.currentBiome = currentBiome;
@@ -24,6 +27,10 @@ export class GameState implements IGameState {
 
     public withPickaxeInventory(pickaxeInventory: PickaxeInventory): GameState {
         return new GameState({ ...this, pickaxeInventory });
+    }
+
+    public withBlockInventory(blockInventory: BlockInventory): GameState {
+        return new GameState({ ...this, blockInventory });
     }
 
     public withScore(score: number): GameState {
@@ -48,6 +55,7 @@ export const getInitialGameState = (): IGameState => {
                 new PlayerPickaxe({ id: null, type: "wood", health: null }),
             ], currentItem: null
         }),
+        blockInventory: new BlockInventory({ items: [] }),
         score: 0,
         unlockedBiomes: ["plains"],
         currentBiome: new PlayerBiome({ id: null, type: "plains", currentHealth: null })

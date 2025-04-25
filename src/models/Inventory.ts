@@ -1,11 +1,31 @@
 import { PlayerPickaxe } from "./Pickaxe";
+import { PlayerBlock } from "./Block";
 
-export class PickaxeInventory {
-    items: PlayerPickaxe[];
+export class Inventory<T> {
+    items: T[];
+
+    constructor({ items }: { items: T[] }) {
+        this.items = items;
+    }
+
+    public add(item: T): Inventory<T> {
+        return new Inventory({ items: [...this.items, item] });
+    }
+
+    public remove(item: T): Inventory<T> {
+        return new Inventory({ items: this.items.filter(i => i !== item) });
+    }
+
+    public get length(): number {
+        return this.items.length;
+    }
+}
+
+export class PickaxeInventory extends Inventory<PlayerPickaxe> {
     currentItem: string | null;
 
     constructor({ items, currentItem }: { items: PlayerPickaxe[], currentItem: string | null }) {
-        this.items = items;
+        super({ items });
 
         if (currentItem === null && items.length > 0) {
             this.currentItem = items[0].id;
@@ -23,14 +43,6 @@ export class PickaxeInventory {
         }
 
         return this.items.find(item => item.id === this.currentItem) || null;
-    }
-
-    public add(item: PlayerPickaxe): PickaxeInventory {
-        return new PickaxeInventory({ items: [...this.items, item], currentItem: this.currentItem });
-    }
-
-    public remove(item: PlayerPickaxe): PickaxeInventory {
-        return new PickaxeInventory({ items: this.items.filter(i => i.id !== item.id), currentItem: this.currentItem });
     }
 
     public removeCurrentItem(): PickaxeInventory {
@@ -66,8 +78,10 @@ export class PickaxeInventory {
             currentItem: pickaxeId
         });
     }
+}
 
-    public get length(): number {
-        return this.items.length;
+export class BlockInventory extends Inventory<PlayerBlock> {
+    constructor({ items }: { items: PlayerBlock[] }) {
+        super({ items });
     }
 }
