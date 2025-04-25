@@ -1309,3 +1309,88 @@
         transform: scale(1.05);
     }
 }
+
+/* Wrong answer animation and effects */
+.wrongAnswerShake {
+    animation: wrongAnswerShake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes wrongAnswerShake {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate3d(-8px, 0, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate3d(8px, 0, 0);
+    }
+}
+
+.wrongAnswerFlash {
+    animation: wrongAnswerFlash 0.5s;
+}
+
+@keyframes wrongAnswerFlash {
+
+    0%,
+    100% {
+        background-color: #333;
+        border-color: #555;
+    }
+
+    50% {
+        background-color: #5a1a1a;
+        border-color: #ff4d4d;
+    }
+}
+
+.incorrectText {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ff4d4d;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000;
+    z-index: 1000;
+    opacity: 0;
+    animation: showIncorrect 1s forwards;
+}
+
+@keyframes showIncorrect {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -70%);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+}

@@ -14,6 +14,7 @@ import QuickInventory from './QuickInventory';
 import gameController, { generateId } from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
 import { PickaxeInventory } from '@/models/Inventory';
+import soundManager from '@/utils/SoundManager';
 /**
  * MathCrafter Game
  * 
@@ -43,6 +44,8 @@ const GameDisplay: React.FC = () => {
     const [brokenPickaxeType, setBrokenPickaxeType] = useState<string>('');
     const [biomeDestroyed, setBiomeDestroyed] = useState<boolean>(false);
     const [destroyedBiomeType, setDestroyedBiomeType] = useState<string>('');
+    const [wrongAnswer, setWrongAnswer] = useState<boolean>(false);
+    const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -153,6 +156,28 @@ const GameDisplay: React.FC = () => {
 
     // Handle wrong answer
     const handleWrongAnswer = () => {
+        // Show wrong answer visual effects
+        setWrongAnswer(true);
+        setIsIncorrect(true);
+
+        // Play error sound
+        soundManager.playSound('error');
+
+        // Add screen shake effect to the body
+        document.body.classList.add('screen-shake');
+
+        // Hide incorrect message after animation completes
+        setTimeout(() => {
+            setIsIncorrect(false);
+        }, 1000);
+
+        // Remove wrong answer class after animation completes
+        setTimeout(() => {
+            setWrongAnswer(false);
+            // Remove screen shake class
+            document.body.classList.remove('screen-shake');
+        }, 500);
+
         // Reduce pickaxe health
         setGameState(prev => {
             const currentPickaxe = prev.pickaxeInventory.getCurrentItem();
@@ -372,7 +397,10 @@ const GameDisplay: React.FC = () => {
                 />
 
                 {showQuestion && (
-                    <form className={styles.mathProblem} onSubmit={handleSubmit}>
+                    <form
+                        className={`${styles.mathProblem} ${wrongAnswer ? styles.wrongAnswerShake + ' ' + styles.wrongAnswerFlash : ''}`}
+                        onSubmit={handleSubmit}
+                    >
                         <div className={styles.question}>
                             {problem.num1} {problem.operator} {problem.num2} = ?
                         </div>
@@ -414,6 +442,10 @@ const GameDisplay: React.FC = () => {
                             </button>
                         </div>
                     </form>
+                )}
+
+                {isIncorrect && (
+                    <div className={styles.incorrectText}>INCORRECT!</div>
                 )}
 
                 <QuickInventory
