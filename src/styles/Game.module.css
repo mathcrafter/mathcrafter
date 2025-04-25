@@ -1606,3 +1606,34 @@
     margin-bottom: 5px;
     color: #fff;
 }
+
+.buyBlocksButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: #4a8e4a;
+    border: 3px solid #397239;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: all 0.2s;
+}
+
+.buyBlocksButton:hover {
+    background-color: #397239;
+    transform: translateY(-2px);
+}
+
+.buyBlocksButton:active {
+    transform: translateY(1px);
+}
+
+.buyBlocksButton img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}

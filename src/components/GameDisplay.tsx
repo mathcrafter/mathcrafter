@@ -17,6 +17,7 @@ import soundManager from '@/utils/SoundManager';
 import { PickaxeInventory } from '@/models/Inventory';
 import { PlayerBlock } from '@/models/Block';
 import { pickaxeStore } from '@/stores/PickaxeStore';
+import BuyBlocksModal from './BuyBlocksModal';
 
 /**
  * MathCrafter Game
@@ -52,6 +53,7 @@ const GameDisplay: React.FC = () => {
     const [scoreToShow, setScoreToShow] = useState<number | null>(null);
     const [minedBlock, setMinedBlock] = useState<{ name: string; imageUrl: string } | null>(null);
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
+    const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -310,13 +312,18 @@ const GameDisplay: React.FC = () => {
     };
 
     // Toggle inventory visibility
-    const toggleInventory = () => {
-        setShowInventory(prev => !prev);
-    };
+    // const toggleInventory = () => {
+    //     setShowInventory(prev => !prev);
+    // };
 
     // Toggle biomes modal visibility
     const toggleBiomes = () => {
         setShowBiomes(prev => !prev);
+    };
+
+    // Toggle buy blocks modal visibility
+    const toggleBuyBlocks = () => {
+        setShowBuyBlocks(prev => !prev);
     };
 
     // Handle unlocking a biome
@@ -411,6 +418,33 @@ const GameDisplay: React.FC = () => {
         });
     };
 
+    // Handle buying a block
+    const handleBuyBlock = (blockName: string) => {
+        // Check if player has enough picks
+        if (gameState.picks < 100) {
+            return;
+        }
+
+        // Deduct picks and add block to inventory
+        setGameState(prev => {
+            // Deduct 100 picks
+            const updatedState = prev.increasePicks(-100);
+
+            // Add the block to inventory
+            const updatedBlockInventory = updatedState.blockInventory.addBlock(blockName, 1);
+
+            // Set block added notification
+            setBlockAdded(new PlayerBlock({ name: blockName, quantity: 1 }));
+
+            // Clear block added notification after 3 seconds
+            setTimeout(() => {
+                setBlockAdded(null);
+            }, 3000);
+
+            return updatedState.withBlockInventory(updatedBlockInventory);
+        });
+    };
+
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
@@ -448,12 +482,19 @@ const GameDisplay: React.FC = () => {
                         Biomes
                     </button>
                     <button
+                        className={styles.buyBlocksButton}
+                        onClick={toggleBuyBlocks}
+                    >
+                        <img src="/assets/blocks.png" alt="Blocks" className={styles.buttonIcon} />
+                        Blocks
+                    </button>
+                    {/* <button
                         className={styles.inventoryButton}
                         onClick={toggleInventory}
                     >
                         <img src="/assets/inventory.png" alt="Inventory" className={styles.buttonIcon} />
                         Inventory
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -533,12 +574,12 @@ const GameDisplay: React.FC = () => {
             />
 
             {/* Inventory Modal */}
-            <InventoryModal
+            {/* <InventoryModal
                 isOpen={showInventory}
                 onClose={toggleInventory}
                 gameState={gameState}
                 onSelectPickaxe={handleSelectPickaxe}
-            />
+            /> */}
 
             {/* Biomes Modal */}
             <BiomesModal
@@ -548,6 +589,14 @@ const GameDisplay: React.FC = () => {
                 onUnlockBiome={handleUnlock}
                 onSelectBiome={handleSelectBiome}
                 selectionMode={gameState.currentBiome.currentHealth <= 0 || biomeDestroyed}
+            />
+
+            {/* Buy Blocks Modal */}
+            <BuyBlocksModal
+                isOpen={showBuyBlocks}
+                onClose={toggleBuyBlocks}
+                gameState={gameState}
+                onBuyBlock={handleBuyBlock}
             />
 
             {/* Game Over Modal */}
