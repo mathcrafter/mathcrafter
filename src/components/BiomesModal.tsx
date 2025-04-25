@@ -51,8 +51,20 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
     };
 
     const canUnlockBiome = (biomeName: string) => {
-        // TODO: placeholder
-        return true;
+        // If the biome is already unlocked, no need to check resources
+        if (isBiomeUnlocked(biomeName)) {
+            return true;
+        }
+
+        const biome = biomeStore.getItemByName(biomeName);
+
+        // If biome has no cost, it's free to unlock
+        if (!biome.cost) {
+            return true;
+        }
+
+        // Check if the player has the required items
+        return gameState.blockInventory.hasBlock(biome.cost.itemType, biome.cost.amount);
     };
 
     return (
@@ -113,14 +125,22 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                         {!isUnlocked && (
                                             <>
                                                 <div className={styles.unlockCost}>
-                                                    Cost: <span className={canUnlock ? styles.affordableCost : styles.unaffordableCost}>{0}</span>
+                                                    {biome.cost ? (
+                                                        <>
+                                                            Cost: <span className={canUnlock ? styles.affordableCost : styles.unaffordableCost}>
+                                                                {biome.cost.amount} {biome.cost.itemType}
+                                                            </span>
+                                                        </>
+                                                    ) : (
+                                                        <span className={styles.affordableCost}>Free</span>
+                                                    )}
                                                 </div>
                                                 <button
                                                     className={`${styles.unlockButton} ${!canUnlock ? styles.unlockButtonDisabled : ''}`}
                                                     onClick={() => handleUnlock(biome.name)}
                                                     disabled={!canUnlock}
                                                 >
-                                                    {canUnlock ? 'Unlock' : 'Not enough picks'}
+                                                    {canUnlock ? 'Unlock' : 'Not enough resources'}
                                                 </button>
                                             </>
                                         )}

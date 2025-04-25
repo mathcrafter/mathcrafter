@@ -13,13 +13,18 @@ const biomes: Biome[] = [
         name: "plains",
         description: "A flat, grassy biome.",
         availableBlocks: ["dirt", "wood", "clay", "pumpkin"],
-        maxHealth: 11,
+        maxHealth: 21,
+        cost: null,
     },
     {
         name: "desert",
         description: "A dry, sandy biome.",
         availableBlocks: ["sand", "glass", "sandstone", "cactus"],
-        maxHealth: 11,
+        maxHealth: 21,
+        cost: {
+            amount: 1,
+            itemType: "pumpkin"
+        }
     },
 ]
 

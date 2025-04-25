@@ -6,6 +6,10 @@ export interface Biome {
     description: string;
     availableBlocks: string[];
     maxHealth: number;
+    cost: {
+        amount: number;
+        itemType: string;
+    } | null;
 }
 
 export class PlayerBiome {

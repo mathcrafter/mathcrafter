@@ -18,6 +18,7 @@ import { PickaxeInventory } from '@/models/Inventory';
 import { PlayerBlock } from '@/models/Block';
 import { pickaxeStore } from '@/stores/PickaxeStore';
 import BuyBlocksModal from './BuyBlocksModal';
+import { biomeStore } from '@/stores/BiomeStore';
 
 /**
  * MathCrafter Game
@@ -128,7 +129,7 @@ const GameDisplay: React.FC = () => {
         // Get current pickaxe to calculate score
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
 
-        var picks = 0;
+        let picks = 0;
 
         if (currentPickaxe) {
             picks = currentPickaxe.getPicks();
@@ -327,17 +328,55 @@ const GameDisplay: React.FC = () => {
 
     // Handle unlocking a biome
     const handleUnlock = (biomeName: string) => {
-        setGameState(prev => {
-            // Add the biome to unlocked biomes if not already unlocked
-            if (!prev.unlockedBiomes.includes(biomeName)) {
+        // Don't do anything if the biome is already unlocked
+        if (gameState.unlockedBiomes.includes(biomeName)) {
+            return;
+        }
+
+        // Get the biome details to determine the cost
+        const biome = biomeStore.getItemByName(biomeName);
+        if (!biome) {
+            console.error(`Biome with name ${biomeName} not found`);
+            return;
+        }
+
+        // Check if the biome costs something to unlock
+        if (biome.cost) {
+            const requiredBlockType = biome.cost.itemType;
+            const requiredAmount = biome.cost.amount;
+
+            // Check if player has enough of the required block
+            if (!gameState.blockInventory.hasBlock(requiredBlockType, requiredAmount)) {
+                console.error(`Not enough ${requiredBlockType} to unlock ${biomeName} biome`);
+                return;
+            }
+
+            // Update game state: deduct cost and add to unlocked biomes
+            setGameState(prev => {
+                // Remove the blocks from inventory
+                let updatedBlockInventory = prev.blockInventory;
+                // Add negative quantity to reduce the amount
+                updatedBlockInventory = updatedBlockInventory.addBlock(requiredBlockType, -requiredAmount);
+
+                // Add the biome to unlocked biomes
+                const updatedUnlockedBiomes = [...prev.unlockedBiomes, biomeName];
+
+                return new GameState({
+                    ...prev,
+                    unlockedBiomes: updatedUnlockedBiomes,
+                    blockInventory: updatedBlockInventory
+                });
+            });
+        } else {
+            // Biome is free to unlock
+            setGameState(prev => {
                 const updatedUnlockedBiomes = [...prev.unlockedBiomes, biomeName];
                 return new GameState({
                     ...prev,
                     unlockedBiomes: updatedUnlockedBiomes
                 });
-            }
-            return prev;
-        });
+            });
+        }
     };
 
     // Handle buying a pickaxe

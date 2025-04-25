@@ -45,7 +45,11 @@ export class PlayerPickaxe {
 
     public getPicks(): number {
         const pickaxeDef = this.getPickaxe();
-        return Math.round(pickaxeDef.strength * 10 + 1000 * pickaxeDef.critical);
+        let picks = pickaxeDef.strength * 10;
+        if (Math.random() < pickaxeDef.critical) {
+            picks += 1000 * pickaxeDef.critical;
+        }
+        return Math.round(picks);
     }
 
     public withDamage(amount: number): PlayerPickaxe {
