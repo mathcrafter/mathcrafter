@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Game.module.css';
 import { PlayerPickaxe } from '@/models/Pickaxe';
 
@@ -9,16 +9,20 @@ interface PickaxeButtonProps {
     isSelected: boolean;
     onClick: (pickaxeId: string) => void;
     className?: string;
+    showTooltip?: boolean;
 }
 
 const PickaxeButton: React.FC<PickaxeButtonProps> = ({
     pickaxe,
     isSelected,
     onClick,
-    className = ''
+    className = '',
+    showTooltip = true
 }) => {
+    const [isHovered, setIsHovered] = useState(false);
     const maxHealth = pickaxe.getPickaxe().maxHealth;
     const healthPercentage = (pickaxe.health / maxHealth) * 100;
+    const pickaxeDef = pickaxe.getPickaxe();
 
     // Calculate color based on health percentage - gradient from red to yellow to green
     const getHealthColor = (percent: number) => {
@@ -46,10 +50,20 @@ const PickaxeButton: React.FC<PickaxeButtonProps> = ({
         onClick(pickaxe.id);
     };
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <div
             className={`${styles.inventorySlot} ${isSelected ? styles.selected : ''} ${className}`}
             onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             title={`${pickaxe.type} Pickaxe - Health: ${pickaxe.health}/${maxHealth}`}
         >
             <img
@@ -66,6 +80,21 @@ const PickaxeButton: React.FC<PickaxeButtonProps> = ({
                     }}
                 ></div>
             </div>
+
+            {showTooltip && isHovered && (
+                <div className={styles.quickItemTooltip}>
+                    <div className={styles.quickItemName}>
+                        {pickaxe.type.charAt(0).toUpperCase() + pickaxe.type.slice(1)} Pickaxe
+                    </div>
+                    <div className={styles.quickItemStats}>
+                        <div>Health: {pickaxe.health}/{maxHealth}</div>
+                        <div>Strength: {pickaxeDef.strength}</div>
+                        <div>Critical: {pickaxeDef.critical * 100}%</div>
+                        <div>Power: {pickaxeDef.power}</div>
+                        <div>Rarity: {pickaxeDef.rarity}</div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
