@@ -1,8 +1,9 @@
 import { GameState, getInitialGameState, IGameState } from "@/models/GameState";
 import { MathProblem } from "@/models/MathProblem";
-import { PickaxeInventory } from "@/models/Inventory";
+import { PickaxeInventory, BlockInventory } from "@/models/Inventory";
 import { PlayerPickaxe } from "@/models/Pickaxe";
 import { PlayerBiome } from "@/models/Biome";
+import { PlayerBlock } from "@/models/Block";
 
 interface IGameStateStorage {
     getGameState(): GameState | null;
@@ -38,10 +39,21 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
                     })
                 );
 
+                const blockItems = parsedState.blockInventory.items.map(item =>
+                    new PlayerBlock({
+                        name: item.name,
+                        quantity: item.quantity
+                    })
+                );
+
                 const currentItem = parsedState.pickaxeInventory.currentItem;
                 const pickaxeInventory = new PickaxeInventory({
                     items: pickaxeItems,
                     currentItem: currentItem
+                });
+
+                const blockInventory = new BlockInventory({
+                    items: blockItems
                 });
 
                 const currentBiome = new PlayerBiome({
@@ -53,6 +65,7 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
                 return new GameState({
                     score: parsedState.score,
                     pickaxeInventory: pickaxeInventory,
+                    blockInventory: blockInventory,
                     unlockedBiomes: parsedState.unlockedBiomes,
                     currentBiome: currentBiome
                 });

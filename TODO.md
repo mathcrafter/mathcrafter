@@ -16,4 +16,4 @@
 
 
 # Bugs
-[ ] When a pickaxe loses all its health points, it does not break but the health bar is back to 100%
+[x] When a pickaxe loses all its health points, it does not break but the health bar is back to 100%
