@@ -1160,8 +1160,55 @@
 .biomesGrid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
     justify-content: center;
+}
+
+/* For the drawer version */
+.biomesDrawerContent .biomesGrid {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 15px;
+    justify-content: flex-start;
+    max-height: none;
+    width: 100%;
+}
+
+.biomesDrawerContent .biomeItem {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.biomesDrawerContent .biomeItemImg {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+    margin-bottom: 0;
+}
+
+.biomesDrawerContent .itemInfo {
+    flex: 1;
+    text-align: left;
+}
+
+.biomesDrawerContent .availableBlocks {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.biomesDrawerContent .blockImagesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 100%;
+    justify-content: flex-start;
 }
 
 .biomeItem {
@@ -1227,7 +1274,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-right: 5px;
     margin-bottom: 5px;
+    width: 40px;
 }
 
 .blockImage {
@@ -1239,10 +1288,29 @@
 }
 
 .blockName {
-    font-size: 0.8rem;
-    color: #ddd;
-    margin-top: 3px;
-    text-transform: capitalize;
+    font-size: 0.7rem;
+    word-break: break-word;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.availableBlocks span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.itemDescription {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    overflow-wrap: break-word;
+}
+
+.itemName {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    width: 100%;
 }
 
 /* Biome Item Styles */
@@ -1655,4 +1723,177 @@
     margin-right: 5px;
     image-rendering: pixelated;
     vertical-align: middle;
+}
+
+/* Biomes Drawer */
+.biomesDrawer {
+    position: fixed;
+    top: 0;
+    left: -400px;
+    /* Off-screen by default */
+    width: 400px;
+    height: 100vh;
+    background-color: #333;
+    border-right: 5px solid #555;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.biomesDrawerOpen {
+    transform: translateX(400px);
+}
+
+.biomesDrawerHandle {
+    position: absolute;
+    top: 50%;
+    right: -40px;
+    width: 40px;
+    height: 100px;
+    background-color: #333;
+    border: 3px solid #555;
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transform: translateY(-50%);
+    z-index: 999;
+}
+
+.biomesDrawerHandle::before {
+    content: 'B';
+    color: #72CB3B;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.biomesDrawerHandle::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #72CB3B;
+    margin-top: 10px;
+    transition: transform 0.3s ease;
+}
+
+.biomesDrawerOpen .biomesDrawerHandle::after {
+    transform: rotate(180deg);
+}
+
+.biomesDrawerContent {
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.biomesDrawerHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 2px solid #555;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.biomesDrawerHeader h2 {
+    font-size: 1.8rem;
+    color: #72CB3B;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.biomesOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.biomesOverlayOpen {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.biomesDrawerContent .blockImageWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    width: 40px;
+}
+
+.biomesDrawerContent .blockName {
+    font-size: 0.7rem;
+    word-break: break-word;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ddd;
+    margin-top: 3px;
+    text-transform: capitalize;
+}
+
+.biomesDrawerContent .availableBlocks span {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.biomesDrawerContent .itemDescription {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    overflow-wrap: break-word;
+    color: #AAA;
+    margin-top: 4px;
+}
+
+.biomesDrawerContent .itemName {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+/* Make sure the drawer takes full available height */
+.biomesDrawer {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+}
+
+.biomesDrawerContent .unlockButton,
+.biomesDrawerContent .selectButton {
+    width: 90%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.biomesDrawerContent .unlockCost {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
 }
