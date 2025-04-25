@@ -11,12 +11,25 @@ interface BiomesModalProps {
     onClose: () => void;
     gameState: GameState;
     onUnlockBiome?: (biomeName: string) => void;
+    onSelectBiome?: (biomeName: string) => void;
+    selectionMode?: boolean;
 }
 
-const BiomesModal: React.FC<BiomesModalProps> = ({ isOpen, onClose, gameState, onUnlockBiome }) => {
+const BiomesModal: React.FC<BiomesModalProps> = ({
+    isOpen,
+    onClose,
+    gameState,
+    onUnlockBiome,
+    onSelectBiome,
+    selectionMode = false
+}) => {
     const availableBiomes = biomeStore.items;
-
     const unlockedBiomes = gameState.unlockedBiomes;
+    const currentBiomeType = gameState.currentBiome.type;
+    const isBiomeDestroyed = gameState.currentBiome.currentHealth <= 0;
+
+    // Log for debugging
+    console.log(`BiomesModal opened - Selection mode: ${selectionMode}, Biome destroyed: ${isBiomeDestroyed}, Current health: ${gameState.currentBiome.currentHealth}`);
 
     if (!isOpen) return null;
 
@@ -30,6 +43,13 @@ const BiomesModal: React.FC<BiomesModalProps> = ({ isOpen, onClose, gameState, o
         }
     };
 
+    const handleSelect = (biomeName: string) => {
+        if (onSelectBiome && isBiomeUnlocked(biomeName)) {
+            onSelectBiome(biomeName.toLowerCase());
+            onClose();
+        }
+    };
+
     const canUnlockBiome = (biomeName: string) => {
         // TODO: placeholder
         return true;
@@ -39,22 +59,27 @@ const BiomesModal: React.FC<BiomesModalProps> = ({ isOpen, onClose, gameState, o
         <div className={`${styles.modal} ${isOpen ? styles.modalShow : ''}`}>
             <div className={`${styles.modalContent} ${styles.biomesModalContent}`}>
                 <div className={styles.modalHeader}>
-                    <h2>Available Biomes</h2>
+                    <h2>{selectionMode ? 'Select Next Biome' : 'Available Biomes'}</h2>
                     <button className={styles.closeBtn} onClick={onClose}>×</button>
                 </div>
 
                 <div className={styles.biomesSection}>
-                    <h3>Biomes you can explore:</h3>
+                    <h3>{selectionMode ? 'Choose a biome to explore:' : 'Biomes you can explore:'}</h3>
 
                     <div className={styles.biomesGrid}>
                         {availableBiomes.map((biome: Biome) => {
                             const isUnlocked = isBiomeUnlocked(biome.name);
                             const canUnlock = canUnlockBiome(biome.name);
+                            const isCurrentBiome = biome.name.toLowerCase() === currentBiomeType;
 
                             return (
                                 <div
                                     key={biome.name}
-                                    className={`${styles.biomeItem} ${isUnlocked ? styles.biomeUnlocked : styles.biomeLocked}`}
+                                    className={`${styles.biomeItem} 
+                                              ${isUnlocked ? styles.biomeUnlocked : styles.biomeLocked}
+                                              ${isCurrentBiome ? styles.biomeSelected : ''}`}
+                                    onClick={() => isUnlocked && selectionMode ? handleSelect(biome.name) : null}
+                                    style={{ cursor: isUnlocked && selectionMode ? 'pointer' : 'default' }}
                                 >
                                     <img
                                         src={`/assets/biomes/${biome.name.toLowerCase()}.webp`}
@@ -65,6 +90,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({ isOpen, onClose, gameState, o
                                         <div className={styles.itemName}>
                                             {biome.name}
                                             {isUnlocked && <span className={styles.unlockedIndicator}>✓</span>}
+                                            {isCurrentBiome && <span className={styles.currentIndicator}> (Current)</span>}
                                         </div>
                                         <div className={styles.itemDescription}>{biome.description}</div>
                                         {!isUnlocked && (
@@ -80,6 +106,14 @@ const BiomesModal: React.FC<BiomesModalProps> = ({ isOpen, onClose, gameState, o
                                                     {canUnlock ? 'Unlock' : 'Not enough score'}
                                                 </button>
                                             </>
+                                        )}
+                                        {isUnlocked && selectionMode && !isCurrentBiome && (
+                                            <button
+                                                className={styles.selectButton}
+                                                onClick={() => handleSelect(biome.name)}
+                                            >
+                                                Select
+                                            </button>
                                         )}
                                     </div>
                                 </div>

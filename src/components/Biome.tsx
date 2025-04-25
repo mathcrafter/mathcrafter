@@ -65,9 +65,11 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
 
     // Calculate health percentage for display
     const healthPercentage = currentBiome?.damagePercent || 100;
+    const isDestroyed = currentBiome?.currentHealth <= 0;
 
     // Determine health color based on percentage
     const getHealthColor = () => {
+        if (isDestroyed) return '#FF0000'; // Red for destroyed
         if (healthPercentage > 60) return '#72CB3B'; // Green
         if (healthPercentage > 30) return '#FFCC00'; // Yellow
         return '#FF6B6B'; // Red
@@ -77,7 +79,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
         <div className={styles.biomeContainer}>
             <div
                 ref={biomeRef}
-                className={`${styles.biome}`}
+                className={`${styles.biome} ${isDestroyed ? styles.biomeDestroyed : ''}`}
                 onMouseMove={handleMouseMove}
                 onClick={handleClick}
                 style={{
@@ -86,6 +88,13 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                     backgroundPosition: 'center'
                 }}
             >
+                {/* Show destroyed overlay if health is zero */}
+                {isDestroyed && (
+                    <div className={styles.destroyedOverlay}>
+                        DESTROYED
+                    </div>
+                )}
+
                 {/* Crack overlay that appears based on damage */}
                 {healthPercentage < 100 && (
                     <>

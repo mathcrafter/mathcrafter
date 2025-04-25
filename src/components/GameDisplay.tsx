@@ -41,6 +41,8 @@ const GameDisplay: React.FC = () => {
     const [showQuestion, setShowQuestion] = useState<boolean>(false);
     const [pickaxeBroken, setPickaxeBroken] = useState<boolean>(false);
     const [brokenPickaxeType, setBrokenPickaxeType] = useState<string>('');
+    const [biomeDestroyed, setBiomeDestroyed] = useState<boolean>(false);
+    const [destroyedBiomeType, setDestroyedBiomeType] = useState<string>('');
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -98,40 +100,55 @@ const GameDisplay: React.FC = () => {
 
             // Then damage the biome (10 points of damage per correct answer)
             const damagedBiome = prev.currentBiome.damage(10);
+            console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
+
             const updatedState = withScore.withCurrentBiome(damagedBiome);
 
             // Check if biome is completely damaged and needs to be rewarded
             if (damagedBiome.currentHealth <= 0) {
-                // Give reward and reset biome health in next tick to avoid
-                // state update during render
-                setTimeout(() => handleBiomeDefeated(), 100);
+                console.log("Biome destroyed! Opening selection modal...");
+                // Handle biome defeated immediately instead of using setTimeout
+                // Store the destroyed biome type for display
+                setDestroyedBiomeType(prev.currentBiome.type);
+                setBiomeDestroyed(true);
+
+                // Auto-hide notification after 3 seconds
+                setTimeout(() => {
+                    setBiomeDestroyed(false);
+                }, 3000);
+
+                // Show biomes modal for selection of next biome
+                setShowBiomes(true);
+
+                // Return state with additional reward
+                return updatedState.increaseScore(500); // Add reward for defeating biome
             }
 
             return updatedState;
         });
     };
 
-    // Handle when biome is completely mined
+    // Handle when biome is completely mined (keeping this for reference, but now inline in handleCorrectAnswer)
     const handleBiomeDefeated = () => {
         // Get reward based on biome type (add more complex rewards later)
         const rewardAmount = 500;
 
-        // Show alert for now, could be replaced with a nicer UI later
-        alert(`Biome mined! You received ${rewardAmount} points!`);
-
-        // Update game state with reward and reset biome health
+        // Update game state with reward
         setGameState(prev => {
-            const withReward = prev.increaseScore(rewardAmount);
+            // Store the destroyed biome type for display
+            setDestroyedBiomeType(prev.currentBiome.type);
+            setBiomeDestroyed(true);
 
-            // Reset biome health
-            const resetBiome = new PlayerBiome({
-                id: prev.currentBiome.id,
-                type: prev.currentBiome.type,
-                currentHealth: null // This will reset to max health
-            });
+            // Auto-hide notification after 3 seconds
+            setTimeout(() => {
+                setBiomeDestroyed(false);
+            }, 3000);
 
-            return withReward.withCurrentBiome(resetBiome);
+            return prev.increaseScore(rewardAmount);
         });
+
+        // Show biomes modal for selection of next biome instead of automatically resetting
+        setShowBiomes(true);
     };
 
     // Handle wrong answer
@@ -230,6 +247,21 @@ const GameDisplay: React.FC = () => {
         setShowBiomes(prev => !prev);
     };
 
+    // Handle unlocking a biome
+    const handleUnlock = (biomeName: string) => {
+        setGameState(prev => {
+            // Add the biome to unlocked biomes if not already unlocked
+            if (!prev.unlockedBiomes.includes(biomeName)) {
+                const updatedUnlockedBiomes = [...prev.unlockedBiomes, biomeName];
+                return new GameState({
+                    ...prev,
+                    unlockedBiomes: updatedUnlockedBiomes
+                });
+            }
+            return prev;
+        });
+    };
+
     // Handle buying a pickaxe
     const handleBuyPickaxe = (itemType: string, cost: number) => {
         // Create a new pickaxe
@@ -270,6 +302,20 @@ const GameDisplay: React.FC = () => {
 
         // Close the inventory modal after selection
         setShowInventory(false);
+    };
+
+    // Handle selecting a biome
+    const handleSelectBiome = (biomeName: string) => {
+        setGameState(prev => {
+            // Create a new biome of the selected type
+            const newBiome = new PlayerBiome({
+                id: null, // Generate a new ID
+                type: biomeName,
+                currentHealth: null // This will reset to max health
+            });
+
+            return prev.withCurrentBiome(newBiome);
+        });
     };
 
     // Calculate total pickaxes
@@ -397,6 +443,9 @@ const GameDisplay: React.FC = () => {
                 isOpen={showBiomes}
                 onClose={toggleBiomes}
                 gameState={gameState}
+                onUnlockBiome={handleUnlock}
+                onSelectBiome={handleSelectBiome}
+                selectionMode={gameState.currentBiome.currentHealth <= 0 || biomeDestroyed}
             />
 
             {/* Game Over Modal */}
@@ -410,6 +459,15 @@ const GameDisplay: React.FC = () => {
                 <div className={styles.brokenPickaxeNotification}>
                     <h3>Pickaxe Destroyed!</h3>
                     <p>Your {brokenPickaxeType} Pickaxe has broken.</p>
+                </div>
+            )}
+
+            {/* Biome Destroyed Notification */}
+            {biomeDestroyed && (
+                <div className={styles.biomeDestroyedNotification}>
+                    <h3>Biome Conquered!</h3>
+                    <p>You've mined the {destroyedBiomeType} biome.</p>
+                    <p>Please select a new biome to explore!</p>
                 </div>
             )}
         </div>
