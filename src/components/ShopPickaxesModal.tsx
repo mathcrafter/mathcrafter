@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { pickaxeStore } from '@/stores/PickaxeStore';
@@ -16,6 +16,39 @@ interface ShopPickaxesModalProps {
 
 const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
     const [hoveredPickaxe, setHoveredPickaxe] = useState<string | null>(null);
+    const drawerContentRef = useRef<HTMLDivElement>(null);
+    const pickaxes = pickaxeStore.items;
+
+    // Check for scrollable content and apply hasScroll class
+    useEffect(() => {
+        if (isOpen && drawerContentRef.current) {
+            const checkScroll = () => {
+                const element = drawerContentRef.current;
+                if (element) {
+                    if (element.scrollHeight > element.clientHeight) {
+                        element.classList.add(styles.hasScroll);
+                    } else {
+                        element.classList.remove(styles.hasScroll);
+                    }
+                }
+            };
+
+            // Check on initial render and when content might change
+            checkScroll();
+
+            // Set up a resize observer to check when container dimensions change
+            const resizeObserver = new ResizeObserver(checkScroll);
+            resizeObserver.observe(drawerContentRef.current);
+
+            // Clean up
+            return () => {
+                if (drawerContentRef.current) {
+                    resizeObserver.unobserve(drawerContentRef.current);
+                }
+                resizeObserver.disconnect();
+            };
+        }
+    }, [isOpen, pickaxes]);
 
     // Function to check if user has enough blocks to buy a pickaxe
     const canBuyPickaxe = (itemType: string, amount: number): boolean => {
@@ -34,61 +67,70 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
     };
 
     return (
-        <div className={`${styles.modal} ${isOpen ? styles.modalShow : ''}`}>
-            <div className={`${styles.modalContent} ${styles.pickaxesModalContent}`}>
-                <div className={styles.modalHeader}>
-                    <h2>Pickaxes</h2>
-                    <button
-                        className={styles.closeBtn}
-                        onClick={onClose}
-                    >
-                        ×
-                    </button>
-                </div>
-                <div className={styles.pickaxesItems}>
-                    {pickaxeStore.items.map((pickaxe) => (
-                        <div
-                            key={pickaxe.name}
-                            className={styles.pickaxesItem}
-                            onMouseEnter={() => setHoveredPickaxe(pickaxe.name)}
-                            onMouseLeave={() => setHoveredPickaxe(null)}
-                        >
-                            <img
-                                src={`/assets/pickaxes/${pickaxe.name.toLowerCase()}.webp`}
-                                alt={`${pickaxe.name} Pickaxe`}
-                                className={styles.shopItemImg}
-                            />
+        <>
+            {/* Darkened overlay when drawer is open */}
+            <div
+                className={`${styles.biomesOverlay} ${isOpen ? styles.biomesOverlayOpen : ''}`}
+                onClick={onClose}
+            />
 
-                            {hoveredPickaxe === pickaxe.name && (
-                                <div className={styles.itemTooltip}>
-                                    <div className={styles.itemName}>{pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1)} Pickaxe</div>
-                                    <div className={styles.itemStats}>
-                                        <div>Strength: {pickaxe.strength}</div>
-                                        <div>Durability: {pickaxe.maxHealth}</div>
-                                        <div>Crit: {pickaxe.critical * 100}%</div>
-                                    </div>
-                                    <div className={styles.itemCost}>
-                                        <span>{pickaxe.cost.amount}</span>
-                                        <span> {pickaxe.cost.itemType}</span>
-                                        <div className={canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount) ? styles.affordableCost : styles.unaffordableCost}>
-                                            (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
+            {/* Drawer component */}
+            <div className={`${styles.biomesDrawer} ${isOpen ? styles.biomesDrawerOpen : ''}`}>
+                {/* Handle to open/close the drawer */}
+                <div className={styles.biomesDrawerHandle} onClick={onClose} />
+
+                <div className={styles.biomesDrawerHeader}>
+                    <h2>Shop Pickaxes</h2>
+                </div>
+
+                <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="pickaxes">
+                    <div className={styles.biomesSection}>
+                        <h3>Available Pickaxes</h3>
+
+                        <div className={styles.biomesGrid}>
+                            {pickaxeStore.items.map((pickaxe) => {
+                                const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
+                                return (
+                                    <div
+                                        key={pickaxe.name}
+                                        className={styles.biomeItem}
+                                    >
+                                        <img
+                                            src={`/assets/pickaxes/${pickaxe.name.toLowerCase()}.webp`}
+                                            alt={`${pickaxe.name} Pickaxe`}
+                                            className={styles.biomeItemImg}
+                                        />
+                                        <div className={styles.itemInfo}>
+                                            <div className={styles.itemName}>
+                                                {pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1)} Pickaxe
+                                            </div>
+                                            <div className={styles.itemDescription}>
+                                                Strength: {pickaxe.strength} | Durability: {pickaxe.maxHealth} | Crit: {pickaxe.critical * 100}%
+                                            </div>
+                                            <div className={styles.unlockCost}>
+                                                Cost: <span className={canBuy ? styles.affordableCost : styles.unaffordableCost}>
+                                                    {pickaxe.cost.amount} {pickaxe.cost.itemType}
+                                                </span>
+                                                <div>
+                                                    (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
+                                                </div>
+                                            </div>
+                                            <button
+                                                className={`${styles.unlockButton} ${!canBuy ? styles.unlockButtonDisabled : ''}`}
+                                                onClick={() => onBuyItem(pickaxe.name, 0)}
+                                                disabled={!canBuy}
+                                            >
+                                                {getBuyButtonText(pickaxe)}
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                            )}
-
-                            <button
-                                className={styles.buyBtn}
-                                onClick={() => onBuyItem(pickaxe.name, 0)}
-                                disabled={!canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount)}
-                            >
-                                {getBuyButtonText(pickaxe)}
-                            </button>
+                                );
+                            })}
                         </div>
-                    ))}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { biomeStore } from '@/stores/BiomeStore';
@@ -27,9 +27,41 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
     const unlockedBiomes = gameState.unlockedBiomes;
     const currentBiomeType = gameState.currentBiome.type;
     const isBiomeDestroyed = gameState.currentBiome.currentHealth <= 0;
+    const drawerContentRef = useRef<HTMLDivElement>(null);
 
     // Log for debugging
     console.log(`BiomesModal opened - Selection mode: ${selectionMode}, Biome destroyed: ${isBiomeDestroyed}, Current health: ${gameState.currentBiome.currentHealth}`);
+
+    // Check for scrollable content and apply hasScroll class
+    useEffect(() => {
+        if (isOpen && drawerContentRef.current) {
+            const checkScroll = () => {
+                const element = drawerContentRef.current;
+                if (element) {
+                    if (element.scrollHeight > element.clientHeight) {
+                        element.classList.add(styles.hasScroll);
+                    } else {
+                        element.classList.remove(styles.hasScroll);
+                    }
+                }
+            };
+
+            // Check on initial render and when content might change
+            checkScroll();
+
+            // Set up a resize observer to check when container dimensions change
+            const resizeObserver = new ResizeObserver(checkScroll);
+            resizeObserver.observe(drawerContentRef.current);
+
+            // Clean up
+            return () => {
+                if (drawerContentRef.current) {
+                    resizeObserver.unobserve(drawerContentRef.current);
+                }
+                resizeObserver.disconnect();
+            };
+        }
+    }, [isOpen, availableBiomes]);
 
     const isBiomeUnlocked = (biomeName: string) => {
         return unlockedBiomes.includes(biomeName.toLowerCase());
@@ -82,7 +114,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                     <h2>{selectionMode ? 'Select Next Biome' : 'Available Biomes'}</h2>
                 </div>
 
-                <div className={styles.biomesDrawerContent}>
+                <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="biomes">
                     <div className={styles.biomesSection}>
                         <h3>{selectionMode ? 'Choose a biome to explore:' : 'Biomes you can explore:'}</h3>
 

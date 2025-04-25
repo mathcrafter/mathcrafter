@@ -1708,11 +1708,21 @@
     z-index: 999;
 }
 
+/* Default handle letter for biomes */
 .biomesDrawerHandle::before {
     content: 'B';
     color: #72CB3B;
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+/* Show appropriate letter depending on context */
+.biomesDrawerContent[data-drawer-type="pickaxes"]+.biomesDrawerHandle::before {
+    content: 'P';
+}
+
+.biomesDrawerContent[data-drawer-type="blocks"]+.biomesDrawerHandle::before {
+    content: 'L';
 }
 
 .biomesDrawerHandle::after {
@@ -1737,6 +1747,41 @@
     flex: 1;
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+    max-height: calc(100vh - 70px);
+    /* Account for the header height */
+    position: relative;
+}
+
+/* Add a subtle scroll indicator when content is scrollable */
+.biomesDrawerContent::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to top, rgba(51, 51, 51, 0.9), rgba(51, 51, 51, 0));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.biomesDrawerContent.hasScroll::after {
+    opacity: 1;
+}
+
+/* Make sure section titles are visible */
+.biomesSection h3 {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    padding: 10px 0;
+    margin-top: 0;
+    z-index: 5;
+    border-bottom: 2px solid #555;
 }
 
 .biomesDrawerHeader {
@@ -1837,4 +1882,120 @@
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+}
+
+/* Remove the global scrollbar styles that are causing errors */
+/* Scrollbar Styling */
+/* Target specific containers instead of using :global() */
+.biomesDrawer::-webkit-scrollbar,
+.biomesDrawerContent::-webkit-scrollbar {
+    width: 14px;
+}
+
+.biomesDrawer::-webkit-scrollbar-track,
+.biomesDrawerContent::-webkit-scrollbar-track {
+    background: #222;
+    border-left: 1px solid #333;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.biomesDrawer::-webkit-scrollbar-thumb,
+.biomesDrawerContent::-webkit-scrollbar-thumb {
+    background: #444;
+    border: 3px solid #222;
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(114, 203, 59, 0.2);
+}
+
+.biomesDrawer::-webkit-scrollbar-thumb:hover,
+.biomesDrawerContent::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-color: #333;
+    box-shadow: inset 0 0 8px rgba(114, 203, 59, 0.4);
+}
+
+.biomesDrawer::-webkit-scrollbar-thumb:active,
+.biomesDrawerContent::-webkit-scrollbar-thumb:active {
+    background: #72CB3B;
+    border-color: #333;
+}
+
+/* Scrollbar corner */
+.biomesDrawer::-webkit-scrollbar-corner,
+.biomesDrawerContent::-webkit-scrollbar-corner {
+    background: #222;
+}
+
+/* Specific styling for drawer content */
+.biomesDrawerContent::-webkit-scrollbar {
+    width: 10px;
+}
+
+.biomesDrawerContent::-webkit-scrollbar-track {
+    background: #333;
+    border-left: 1px solid #444;
+}
+
+.biomesDrawerContent::-webkit-scrollbar-thumb {
+    background: #555;
+    border: 2px solid #333;
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(114, 203, 59, 0.3);
+}
+
+.biomesDrawerContent::-webkit-scrollbar-thumb:hover {
+    background: #72CB3B;
+}
+
+/* Firefox scrollbar styling for specific containers */
+.biomesDrawer,
+.biomesDrawerContent {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #222;
+}
+
+/* Add scrollbar styling for modal content and other game containers */
+.modalContent::-webkit-scrollbar,
+.gameContainer::-webkit-scrollbar,
+.inventorySection::-webkit-scrollbar {
+    width: 14px;
+}
+
+.modalContent::-webkit-scrollbar-track,
+.gameContainer::-webkit-scrollbar-track,
+.inventorySection::-webkit-scrollbar-track {
+    background: #222;
+    border-left: 1px solid #333;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.modalContent::-webkit-scrollbar-thumb,
+.gameContainer::-webkit-scrollbar-thumb,
+.inventorySection::-webkit-scrollbar-thumb {
+    background: #444;
+    border: 3px solid #222;
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(114, 203, 59, 0.2);
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover,
+.gameContainer::-webkit-scrollbar-thumb:hover,
+.inventorySection::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-color: #333;
+    box-shadow: inset 0 0 8px rgba(114, 203, 59, 0.4);
+}
+
+.modalContent::-webkit-scrollbar-corner,
+.gameContainer::-webkit-scrollbar-corner,
+.inventorySection::-webkit-scrollbar-corner {
+    background: #222;
+}
+
+/* Firefox scrollbar styling for more containers */
+.modalContent,
+.gameContainer,
+.inventorySection {
+    scrollbar-width: thin;
+    scrollbar-color: #444 #222;
 }
