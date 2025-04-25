@@ -19,6 +19,6 @@ export class PlayerBlock {
     }
 
     public getImageUrl(): string {
-        return `/assets/blocks/${this.getBlock().name.toLowerCase()}.webp`;
+        return `/assets/blocks/${this.getBlock().name.toLowerCase()}.png`;
     }
 }
