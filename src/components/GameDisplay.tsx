@@ -15,6 +15,11 @@ import gameController from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
 import soundManager from '@/utils/SoundManager';
 import { PickaxeInventory } from '@/models/Inventory';
+import { PlayerBlock } from '@/models/Block';
+
+// Block mining chance configuration (25% by default)
+const BLOCK_MINING_CHANCE = 0.25;
+
 /**
  * MathCrafter Game
  * 
@@ -46,6 +51,9 @@ const GameDisplay: React.FC = () => {
     const [destroyedBiomeType, setDestroyedBiomeType] = useState<string>('');
     const [wrongAnswer, setWrongAnswer] = useState<boolean>(false);
     const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
+    const [scoreToShow, setScoreToShow] = useState<number | null>(null);
+    const [minedBlock, setMinedBlock] = useState<{ name: string; imageUrl: string } | null>(null);
+    const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -117,10 +125,31 @@ const GameDisplay: React.FC = () => {
 
     // Handle correct answer
     const handleCorrectAnswer = () => {
+        // Get current pickaxe to calculate score
+        const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
+        let scoreAmount = 100; // Default score
+
+        if (currentPickaxe) {
+            const pickaxeDef = currentPickaxe.getPickaxe();
+            // Calculate score based on pickaxe strength and critical values
+            scoreAmount = Math.round(pickaxeDef.strength * 10 + 1000 * pickaxeDef.critical);
+
+            // Flash the score display
+            setScoreToShow(scoreAmount);
+
+            // Reset score display after animation time
+            setTimeout(() => {
+                setScoreToShow(null);
+            }, 2000);
+        }
+
+        // Attempt to mine a block with the configured chance
+        attemptToMineBlock();
+
         // Damage the biome
         setGameState(prev => {
-            // Increase picks first
-            const withPicks = prev.increasePicks(100);
+            // Increase picks with calculated score
+            const withPicks = prev.increasePicks(scoreAmount);
 
             // Then damage the biome (10 points of damage per correct answer)
             const damagedBiome = prev.currentBiome.withDamage(10);
@@ -130,6 +159,49 @@ const GameDisplay: React.FC = () => {
 
             return updatedState;
         });
+    };
+
+    // Attempt to mine a block with the configured chance
+    const attemptToMineBlock = () => {
+        const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
+        // Check if we should mine a block based on the configured chance (25%)
+        if (currentPickaxe && Math.random() < BLOCK_MINING_CHANCE) {
+            const currentBiome = gameState.currentBiome;
+            if (!currentBiome) return;
+
+            const biomeData = currentBiome.getBiome();
+            const availableBlocks = biomeData.availableBlocks;
+
+            if (availableBlocks && availableBlocks.length > 0) {
+                // Select a random block from the available ones
+                const randomIndex = Math.floor(Math.random() * availableBlocks.length);
+                const blockName = availableBlocks[randomIndex];
+
+                // Create temporary block to get image URL
+                const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
+                const blockImageUrl = tempBlock.getImageUrl();
+
+                // Set the mined block for animation
+                setMinedBlock({
+                    name: blockName,
+                    imageUrl: blockImageUrl
+                });
+
+                // Set block added notification
+                setBlockAdded(tempBlock);
+
+                // Clear block added notification after 3 seconds
+                setTimeout(() => {
+                    setBlockAdded(null);
+                }, 3000);
+
+                // Add the block to inventory
+                setGameState(prev => {
+                    const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
+                    return prev.withBlockInventory(updatedBlockInventory);
+                });
+            }
+        }
     };
 
     // Handle wrong answer
@@ -372,6 +444,8 @@ const GameDisplay: React.FC = () => {
                     onBiomeClick={handleBiomeClick}
                     currentPickaxe={gameState.pickaxeInventory.getCurrentItem()}
                     currentBiome={gameState.currentBiome}
+                    scoreToShow={scoreToShow}
+                    minedBlock={minedBlock}
                 />
 
                 {showQuestion && (
@@ -478,6 +552,16 @@ const GameDisplay: React.FC = () => {
                     <h3>Biome Conquered!</h3>
                     <p>You've mined the {destroyedBiomeType} biome.</p>
                     <p>Please select a new biome to explore!</p>
+                </div>
+            )}
+
+            {/* Block added notification */}
+            {blockAdded && (
+                <div className={styles.blockAddedNotification}>
+                    <img src={blockAdded.getImageUrl()} alt={blockAdded.name} />
+                    <div>
+                        <div>+1 {blockAdded.name}</div>
+                    </div>
                 </div>
             )}
         </div>

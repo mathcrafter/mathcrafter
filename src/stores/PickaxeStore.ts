@@ -11,7 +11,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "wood",
         "strength": 1,
-        "critical": 0.01,
+        "critical": 0.10,
         "cost": {
             "amount": 25,
             "itemType": "wood"
@@ -25,7 +25,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "clay",
         "strength": 2,
-        "critical": 0.01,
+        "critical": 0.10,
         "cost": {
             "amount": 100,
             "itemType": "clay"
@@ -39,7 +39,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "pumpkin",
         "strength": 3,
-        "critical": 0.02,
+        "critical": 0.20,
         "cost": {
             "amount": 250,
             "itemType": "pumpkin"
@@ -53,7 +53,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "cactus",
         "strength": 3,
-        "critical": 0.02,
+        "critical": 0.20,
         "cost": {
             "amount": 250,
             "itemType": "cactus"
@@ -67,7 +67,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "Sandstone",
         "strength": 4,
-        "critical": 0.025,
+        "critical": 0.25,
         "cost": {
             "amount": 500,
             "itemType": "sandstone"
@@ -81,7 +81,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "glass",
         "strength": 4,
-        "critical": 0.025,
+        "critical": 0.25,
         "cost": {
             "amount": 100,
             "itemType": "glass"
@@ -95,7 +95,7 @@ const pickaxes: Pickaxe[] = [
     {
         "name": "birchwood",
         "strength": 5,
-        "critical": 0.025,
+        "critical": 0.25,
         "cost": {
             "amount": 500,
             "itemType": "birchwood"

@@ -84,4 +84,49 @@ export class BlockInventory extends Inventory<PlayerBlock> {
     constructor({ items }: { items: PlayerBlock[] }) {
         super({ items });
     }
+
+    /**
+     * Add a block to the inventory or increases its quantity if it already exists
+     * @param blockName The name of the block to add
+     * @param quantity The quantity to add (default 1)
+     * @returns A new BlockInventory with the updated items
+     */
+    public addBlock(blockName: string, quantity: number = 1): BlockInventory {
+        // Check if the block already exists in inventory
+        const existingBlock = this.items.find(item => item.name === blockName);
+
+        if (existingBlock) {
+            // If exists, update its quantity
+            const updatedItems = this.items.map(item =>
+                item.name === blockName
+                    ? new PlayerBlock({ name: item.name, quantity: item.quantity + quantity })
+                    : item
+            );
+            return new BlockInventory({ items: updatedItems });
+        } else {
+            // If not exists, add a new block entry
+            const newBlock = new PlayerBlock({ name: blockName, quantity });
+            return new BlockInventory({ items: [...this.items, newBlock] });
+        }
+    }
+
+    /**
+     * Get the total quantity of a specific block in the inventory
+     * @param blockName The name of the block to check
+     * @returns The quantity of the block, 0 if it doesn't exist
+     */
+    public getBlockQuantity(blockName: string): number {
+        const block = this.items.find(item => item.name === blockName);
+        return block ? block.quantity : 0;
+    }
+
+    /**
+     * Check if the inventory contains at least the specified quantity of a block
+     * @param blockName The name of the block to check
+     * @param quantity The minimum quantity to check for (default 1)
+     * @returns True if the inventory has at least the specified quantity
+     */
+    public hasBlock(blockName: string, quantity: number = 1): boolean {
+        return this.getBlockQuantity(blockName) >= quantity;
+    }
 }

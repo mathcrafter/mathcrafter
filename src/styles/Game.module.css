@@ -971,13 +971,22 @@
 /* Quick Inventory */
 .quickInventoryContainer {
     margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quickInventorySection {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .quickInventoryLabel {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #72CB3B;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     text-transform: capitalize;
 }
 
@@ -1437,5 +1446,110 @@
     100% {
         opacity: 0;
         transform: translate(-50%, -40%);
+    }
+}
+
+.scoreFlash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FFC107;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000;
+    z-index: 1000;
+    opacity: 0;
+    animation: showScore 1.5s forwards;
+}
+
+@keyframes showScore {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -70%);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -30%) scale(1);
+    }
+}
+
+.minedBlock {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    z-index: 1000;
+    image-rendering: pixelated;
+    animation: blockPopUp 1.5s forwards;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+}
+
+@keyframes blockPopUp {
+    0% {
+        opacity: 0;
+        transform: scale(0) translate(-50%, -50%);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1.2) translate(-50%, -50%);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1) translate(-50%, -100%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translate(-50%, -200%);
+    }
+}
+
+.blockAddedNotification {
+    position: fixed;
+    top: 20%;
+    right: 20px;
+    background-color: rgba(20, 20, 20, 0.9);
+    color: #72CB3B;
+    padding: 10px 15px;
+    border: 2px solid #72CB3B;
+    border-radius: 8px;
+    z-index: 100;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(114, 203, 59, 0.4);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blockAddedNotification img {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
     }
 }

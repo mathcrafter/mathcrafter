@@ -7,13 +7,19 @@ interface BiomeProps {
     onBiomeClick: () => void;
     currentPickaxe: PlayerPickaxe | null;
     currentBiome: any;
+    scoreToShow?: number | null;
+    minedBlock?: { name: string; imageUrl: string } | null;
 }
 
-const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome }) => {
+const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome, scoreToShow, minedBlock }) => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [isSwinging, setIsSwinging] = useState<boolean>(false);
     const [lastHealth, setLastHealth] = useState<number>(currentBiome?.currentHealth || 0);
     const [pickaxeImageUrl, setPickaxeImageUrl] = useState<string>('/assets/pickaxes/wood.webp');
+    const [showScore, setShowScore] = useState<boolean>(false);
+    const [scoreValue, setScoreValue] = useState<number | null>(null);
+    const [showBlock, setShowBlock] = useState<boolean>(false);
+    const [blockData, setBlockData] = useState<{ name: string; imageUrl: string } | null>(null);
 
     const biomeRef = useRef<HTMLDivElement>(null);
 
@@ -23,6 +29,36 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
             setPickaxeImageUrl(currentPickaxe.getImageUrl());
         }
     }, [currentPickaxe]);
+
+    // Handle score display
+    useEffect(() => {
+        if (scoreToShow) {
+            setScoreValue(scoreToShow);
+            setShowScore(true);
+
+            // Hide score after animation completes
+            const timer = setTimeout(() => {
+                setShowScore(false);
+            }, 1500);
+
+            return () => clearTimeout(timer);
+        }
+    }, [scoreToShow]);
+
+    // Handle mined block display
+    useEffect(() => {
+        if (minedBlock) {
+            setBlockData(minedBlock);
+            setShowBlock(true);
+
+            // Hide block after animation completes
+            const timer = setTimeout(() => {
+                setShowBlock(false);
+            }, 1500);
+
+            return () => clearTimeout(timer);
+        }
+    }, [minedBlock]);
 
     // Track health changes to add shaking effect
     useEffect(() => {
@@ -86,6 +122,28 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                     backgroundPosition: 'center'
                 }}
             >
+                {/* Score flash display */}
+                {showScore && scoreValue && (
+                    <div className={styles.scoreFlash}>
+                        +{scoreValue}
+                    </div>
+                )}
+
+                {/* Mined block display */}
+                {showBlock && blockData && (
+                    <div
+                        className={styles.minedBlock}
+                        style={{
+                            top: '50%',
+                            left: '50%',
+                            backgroundImage: `url(${blockData.imageUrl})`,
+                            backgroundSize: 'contain',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center'
+                        }}
+                    />
+                )}
+
                 {/* Crack overlay that appears based on damage */}
                 {healthPercentage < 100 && (
                     <>
