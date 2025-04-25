@@ -27,7 +27,7 @@ export class PlayerBiome {
         return `/assets/biomes/${this.getBiome().name.toLowerCase()}.webp`;
     }
 
-    public damage(amount: number): PlayerBiome {
+    public withDamage(amount: number): PlayerBiome {
         return new PlayerBiome({ id: this.id, type: this.type, currentHealth: this.currentHealth - amount });
     }
 

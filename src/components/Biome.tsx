@@ -65,11 +65,9 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
 
     // Calculate health percentage for display
     const healthPercentage = currentBiome?.damagePercent || 100;
-    const isDestroyed = currentBiome?.currentHealth <= 0;
 
     // Determine health color based on percentage
     const getHealthColor = () => {
-        if (isDestroyed) return '#FF0000'; // Red for destroyed
         if (healthPercentage > 60) return '#72CB3B'; // Green
         if (healthPercentage > 30) return '#FFCC00'; // Yellow
         return '#FF6B6B'; // Red
@@ -79,7 +77,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
         <div className={styles.biomeContainer}>
             <div
                 ref={biomeRef}
-                className={`${styles.biome} ${isDestroyed ? styles.biomeDestroyed : ''}`}
+                className={`${styles.biome}`}
                 onMouseMove={handleMouseMove}
                 onClick={handleClick}
                 style={{
@@ -88,13 +86,6 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                     backgroundPosition: 'center'
                 }}
             >
-                {/* Show destroyed overlay if health is zero */}
-                {isDestroyed && (
-                    <div className={styles.destroyedOverlay}>
-                        DESTROYED
-                    </div>
-                )}
-
                 {/* Crack overlay that appears based on damage */}
                 {healthPercentage < 100 && (
                     <>
@@ -103,9 +94,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                             className={styles.crackOverlay}
                             style={{
                                 opacity: Math.max(0.2, 1 - (healthPercentage / 100)), // Minimum opacity of 0.2
-                                backgroundImage: currentBiome?.type === 'desert'
-                                    ? 'url(/assets/desert_crack_overlay.png)'
-                                    : 'url(/assets/crack_overlay.png)',
+                                backgroundImage: 'url(/assets/crack_overlay.png)',
                                 transform: `scale(${1 + (1 - healthPercentage / 100)})`, // Scale up as health decreases
                                 filter: `contrast(${100 + (100 - healthPercentage)}%) brightness(${100 + (100 - healthPercentage) / 2}%)` // Increase contrast as health decreases
                             }}
@@ -117,9 +106,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                                 className={`${styles.crackOverlay} ${styles.secondaryCracks}`}
                                 style={{
                                     opacity: Math.max(0.1, 0.8 - (healthPercentage / 50)), // More visible as health drops below 50%
-                                    backgroundImage: currentBiome?.type === 'desert'
-                                        ? 'url(/assets/desert_crack_overlay.png)'
-                                        : 'url(/assets/crack_overlay.png)',
+                                    backgroundImage: 'url(/assets/crack_overlay.png)',
                                     transform: `scale(${0.7 + (1 - healthPercentage / 50)}) rotate(45deg)` // Different scale and rotation
                                 }}
                             />
@@ -131,9 +118,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                                 className={`${styles.crackOverlay} ${styles.criticalCracks}`}
                                 style={{
                                     opacity: Math.max(0.15, 0.9 - (healthPercentage / 25)),
-                                    backgroundImage: currentBiome?.type === 'desert'
-                                        ? 'url(/assets/desert_crack_overlay.png)'
-                                        : 'url(/assets/crack_overlay.png)',
+                                    backgroundImage: 'url(/assets/crack_overlay.png)',
                                     transform: `scale(${0.9 + (1 - healthPercentage / 25)}) rotate(-30deg)`
                                 }}
                             />

@@ -19,7 +19,7 @@ const biomes: Biome[] = [
         name: "desert",
         description: "A dry, sandy biome.",
         availableBlocks: ["sand", "glass", "sandstone", "cactus"],
-        maxHealth: 100,
+        maxHealth: 11,
     },
 ]
 

@@ -11,9 +11,8 @@ import Biome from './Biome';
 import InventoryModal from './InventoryModal';
 import BiomesModal from './BiomesModal';
 import QuickInventory from './QuickInventory';
-import gameController, { generateId } from '../controllers/GameController';
+import gameController from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
-import { PickaxeInventory } from '@/models/Inventory';
 import soundManager from '@/utils/SoundManager';
 /**
  * MathCrafter Game
@@ -64,6 +63,27 @@ const GameDisplay: React.FC = () => {
         }
     }, [gameState, isClient, showGameOver]);
 
+    useEffect(() => {
+        console.log("gameState", gameState);
+
+        const currentBiome = gameState.currentBiome;
+
+        if (currentBiome.currentHealth <= 0) {
+            console.log("Biome destroyed! Opening selection modal...");
+            // Handle biome defeated immediately instead of using setTimeout
+            // Store the destroyed biome type for display
+            setDestroyedBiomeType(currentBiome.type);
+            setBiomeDestroyed(true);
+
+            // Auto-hide notification after 3 seconds
+            setTimeout(() => {
+                setBiomeDestroyed(false);
+            }, 3000);
+            // Show biomes modal for selection of next biome
+            setShowBiomes(true);
+        }
+    }, [gameState]);
+
     // Generate a new math problem
     const generateNewProblem = () => {
         setProblem(gameController.generateMathProblem());
@@ -102,57 +122,57 @@ const GameDisplay: React.FC = () => {
             const withScore = prev.increaseScore(100);
 
             // Then damage the biome (10 points of damage per correct answer)
-            const damagedBiome = prev.currentBiome.damage(10);
+            const damagedBiome = prev.currentBiome.withDamage(10);
             console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
 
+            // // Check if biome is completely damaged and needs to be rewarded
+            // if (damagedBiome.currentHealth <= 0) {
+            //     console.log("Biome destroyed! Opening selection modal...");
+            //     // Handle biome defeated immediately instead of using setTimeout
+            //     // Store the destroyed biome type for display
+            //     setDestroyedBiomeType(prev.currentBiome.type);
+            //     setBiomeDestroyed(true);
+
+            //     // Auto-hide notification after 3 seconds
+            //     setTimeout(() => {
+            //         setBiomeDestroyed(false);
+            //     }, 3000);
+
+            //     // Show biomes modal for selection of next biome
+            //     setShowBiomes(true);
+
+            //     // Return state with additional reward
+            //     return withScore.increaseScore(500); // Add reward for defeating biome
+            // }
+
             const updatedState = withScore.withCurrentBiome(damagedBiome);
-
-            // Check if biome is completely damaged and needs to be rewarded
-            if (damagedBiome.currentHealth <= 0) {
-                console.log("Biome destroyed! Opening selection modal...");
-                // Handle biome defeated immediately instead of using setTimeout
-                // Store the destroyed biome type for display
-                setDestroyedBiomeType(prev.currentBiome.type);
-                setBiomeDestroyed(true);
-
-                // Auto-hide notification after 3 seconds
-                setTimeout(() => {
-                    setBiomeDestroyed(false);
-                }, 3000);
-
-                // Show biomes modal for selection of next biome
-                setShowBiomes(true);
-
-                // Return state with additional reward
-                return updatedState.increaseScore(500); // Add reward for defeating biome
-            }
 
             return updatedState;
         });
     };
 
-    // Handle when biome is completely mined (keeping this for reference, but now inline in handleCorrectAnswer)
-    const handleBiomeDefeated = () => {
-        // Get reward based on biome type (add more complex rewards later)
-        const rewardAmount = 500;
+    // // Handle when biome is completely mined (keeping this for reference, but now inline in handleCorrectAnswer)
+    // const handleBiomeDefeated = () => {
+    //     // Get reward based on biome type (add more complex rewards later)
+    //     const rewardAmount = 500;
 
-        // Update game state with reward
-        setGameState(prev => {
-            // Store the destroyed biome type for display
-            setDestroyedBiomeType(prev.currentBiome.type);
-            setBiomeDestroyed(true);
+    //     // Update game state with reward
+    //     setGameState(prev => {
+    //         // Store the destroyed biome type for display
+    //         setDestroyedBiomeType(prev.currentBiome.type);
+    //         setBiomeDestroyed(true);
 
-            // Auto-hide notification after 3 seconds
-            setTimeout(() => {
-                setBiomeDestroyed(false);
-            }, 3000);
+    //         // Auto-hide notification after 3 seconds
+    //         setTimeout(() => {
+    //             setBiomeDestroyed(false);
+    //         }, 3000);
 
-            return prev.increaseScore(rewardAmount);
-        });
+    //         return prev.increaseScore(rewardAmount);
+    //     });
 
-        // Show biomes modal for selection of next biome instead of automatically resetting
-        setShowBiomes(true);
-    };
+    //     // Show biomes modal for selection of next biome instead of automatically resetting
+    //     setShowBiomes(true);
+    // };
 
     // Handle wrong answer
     const handleWrongAnswer = () => {
