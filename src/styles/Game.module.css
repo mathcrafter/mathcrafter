@@ -105,8 +105,8 @@
 }
 
 .avatarImage {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     border: 3px solid #72CB3B;
     box-shadow: 0 0 8px rgba(114, 203, 59, 0.6);
@@ -1636,4 +1636,12 @@
     width: 20px;
     height: 20px;
     margin-right: 5px;
+}
+
+.picksIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    image-rendering: pixelated;
+    vertical-align: middle;
 }

@@ -43,7 +43,7 @@ export class PlayerPickaxe {
         return `/assets/pickaxes/${this.getPickaxe().name.toLowerCase()}.webp`;
     }
 
-    public damage(amount: number): PlayerPickaxe {
+    public withDamage(amount: number): PlayerPickaxe {
         // Calculate new health without modifying the original object
         const newHealth = Math.max(0, this.health - amount);
 

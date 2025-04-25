@@ -56,6 +56,7 @@ const InventoryModal: React.FC<InventoryModalProps> = ({ isOpen, onClose, gameSt
                                 pickaxe={pickaxe}
                                 isSelected={pickaxe.id === previewPickaxeId}
                                 onClick={handlePickaxePreview}
+                                showTooltip={false}
                             />
                         ))}
                     </div>

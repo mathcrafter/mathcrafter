@@ -235,7 +235,7 @@ const GameDisplay: React.FC = () => {
             }
 
             // Damage the current pickaxe
-            const damagedPickaxe = currentPickaxe.damage(1);
+            const damagedPickaxe = currentPickaxe.withDamage(1);
 
             // IMPORTANT: Force re-creation of the damaged pickaxe to ensure clean state
             const freshDamagedPickaxe = new PlayerPickaxe({
@@ -312,9 +312,9 @@ const GameDisplay: React.FC = () => {
     };
 
     // Toggle inventory visibility
-    // const toggleInventory = () => {
-    //     setShowInventory(prev => !prev);
-    // };
+    const toggleInventory = () => {
+        setShowInventory(prev => !prev);
+    };
 
     // Toggle biomes modal visibility
     const toggleBiomes = () => {
@@ -458,11 +458,17 @@ const GameDisplay: React.FC = () => {
             <div className={styles.gameHeader}>
                 <h1>MathCrafter</h1>
                 <div className={styles.avatar}>
-                    <img src="/assets/avatars/avatar.png" alt="Player Avatar" className={styles.avatarImage} />
+                    <img
+                        src="/assets/avatars/avatar.png"
+                        alt="Player Avatar"
+                        className={styles.avatarImage}
+                        onClick={toggleInventory}
+                        style={{ cursor: 'pointer' }}
+                    />
                 </div>
                 <div className={styles.stats}>
                     <div className={styles.statItem}>
-                        <span>Picks:</span>
+                        <img src="/assets/picks.png" alt="Picks" className={styles.picksIcon} />
                         <span>{gameState.picks}</span>
                     </div>
                 </div>
@@ -574,12 +580,12 @@ const GameDisplay: React.FC = () => {
             />
 
             {/* Inventory Modal */}
-            {/* <InventoryModal
+            <InventoryModal
                 isOpen={showInventory}
                 onClose={toggleInventory}
                 gameState={gameState}
                 onSelectPickaxe={handleSelectPickaxe}
-            /> */}
+            />
 
             {/* Biomes Modal */}
             <BiomesModal
