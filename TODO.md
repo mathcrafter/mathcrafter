@@ -7,10 +7,10 @@
 [x] Show the health of the pickaxe on the sidebar
 
 # Biomes
-[ ] Biome panel that shows all the locked and unlocked biomes
+[x] Biome panel that shows all the locked and unlocked biomes
 [x] Add health to the player biome damage the biome when the player answers correctly
 [x] Show cracks of the biome
-[ ] Unlock the biomes with the inventory
+[x] Unlock the biomes with the inventory
 
 # Blocks
 

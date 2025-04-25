@@ -47,7 +47,7 @@ export const getInitialGameState = (): IGameState => {
                 new PlayerPickaxe({ id: null, type: "clay", health: null }),
                 new PlayerPickaxe({ id: null, type: "wood", health: null }),
             ], currentItem: null
-        }), // Start with wooden pickaxe
+        }),
         score: 0,
         unlockedBiomes: ["plains"],
         currentBiome: new PlayerBiome({ id: null, type: "plains", currentHealth: null })
