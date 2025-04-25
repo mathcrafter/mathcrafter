@@ -1,5 +1,5 @@
 import { PlayerBiome } from './Biome';
-import { BlockInventory, PickaxeInventory } from './Inventory';
+import { BlockInventory, Inventory, PickaxeInventory } from './Inventory';
 import { PlayerPickaxe } from './Pickaxe';
 
 export interface IGameState {

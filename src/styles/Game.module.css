@@ -1157,9 +1157,24 @@
 }
 
 .itemDescription {
+    margin-top: 4px;
     font-size: 0.9rem;
-    color: #ccc;
-    margin-top: 5px;
+    color: #AAA;
+}
+
+.availableBlocks {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #88cc88;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border-left: 3px solid #72CB3B;
+}
+
+.availableBlocks span {
+    font-weight: bold;
+    margin-right: 4px;
 }
 
 /* Biome Item Styles */

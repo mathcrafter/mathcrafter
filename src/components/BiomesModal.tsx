@@ -93,6 +93,12 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                             {isCurrentBiome && <span className={styles.currentIndicator}> (Current)</span>}
                                         </div>
                                         <div className={styles.itemDescription}>{biome.description}</div>
+                                        {biome.availableBlocks && biome.availableBlocks.length > 0 && (
+                                            <div className={styles.availableBlocks}>
+                                                <span>Available blocks: </span>
+                                                {biome.availableBlocks.join(', ')}
+                                            </div>
+                                        )}
                                         {!isUnlocked && (
                                             <>
                                                 <div className={styles.unlockCost}>

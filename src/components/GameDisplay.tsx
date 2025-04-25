@@ -14,6 +14,7 @@ import QuickInventory from './QuickInventory';
 import gameController from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
 import soundManager from '@/utils/SoundManager';
+import { PickaxeInventory } from '@/models/Inventory';
 /**
  * MathCrafter Game
  * 
@@ -314,7 +315,7 @@ const GameDisplay: React.FC = () => {
 
         // Add to inventory and deduct score
         const newState = gameState
-            .withPickaxeInventory(gameState.pickaxeInventory.add(newPickaxe))
+            .withPickaxeInventory(gameState.pickaxeInventory.add(newPickaxe) as PickaxeInventory)
             .withScore(gameState.score - cost);
 
         setGameState(newState);
