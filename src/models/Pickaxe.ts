@@ -13,7 +13,7 @@ export interface Pickaxe {
     critical: number;
     cost: Cost;
     power: string;
-    rarity: "Common" | "Uncommon" | "Rare" | "Legendary";
+    rarity: "Common" | "Uncommon" | "Rare" | "Epic" | "Seasonal" | "Legendary";
     description: string;
     notes: string;
     maxHealth: number;

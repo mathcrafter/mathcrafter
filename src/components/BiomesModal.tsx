@@ -133,7 +133,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                     >
                                         <div className={styles.biomeImageContainer}>
                                             <img
-                                                src={`/assets/biomes/${biome.name.toLowerCase()}.webp`}
+                                                src={`/assets/biomes/${biome.name.toLowerCase()}.png`}
                                                 alt={biome.name}
                                                 className={`${styles.biomeItemImg} ${!isUnlocked ? styles.biomeLockedImg : ''}`}
                                             />

@@ -5,6 +5,7 @@ export interface Biome {
     name: string;
     description: string;
     availableBlocks: string[];
+    availablePickaxes: string[];
     maxHealth: number;
     cost: {
         amount: number;
@@ -28,7 +29,7 @@ export class PlayerBiome {
     }
 
     public getImageUrl(): string {
-        return `/assets/biomes/${this.getBiome().name.toLowerCase()}.webp`;
+        return `/assets/biomes/${this.getBiome().name.toLowerCase()}.png`;
     }
 
     public withDamage(amount: number): PlayerBiome {

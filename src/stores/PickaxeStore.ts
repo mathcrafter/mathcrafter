@@ -106,6 +106,258 @@ const pickaxes: Pickaxe[] = [
         "notes": "Created by RockShield.",
         "maxHealth": 30,
     },
+    {
+        "name": "stone",
+        "strength": 5,
+        "critical": 0.30,
+        "cost": {
+            "amount": 25,
+            "itemType": "stone"
+        },
+        "power": "On Fire",
+        "rarity": "Common",
+        "description": "Pickaxe hewn from Stone.",
+        "notes": "A standard mining tool.",
+        "maxHealth": 35,
+    },
+    {
+        "name": "copper",
+        "strength": 6,
+        "critical": 0.30,
+        "cost": {
+            "amount": 50,
+            "itemType": "copper"
+        },
+        "power": "On Fire",
+        "rarity": "Common",
+        "description": "Pickaxe smelted from Copper.",
+        "notes": "Better than stone, but still entry level.",
+        "maxHealth": 40,
+    },
+    {
+        "name": "iron",
+        "strength": 7,
+        "critical": 0.35,
+        "cost": {
+            "amount": 100,
+            "itemType": "iron"
+        },
+        "power": "On Fire",
+        "rarity": "Common",
+        "description": "Pickaxe forged from Iron.",
+        "notes": "A standard issue iron pickaxe.",
+        "maxHealth": 45,
+    },
+    {
+        "name": "gold",
+        "strength": 8,
+        "critical": 0.40,
+        "cost": {
+            "amount": 250,
+            "itemType": "gold"
+        },
+        "power": "On Fire",
+        "rarity": "Uncommon",
+        "description": "Pickaxe crafted from Gold.",
+        "notes": "Shiny but not very durable.",
+        "maxHealth": 50,
+    },
+    {
+        "name": "diamond",
+        "strength": 10,
+        "critical": 0.50,
+        "cost": {
+            "amount": 500,
+            "itemType": "diamond"
+        },
+        "power": "On Fire",
+        "rarity": "Rare",
+        "description": "Pickaxe fashioned from Diamond.",
+        "notes": "Hard as diamonds, because it is diamonds.",
+        "maxHealth": 60,
+    },
+    {
+        "name": "emerald",
+        "strength": 12,
+        "critical": 0.60,
+        "cost": {
+            "amount": 750,
+            "itemType": "emerald"
+        },
+        "power": "On Fire",
+        "rarity": "Rare",
+        "description": "Pickaxe cut from Emerald.",
+        "notes": "Villagers would trade a lot for this.",
+        "maxHealth": 70,
+    },
+    {
+        "name": "obsidian",
+        "strength": 15,
+        "critical": 0.70,
+        "cost": {
+            "amount": 1000,
+            "itemType": "obsidian"
+        },
+        "power": "On Fire",
+        "rarity": "Rare",
+        "description": "Pickaxe carved from Obsidian.",
+        "notes": "Formed from cooled lava.",
+        "maxHealth": 80,
+    },
+    {
+        "name": "netherrack",
+        "strength": 18,
+        "critical": 0.80,
+        "cost": {
+            "amount": 1500,
+            "itemType": "netherrack"
+        },
+        "power": "Nether Flame",
+        "rarity": "Rare",
+        "description": "Pickaxe formed from Netherrack.",
+        "notes": "Hot to the touch.",
+        "maxHealth": 90,
+    },
+    {
+        "name": "ender",
+        "strength": 20,
+        "critical": 0.90,
+        "cost": {
+            "amount": 2000,
+            "itemType": "endstone"
+        },
+        "power": "Teleport Strike",
+        "rarity": "Legendary",
+        "description": "Pickaxe forged with Ender essence.",
+        "notes": "Occasionally teleports to its target.",
+        "maxHealth": 100,
+    },
+    {
+        "name": "cookie",
+        "strength": 15,
+        "critical": 0.75,
+        "cost": {
+            "amount": 1000,
+            "itemType": "cookie"
+        },
+        "power": "Sugar Rush",
+        "rarity": "Uncommon",
+        "description": "Pickaxe baked from Cookies.",
+        "notes": "Smells delicious. Try not to eat it.",
+        "maxHealth": 75,
+    },
+    {
+        "name": "coffee",
+        "strength": 16,
+        "critical": 0.80,
+        "cost": {
+            "amount": 500,
+            "itemType": "coffee"
+        },
+        "power": "Coffee Craze!",
+        "rarity": "Epic",
+        "description": "A Coffee Pickaxe dedicated to Coffee Craze. Download now!",
+        "notes": "Will keep you up all night, Special Thanks to DeathSquid.",
+        "maxHealth": 85,
+    },
+    {
+        "name": "deathsquid",
+        "strength": 18,
+        "critical": 0.85,
+        "cost": {
+            "amount": 1000,
+            "itemType": "special"
+        },
+        "power": "Tentacle Helpers",
+        "rarity": "Epic",
+        "description": "A squid Pickaxe that is made out of tentacles.",
+        "notes": "A slippery boi, Special Thanks to DeathSquid.",
+        "maxHealth": 95,
+    },
+    {
+        "name": "spooky_pumpkin",
+        "strength": 17,
+        "critical": 0.80,
+        "cost": {
+            "amount": 500,
+            "itemType": "pumpkin"
+        },
+        "power": "Hocus Pocus",
+        "rarity": "Rare",
+        "description": "A Spooky version of the Pumpkin Pickaxe",
+        "notes": "Spooky 2.0, Special thanks to DeathSquid.",
+        "maxHealth": 85,
+    },
+    {
+        "name": "dark_pumpkin",
+        "strength": 19,
+        "critical": 0.85,
+        "cost": {
+            "amount": 750,
+            "itemType": "pumpkin"
+        },
+        "power": "Spooky Flame",
+        "rarity": "Rare",
+        "description": "A Dark version of the Pumpkin Pickaxe",
+        "notes": "Spooky 3.0, Special thanks to Ananasek.",
+        "maxHealth": 90,
+    },
+    {
+        "name": "candle",
+        "strength": 21,
+        "critical": 0.90,
+        "cost": {
+            "amount": 1000,
+            "itemType": "special"
+        },
+        "power": "Candle Break",
+        "rarity": "Legendary",
+        "description": "A spooky candly pickaxe with eerie origins.",
+        "notes": "Light the way, Special thanks to Ananasek.",
+        "maxHealth": 100,
+    },
+    {
+        "name": "transport",
+        "strength": 22,
+        "critical": 0.85,
+        "cost": {
+            "amount": 15,
+            "itemType": "runic"
+        },
+        "power": "Road Trip",
+        "rarity": "Epic",
+        "description": "A pickaxe from another world. It seems mechanical.",
+        "notes": "ROAD TRIP! Special Thanks to Welshx7.",
+        "maxHealth": 110,
+    },
+    {
+        "name": "beast",
+        "strength": 25,
+        "critical": 0.95,
+        "cost": {
+            "amount": 10,
+            "itemType": "runic"
+        },
+        "power": "Beast Mode",
+        "rarity": "Seasonal",
+        "description": "A fearsome pickaxe with animalistic power.",
+        "notes": "Its a shame he was split into 5 pieces, Can be found in Scroll Chest.",
+        "maxHealth": 125,
+    },
+    {
+        "name": "scroll",
+        "strength": 23,
+        "critical": 0.90,
+        "cost": {
+            "amount": 10,
+            "itemType": "runic"
+        },
+        "power": "Ancient Wisdom",
+        "rarity": "Seasonal",
+        "description": "A pickaxe made from ancient scrolls of knowledge.",
+        "notes": "Easy to read and a portable whacking stick, Can be found in Scroll Chest.",
+        "maxHealth": 115,
+    }
 ]
 
 export const pickaxeStore = new PickaxeStore(pickaxes);
