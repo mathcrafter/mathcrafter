@@ -121,7 +121,7 @@ const pickaxes: Pickaxe[] = [
         "maxHealth": 35,
     },
     {
-        "name": "copper",
+        "name": "arctic_copper",
         "strength": 6,
         "critical": 0.30,
         "cost": {
@@ -205,21 +205,7 @@ const pickaxes: Pickaxe[] = [
         "maxHealth": 80,
     },
     {
-        "name": "netherrack",
-        "strength": 18,
-        "critical": 0.80,
-        "cost": {
-            "amount": 1500,
-            "itemType": "netherrack"
-        },
-        "power": "Nether Flame",
-        "rarity": "Rare",
-        "description": "Pickaxe formed from Netherrack.",
-        "notes": "Hot to the touch.",
-        "maxHealth": 90,
-    },
-    {
-        "name": "ender",
+        "name": "enderium",
         "strength": 20,
         "critical": 0.90,
         "cost": {
@@ -231,6 +217,48 @@ const pickaxes: Pickaxe[] = [
         "description": "Pickaxe forged with Ender essence.",
         "notes": "Occasionally teleports to its target.",
         "maxHealth": 100,
+    },
+    {
+        "name": "struct",
+        "strength": 25,
+        "critical": 0.95,
+        "cost": {
+            "amount": 500,
+            "itemType": "struct"
+        },
+        "power": "Structure",
+        "rarity": "Legendary",
+        "description": "Pickaxe made from structure blocks.",
+        "notes": "Can be found in structure blocks.",
+        "maxHealth": 125,
+    },
+    {
+        "name": "enum",
+        "strength": 25,
+        "critical": 0.95,
+        "cost": {
+            "amount": 500,
+            "itemType": "enum_crystal"
+        },
+        "power": "Enchantment",
+        "rarity": "Legendary",
+        "description": "Pickaxe made from enchantment crystals.",
+        "notes": "Can be found in enchantment crystals.",
+        "maxHealth": 125,
+    },
+    {
+        "name": "null",
+        "strength": 25,
+        "critical": 0.95,
+        "cost": {
+            "amount": 7500,
+            "itemType": "null"
+        },
+        "power": "Null",
+        "rarity": "Legendary",
+        "description": "Error - null description. Don't forget to null check this one.",
+        "notes": "Can be found in null crystals.",
+        "maxHealth": 125,
     },
     {
         "name": "cookie",
@@ -247,7 +275,7 @@ const pickaxes: Pickaxe[] = [
         "maxHealth": 75,
     },
     {
-        "name": "coffee",
+        "name": "coffee_craze",
         "strength": 16,
         "critical": 0.80,
         "cost": {

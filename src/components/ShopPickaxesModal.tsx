@@ -95,7 +95,7 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                                     >
                                         <div className={styles.pickaxeImageContainer}>
                                             <img
-                                                src={`/assets/pickaxes/${pickaxe.name.toLowerCase()}.webp`}
+                                                src={`/assets/pickaxes/${pickaxe.name.toLowerCase()}.png`}
                                                 alt={`${pickaxe.name} Pickaxe`}
                                                 className={styles.pickaxeItemImg}
                                             />

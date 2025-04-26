@@ -41,7 +41,7 @@ export class PlayerPickaxe {
     }
 
     public getImageUrl(): string {
-        return `/assets/pickaxes/${this.getPickaxe().name.toLowerCase()}.webp`;
+        return `/assets/pickaxes/${this.getPickaxe().name.toLowerCase()}.png`;
     }
 
     public getPicks(): number {
