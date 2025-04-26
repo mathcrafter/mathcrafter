@@ -39,6 +39,26 @@ const blocks: Block[] = [
     {
         name: "glass",
         rarity: "Rare",
+    },
+    {
+        name: "ice",
+        rarity: "Common",
+    },
+    {
+        name: "snow",
+        rarity: "Common",
+    },
+    {
+        name: "birchwood",
+        rarity: "Common",
+    },
+    {
+        name: "sapphire",
+        rarity: "Rare",
+    },
+    {
+        name: "winter_candy",
+        rarity: "Rare",
     }
 ]
 
