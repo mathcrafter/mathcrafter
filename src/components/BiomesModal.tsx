@@ -116,8 +116,6 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
 
                 <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="biomes">
                     <div className={styles.biomesSection}>
-                        <h3>{selectionMode ? 'Choose a biome to explore:' : 'Biomes you can explore:'}</h3>
-
                         <div className={styles.biomesGrid}>
                             {availableBiomes.map((biome: Biome) => {
                                 const isUnlocked = isBiomeUnlocked(biome.name);
@@ -139,6 +137,15 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                                 alt={biome.name}
                                                 className={`${styles.biomeItemImg} ${!isUnlocked ? styles.biomeLockedImg : ''}`}
                                             />
+                                            {!isUnlocked && (
+                                                <div className={styles.lockOverlay}>
+                                                    <img
+                                                        src="/assets/padlock.svg"
+                                                        alt="Locked"
+                                                        className={styles.lockIcon}
+                                                    />
+                                                </div>
+                                            )}
                                             <div className={styles.biomeNameOverlay}>
                                                 {biome.name}
                                                 {isUnlocked && <span className={styles.unlockedIndicator}>✓</span>}

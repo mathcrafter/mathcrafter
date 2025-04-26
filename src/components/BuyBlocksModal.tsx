@@ -61,43 +61,41 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
                 <div className={styles.biomesDrawerHandle} onClick={onClose} />
 
                 <div className={styles.biomesDrawerHeader}>
-                    <h2>Buy Blocks</h2>
+                    <h2>Buy Blocks from {currentBiome.name} biome</h2>
                 </div>
 
                 <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="blocks">
                     <div className={styles.biomesSection}>
-                        <h3>Blocks from {currentBiome.name} biome</h3>
-                        <p>Each block costs 100 picks. Your picks: {gameState.picks}</p>
+                        <p>Your picks: {gameState.picks}</p>
 
                         {availableBlocks.length === 0 ? (
                             <p>No blocks available in this biome.</p>
                         ) : (
-                            <div className={styles.biomesGrid}>
+                            <div className={styles.blocksGrid}>
                                 {availableBlocks.map((blockName) => {
                                     const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
                                     const blockImageUrl = tempBlock.getImageUrl();
 
                                     return (
-                                        <div key={blockName} className={styles.biomeItem}>
-                                            <img
-                                                src={blockImageUrl}
-                                                alt={blockName}
-                                                className={styles.biomeItemImg}
-                                            />
-                                            <div className={styles.itemInfo}>
-                                                <div className={styles.itemName}>{blockName}</div>
-                                                <div className={styles.itemDescription}>A block from the {currentBiome.name} biome.</div>
-                                                <div className={styles.unlockCost}>
-                                                    Cost: <span className={hasEnoughPicks ? styles.affordableCost : styles.unaffordableCost}>
-                                                        100 picks
-                                                    </span>
+                                        <div key={blockName} className={styles.blockItem}>
+                                            <div className={styles.blockImageContainer}>
+                                                <img
+                                                    src={blockImageUrl}
+                                                    alt={blockName}
+                                                    className={styles.blockItemImg}
+                                                />
+                                                <div className={styles.blockNameOverlay}>{blockName}</div>
+                                            </div>
+                                            <div className={styles.blockItemContent}>
+                                                <div className={styles.blockDescription}>
+                                                    A {blockName} block from the {currentBiome.name} biome.
                                                 </div>
                                                 <button
-                                                    className={`${styles.unlockButton} ${!hasEnoughPicks ? styles.unlockButtonDisabled : ''}`}
+                                                    className={`${styles.buyBlockButton} ${!hasEnoughPicks ? styles.buyBlockButtonDisabled : ''}`}
                                                     onClick={() => onBuyBlock(blockName)}
                                                     disabled={!hasEnoughPicks}
                                                 >
-                                                    {hasEnoughPicks ? 'Buy' : 'Not enough picks'}
+                                                    {hasEnoughPicks ? 'Buy (100 picks)' : 'Need 100 picks'}
                                                 </button>
                                             </div>
                                         </div>

@@ -1321,6 +1321,28 @@
 
 .biomeLockedImg {
     filter: grayscale(1);
+    opacity: 0.7;
+}
+
+.lockOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    z-index: 5;
+}
+
+.lockIcon {
+    width: 60px;
+    height: 60px;
+    image-rendering: pixelated;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
 }
 
 .unlockedIndicator {
@@ -2110,4 +2132,187 @@
     color: #ddd;
     margin-top: 3px;
     text-transform: capitalize;
+}
+
+/* Block Grid for Buy Blocks Modal */
+.blocksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.blockItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    background-color: #444;
+    border: 2px solid #555;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.blockImageContainer {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.blockItemImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    image-rendering: pixelated;
+}
+
+.blockNameOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2px 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.blockItemContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    height: 80px;
+}
+
+.blockDescription {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+
+.buyBlockButton {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    padding: 8px 10px;
+    background-color: #FECC33;
+    border: 2px solid #D4A929;
+    border-radius: 5px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.buyBlockButton:hover {
+    background-color: #D4A929;
+    transform: translateY(-2px);
+}
+
+.buyBlockButton:active {
+    transform: translateY(1px);
+}
+
+.buyBlockButtonDisabled {
+    background-color: #888;
+    border-color: #666;
+    cursor: not-allowed;
+    color: #444;
+}
+
+.buyBlockButtonDisabled:hover {
+    transform: none;
+    background-color: #888;
+}
+
+/* Pickaxe Shop Grid for ShopPickaxesModal */
+.pickaxesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.pickaxeItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    background-color: #444;
+    border: 2px solid #555;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.pickaxeImageContainer {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.pickaxeItemImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    image-rendering: pixelated;
+}
+
+.pickaxeItemContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    min-height: 100px;
+}
+
+.pickaxeInfo {
+    margin-bottom: 10px;
+}
+
+.buyPickaxeButton {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    padding: 8px 10px;
+    background-color: #FECC33;
+    border: 2px solid #D4A929;
+    border-radius: 5px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.buyPickaxeButton:hover {
+    background-color: #D4A929;
+    transform: translateY(-2px);
+}
+
+.buyPickaxeButton:active {
+    transform: translateY(1px);
+}
+
+.buyPickaxeButtonDisabled {
+    background-color: #888;
+    border-color: #666;
+    cursor: not-allowed;
+    color: #444;
+}
+
+.buyPickaxeButtonDisabled:hover {
+    transform: none;
+    background-color: #888;
 }
