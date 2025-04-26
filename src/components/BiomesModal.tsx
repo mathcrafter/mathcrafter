@@ -133,17 +133,19 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                         onClick={() => isUnlocked && selectionMode ? handleSelect(biome.name) : null}
                                         style={{ cursor: isUnlocked && selectionMode ? 'pointer' : 'default' }}
                                     >
-                                        <img
-                                            src={`/assets/biomes/${biome.name.toLowerCase()}.webp`}
-                                            alt={biome.name}
-                                            className={`${styles.biomeItemImg} ${!isUnlocked ? styles.biomeLockedImg : ''}`}
-                                        />
-                                        <div className={styles.itemInfo}>
-                                            <div className={styles.itemName}>
+                                        <div className={styles.biomeImageContainer}>
+                                            <img
+                                                src={`/assets/biomes/${biome.name.toLowerCase()}.webp`}
+                                                alt={biome.name}
+                                                className={`${styles.biomeItemImg} ${!isUnlocked ? styles.biomeLockedImg : ''}`}
+                                            />
+                                            <div className={styles.biomeNameOverlay}>
                                                 {biome.name}
                                                 {isUnlocked && <span className={styles.unlockedIndicator}>✓</span>}
                                                 {isCurrentBiome && <span className={styles.currentIndicator}> (Current)</span>}
                                             </div>
+                                        </div>
+                                        <div className={styles.itemInfo}>
                                             <div className={styles.itemDescription}>{biome.description}</div>
 
                                             {!isUnlocked && (
