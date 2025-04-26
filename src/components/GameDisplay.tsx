@@ -291,14 +291,26 @@ const GameDisplay: React.FC = () => {
     // Handle biome click
     const handleBiomeClick = () => {
         // Don't allow clicking if biome health is already zero
-        // if (gameState.biomeHealth <= 0) return;
+        if (gameState.currentBiome.currentHealth <= 0) return;
 
-        // Show the math question
-        setShowQuestion(true);
+        // Don't respond to clicks when a question is being shown
+        if (showQuestion) return;
 
-        // Generate a new problem if one isn't already shown
-        if (!showQuestion) {
+        const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
+        if (!currentPickaxe) return;
+
+        // Generate random number and check against pickaxe critical
+        const randomValue = Math.random();
+        const criticalValue = currentPickaxe.getPickaxe().critical;
+
+        // If random number is between 0 and critical, show the question
+        if (randomValue <= criticalValue) {
+            // Show the math question
+            setShowQuestion(true);
             generateNewProblem();
+        } else {
+            // Skip the question and directly mine the biome
+            handleCorrectAnswer();
         }
     };
 
@@ -411,9 +423,15 @@ const GameDisplay: React.FC = () => {
         // Add negative quantity to reduce the amount
         updatedBlockInventory = updatedBlockInventory.addBlock(requiredBlockType, -requiredAmount);
 
-        // Add pickaxe to inventory and update block inventory
+        // Create a new pickaxe inventory with the new pickaxe added and set as current
+        const updatedPickaxeInventory = new PickaxeInventory({
+            items: [...gameState.pickaxeInventory.items, newPickaxe],
+            currentItem: newPickaxe.id
+        });
+
+        // Update the game state with both the new pickaxe and updated block inventory
         const newState = gameState
-            .withPickaxeInventory(gameState.pickaxeInventory.add(newPickaxe) as PickaxeInventory)
+            .withPickaxeInventory(updatedPickaxeInventory)
             .withBlockInventory(updatedBlockInventory);
 
         setGameState(newState);

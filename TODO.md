@@ -9,7 +9,7 @@
 
 # Pickaxes
 [x] Show the health of the pickaxe on the sidebar
-[ ] Swing has a critical change of not answering a question and still get rewards
+[ ] Swing has a critical chance of not answering a question and still get rewards
 
 # Biomes
 [x] Biome panel that shows all the locked and unlocked biomes
