@@ -11,6 +11,46 @@ interface QuickInventoryProps {
     onSelectPickaxe: (pickaxeId: string) => void;
 }
 
+interface InventoryRowProps<T> {
+    items: T[];
+    totalSlots: number;
+    itemType: 'pickaxe' | 'block';
+    renderItem: (item: T, rowIndex: number, slotIndex: number) => React.ReactNode;
+    renderEmptySlot: (rowIndex: number, slotIndex: number) => React.ReactNode;
+}
+
+function InventoryRows<T>({ items, totalSlots, itemType, renderItem, renderEmptySlot }: InventoryRowProps<T>) {
+    const rows = [];
+    const totalItems = items.length;
+    const rowCount = Math.max(1, Math.ceil(totalItems / totalSlots));
+
+    for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+        const rowSlots = Array(totalSlots).fill(null);
+
+        // Fill this row with items
+        for (let slotIndex = 0; slotIndex < totalSlots; slotIndex++) {
+            const itemIndex = rowIndex * totalSlots + slotIndex;
+            if (itemIndex < totalItems) {
+                rowSlots[slotIndex] = items[itemIndex];
+            }
+        }
+
+        rows.push(
+            <div className={styles.quickInventory} key={`${itemType}-row-${rowIndex}`}>
+                {rowSlots.map((item, slotIndex) => {
+                    if (item) {
+                        return renderItem(item, rowIndex, slotIndex);
+                    } else {
+                        return renderEmptySlot(rowIndex, slotIndex);
+                    }
+                })}
+            </div>
+        );
+    }
+
+    return <>{rows}</>;
+}
+
 const QuickInventory: React.FC<QuickInventoryProps> = ({ gameState, onSelectPickaxe }) => {
     const pickaxeInventory = gameState.pickaxeInventory;
     const blockInventory = gameState.blockInventory;
@@ -25,80 +65,56 @@ const QuickInventory: React.FC<QuickInventoryProps> = ({ gameState, onSelectPick
         }
     };
 
-    // Create array of 8 slots for pickaxes
-    const pickaxeSlots = Array(totalSlots).fill(null);
-    // Fill available slots with pickaxes
-    pickaxeInventory.items.forEach((pickaxe, index) => {
-        if (index < totalSlots) {
-            pickaxeSlots[index] = pickaxe;
-        }
-    });
-
-    // Create array of 8 slots for blocks
-    const blockSlots = Array(totalSlots).fill(null);
-    // Fill available slots with blocks (up to 8)
-    blockInventory.items.slice(0, totalSlots).forEach((block, index) => {
-        if (index < totalSlots) {
-            blockSlots[index] = block;
-        }
-    });
-
     return (
         <div className={styles.quickInventoryContainer}>
-            {/* Pickaxe row */}
+            {/* Pickaxe section */}
             <div className={styles.quickInventorySection}>
                 <div className={styles.quickInventoryLabel}>Pickaxes</div>
-                <div className={styles.quickInventory}>
-                    {pickaxeSlots.map((pickaxe, index) => {
-                        if (pickaxe) {
-                            return (
-                                <PickaxeButton
-                                    key={pickaxe.id}
-                                    pickaxe={pickaxe}
-                                    isSelected={pickaxe.id === currentPickaxeId}
-                                    onClick={handlePickaxeSelect}
-                                />
-                            );
-                        } else {
-                            // Empty slot
-                            return (
-                                <div
-                                    key={`pickaxe-empty-${index}`}
-                                    className={styles.inventorySlot}
-                                >
-                                    {/* Empty slot */}
-                                </div>
-                            );
-                        }
-                    })}
-                </div>
+                <InventoryRows
+                    items={pickaxeInventory.items}
+                    totalSlots={totalSlots}
+                    itemType="pickaxe"
+                    renderItem={(pickaxe, rowIndex, slotIndex) => (
+                        <PickaxeButton
+                            key={pickaxe.id}
+                            pickaxe={pickaxe}
+                            isSelected={pickaxe.id === currentPickaxeId}
+                            onClick={handlePickaxeSelect}
+                        />
+                    )}
+                    renderEmptySlot={(rowIndex, slotIndex) => (
+                        <div
+                            key={`pickaxe-empty-${rowIndex}-${slotIndex}`}
+                            className={styles.inventorySlot}
+                        >
+                            {/* Empty slot */}
+                        </div>
+                    )}
+                />
             </div>
 
-            {/* Blocks row */}
+            {/* Blocks section */}
             <div className={styles.quickInventorySection}>
                 <div className={styles.quickInventoryLabel}>Blocks</div>
-                <div className={styles.quickInventory}>
-                    {blockSlots.map((block, index) => {
-                        if (block) {
-                            return (
-                                <BlockButton
-                                    key={`block-${block.name}-${index}`}
-                                    block={block}
-                                />
-                            );
-                        } else {
-                            // Empty slot
-                            return (
-                                <div
-                                    key={`block-empty-${index}`}
-                                    className={styles.inventorySlot}
-                                >
-                                    {/* Empty slot */}
-                                </div>
-                            );
-                        }
-                    })}
-                </div>
+                <InventoryRows
+                    items={blockInventory.items}
+                    totalSlots={totalSlots}
+                    itemType="block"
+                    renderItem={(block, rowIndex, slotIndex) => (
+                        <BlockButton
+                            key={`block-${block.name}-${rowIndex}-${slotIndex}`}
+                            block={block}
+                        />
+                    )}
+                    renderEmptySlot={(rowIndex, slotIndex) => (
+                        <div
+                            key={`block-empty-${rowIndex}-${slotIndex}`}
+                            className={styles.inventorySlot}
+                        >
+                            {/* Empty slot */}
+                        </div>
+                    )}
+                />
             </div>
         </div>
     );
