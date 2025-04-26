@@ -1,0 +1,52 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          # This is required for Next.js static export
+          NEXT_PUBLIC_BASE_PATH: /$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)
+
+      - name: Export static files
+        run: npx next export || npm run export || echo "Next export command not available, continuing with build output"
+
+      - name: Configure output directory
+        run: |
+          # Check if 'out' directory exists, otherwise use '.next'
+          if [ -d "out" ]; then
+            echo "Using 'out' directory for deployment"
+            OUTPUT_DIR="out"
+          else
+            echo "Using '.next' directory for deployment"
+            OUTPUT_DIR=".next"
+            # Create a .nojekyll file to prevent GitHub Pages from ignoring files that begin with an underscore
+            touch ${OUTPUT_DIR}/.nojekyll
+          fi
+          echo "OUTPUT_DIR=${OUTPUT_DIR}" >> $GITHUB_ENV
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ${{ env.OUTPUT_DIR }}
+          clean: true

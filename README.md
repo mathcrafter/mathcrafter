@@ -116,3 +116,35 @@ mathcrafterz/
 - Implement server-side rendering for dynamic content
 - Add more advanced biomes and game mechanics
 - Add crafting system using collected blocks 
+
+## GitHub Pages Deployment
+
+This project is configured to automatically deploy to GitHub Pages when code is pushed to the master branch.
+
+### Automatic Deployment
+
+1. Whenever changes are pushed to the master branch, a GitHub Actions workflow will:
+   - Build the Next.js application
+   - Export it as static HTML/CSS/JS
+   - Deploy it to the gh-pages branch
+   - Make it available at https://[username].github.io/[repository-name]/
+
+2. To enable GitHub Pages:
+   - Go to your repository settings
+   - Navigate to "Pages"
+   - Set the source branch to "gh-pages"
+   - Save the configuration
+
+### Manual Setup
+
+You can also manually prepare the repository for GitHub Pages deployment:
+
+```bash
+# Install dependencies for scripts and set up GitHub Pages configuration
+./scripts/install_deps.sh --setup-github-pages
+```
+
+This script will:
+- Create a `.nojekyll` file to prevent GitHub Pages from ignoring files starting with underscores
+- Update `next.config.js` to support static exports
+- Configure path prefixes for GitHub Pages hosting 
