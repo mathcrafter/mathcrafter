@@ -111,7 +111,7 @@ const GameDisplay: React.FC = () => {
         }
 
         if (userAnswer === problem.answer) {
-            handleCorrectAnswer();
+            handleCorrectAnswer(null, true);
             // Generate new problem
             generateNewProblem();
             // Clear the answer field
@@ -127,14 +127,12 @@ const GameDisplay: React.FC = () => {
     };
 
     // Handle correct answer
-    const handleCorrectAnswer = () => {
+    const handleCorrectAnswer = (picks: number | null = null, dealDamageToBiome: boolean = true) => {
         // Get current pickaxe to calculate score
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
 
-        let picks = 0;
-
         if (currentPickaxe) {
-            picks = currentPickaxe.getPicks();
+            picks = picks || currentPickaxe.getPicks();
 
             // Flash the score display
             setPicksToShow(picks);
@@ -151,10 +149,9 @@ const GameDisplay: React.FC = () => {
         // Damage the biome
         setGameState(prev => {
             // Increase picks with calculated score
-            const withPicks = prev.increasePicks(picks);
+            const withPicks = prev.increasePicks(picks || 0);
 
-            // Then damage the biome (10 points of damage per correct answer)
-            if (currentPickaxe) {
+            if (currentPickaxe && dealDamageToBiome) {
                 const damagedBiome = prev.currentBiome.withDamage(currentPickaxe.getDamageToBiome(prev.currentBiome.getBiome()));
                 console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
 
@@ -310,7 +307,7 @@ const GameDisplay: React.FC = () => {
             generateNewProblem();
         } else {
             // Skip the question and directly mine the biome
-            handleCorrectAnswer();
+            handleCorrectAnswer(currentPickaxe.getPickaxe().strength, false);
         }
     };
 
