@@ -35,7 +35,57 @@ const biomes: Biome[] = [
             amount: 1,
             itemType: "sandstone"
         },
-    }
+    },
+    {
+        name: "cave",
+        description: "A dark, underground biome.",
+        availableBlocks: ["stone", "gravel", "coal", "iron", "gold", "diamond", "redstone", "copper"],
+        maxHealth: 31,
+        cost: {
+            amount: 1,
+            itemType: "sapphire"
+        },
+    },
+    {
+        name: "deep_caverns",
+        description: "A deep, dark biome.",
+        availableBlocks: ["emerald", "jasper", "lapis_lazuli", "deepslate", "calcite", "bedrock"],
+        maxHealth: 31,
+        cost: {
+            amount: 1,
+            itemType: "copper"
+        },
+    },
+    {
+        name: "mesa",
+        description: "A hot, sandy biome.",
+        availableBlocks: ["red_sand", "hardened_clay", "red_sandstone", "red_cactus", "topaz", "tumbleweed"],
+        maxHealth: 31,
+        cost: {
+            amount: 1,
+            itemType: "bedrock"
+        },
+    },
+    {
+        name: "jungle",
+        description: "A dense, tropical biome.",
+        availableBlocks: ["dandelion_seeds", "coffee_beans", "podzol", "jungle_log", "orchid_seeds", "jade"],
+        maxHealth: 31,
+        cost: {
+            amount: 1,
+            itemType: "topaz"
+        }
+    },
+    {
+        name: "ocean",
+        description: "A deep, blue biome.",
+        availableBlocks: ["coral", "ocean_sand", "sponge", "live_rock", "prismarine", "pearl"],
+        maxHealth: 31,
+        cost: {
+            amount: 1,
+            itemType: "jade"
+        }
+    },
 ]
 
 export const biomeStore = new BiomeStore(biomes);

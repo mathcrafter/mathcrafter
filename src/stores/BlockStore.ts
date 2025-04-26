@@ -59,7 +59,135 @@ const blocks: Block[] = [
     {
         name: "winter_candy",
         rarity: "Rare",
-    }
+    },
+    {
+        name: "stone",
+        rarity: "Common",
+    },
+    {
+        name: "gravel",
+        rarity: "Common",
+    },
+    {
+        name: "coal",
+        rarity: "Uncommon",
+    },
+    {
+        name: "iron",
+        rarity: "Uncommon",
+    },
+    {
+        name: "gold",
+        rarity: "Rare",
+    },
+    {
+        name: "diamond",
+        rarity: "Legendary",
+    },
+    {
+        name: "redstone",
+        rarity: "Rare",
+    },
+    {
+        name: "copper",
+        rarity: "Uncommon",
+    },
+    {
+        name: "emerald",
+        rarity: "Legendary",
+    },
+    {
+        name: "jasper",
+        rarity: "Rare",
+    },
+    {
+        name: "lapis_lazuli",
+        rarity: "Rare",
+    },
+    {
+        name: "deepslate",
+        rarity: "Uncommon",
+    },
+    {
+        name: "calcite",
+        rarity: "Common",
+    },
+    {
+        name: "bedrock",
+        rarity: "Legendary",
+    },
+    {
+        name: "red_sand",
+        rarity: "Common",
+    },
+    {
+        name: "hardened_clay",
+        rarity: "Common",
+    },
+    {
+        name: "red_sandstone",
+        rarity: "Common",
+    },
+    {
+        name: "red_cactus",
+        rarity: "Uncommon",
+    },
+    {
+        name: "topaz",
+        rarity: "Rare",
+    },
+    {
+        name: "tumbleweed",
+        rarity: "Common",
+    },
+    {
+        name: "dandelion_seeds",
+        rarity: "Common",
+    },
+    {
+        name: "coffee_beans",
+        rarity: "Common",
+    },
+    {
+        name: "podzol",
+        rarity: "Common",
+    },
+    {
+        name: "jungle_log",
+        rarity: "Uncommon",
+    },
+    {
+        name: "orchid_seeds",
+        rarity: "Uncommon",
+    },
+    {
+        name: "jade",
+        rarity: "Rare",
+    },
+    {
+        name: "coral",
+        rarity: "Rare",
+    },
+    {
+        name: "ocean_sand",
+        rarity: "Common",
+    },
+    {
+        name: "sponge",
+        rarity: "Uncommon",
+    },
+    {
+        name: "live_rock",
+        rarity: "Uncommon",
+    },
+    {
+        name: "prismarine",
+        rarity: "Rare",
+    },
+    {
+        name: "pearl",
+        rarity: "Legendary",
+    },
 ]
 
 export const blockStore = new BlockStore(blocks);
