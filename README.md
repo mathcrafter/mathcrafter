@@ -8,6 +8,7 @@ A math learning game where players solve math problems to mine resources, craft 
 - **TypeScript**: For type safety
 - **CSS Modules**: For component-scoped styling
 - **React Hooks**: For state management
+- **PWA Support**: For offline gameplay capabilities
 
 ## Features
 
@@ -68,6 +69,31 @@ The default block mining chance is 25% (0.25).
 The quick inventory shows both pickaxes and blocks:
 - Pickaxes row: Shows up to 8 pickaxes with durability bars
 - Blocks row: Shows up to 8 blocks with quantity counters
+
+## Offline Capabilities
+
+MathCrafterZ can be played offline after the initial load. The game uses Progressive Web App (PWA) technology to cache assets and enable offline gameplay:
+
+1. Install the PWA dependencies:
+   ```bash
+   ./scripts/setup_next_offline.sh
+   ```
+
+2. Generate PWA icons (requires a source icon):
+   ```bash
+   ./scripts/generate_pwa_icons.sh
+   ```
+
+3. Test the offline functionality:
+   ```bash
+   ./scripts/test_offline.sh
+   ```
+   
+4. To use the game offline:
+   - Visit the game in a modern browser
+   - The game assets will be cached automatically
+   - You can then play without an internet connection
+   - On mobile devices, you can add the game to your home screen for an app-like experience
 
 ## Development
 
