@@ -29,7 +29,7 @@ jobs:
         run: npm run build
         env:
           # This is required for Next.js static export
-          NEXT_PUBLIC_BASE_PATH: /
+          NEXT_PUBLIC_BASE_PATH: /mathcrafter/
 
       - name: Configure output directory
         run: |
