@@ -43,7 +43,7 @@ const biomes: Biome[] = [
         name: "caves",
         description: "A dark, underground biome.",
         availableBlocks: ["stone", "gravel", "coal", "iron", "gold", "diamond", "redstone", "copper"],
-        availablePickaxes: ["stone", "iron", "gold", "diamond", "copper"],
+        availablePickaxes: ["stone", "iron", "gold", "diamond", "arctic_copper"],
         maxHealth: 1000,
         cost: {
             amount: 1,

@@ -497,6 +497,20 @@ const pickaxes: Pickaxe[] = [
         "description": "A pickaxe made from ruby.",
         "notes": "Ruby 1.0, Special thanks to Ananasek.",
         "maxHealth": 5,
+    },
+    {
+        "name": "fire",
+        "strength": 10,
+        "critical": 0.50,
+        "cost": {
+            "amount": 50,
+            "itemType": "magma_block"
+        },
+        "power": "Fire Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from fire.",
+        "notes": "Fire 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
     }
 ]
 
