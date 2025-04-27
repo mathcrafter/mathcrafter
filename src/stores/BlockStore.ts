@@ -224,6 +224,30 @@ const blocks: Block[] = [
         name: "c_sharp",
         rarity: "Legendary",
     },
+    {
+        name: "moon_rock",
+        rarity: "Common",
+    },
+    {
+        name: "aluminum",
+        rarity: "Common",
+    },
+    {
+        name: "diorite",
+        rarity: "Common",
+    },
+    {
+        name: "lunar_meteorite",
+        rarity: "Rare",
+    },
+    {
+        name: "alien_ooze",
+        rarity: "Rare",
+    },
+    {
+        name: "cheese",
+        rarity: "Common",
+    },
 ]
 
 export const blockStore = new BlockStore(blocks);

@@ -11,8 +11,10 @@ const nextConfig = {
     swcMinify: true,
     output: 'export',
     // Get the repository name from environment or use empty string as fallback
-    basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-    assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+    // basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+    // assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+    basePath: "/mathcrafter",
+    assetPrefix: "/mathcrafter",
 }
 
 module.exports = withPWA(nextConfig) 

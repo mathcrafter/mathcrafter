@@ -108,8 +108,8 @@ const biomes: Biome[] = [
     {
         name: "moon",
         description: "A moon biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["moon_rock", "aluminum", "diorite", "lunar_meteorite", "alien_ooze", "cheese"],
+        availablePickaxes: ["moon_rock", "asteroid", "alien"],
         maxHealth: 1000,
         cost: {
             amount: 1,
