@@ -111,7 +111,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                 <div className={styles.biomesDrawerHandle} onClick={onClose} />
 
                 <div className={styles.biomesDrawerHeader}>
-                    <h2>{selectionMode ? 'Select Next Biome' : 'Available Biomes'}</h2>
+                    <h2>{selectionMode ? 'Select Biome' : 'Available Biomes'}</h2>
                 </div>
 
                 <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="biomes">

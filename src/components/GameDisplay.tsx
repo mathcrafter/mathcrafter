@@ -80,7 +80,6 @@ const GameDisplay: React.FC = () => {
 
         if (currentBiome.currentHealth <= 0) {
             console.log("Biome destroyed! Opening selection modal...");
-            // Handle biome defeated immediately instead of using setTimeout
             // Store the destroyed biome type for display
             setDestroyedBiomeType(currentBiome.type);
             setBiomeDestroyed(true);
@@ -89,8 +88,7 @@ const GameDisplay: React.FC = () => {
             setTimeout(() => {
                 setBiomeDestroyed(false);
             }, 3000);
-            // Show biomes modal for selection of next biome
-            setShowBiomes(true);
+            // User can open biomes modal manually now
         }
     }, [gameState]);
 
@@ -287,9 +285,6 @@ const GameDisplay: React.FC = () => {
 
     // Handle biome click
     const handleBiomeClick = () => {
-        // Don't allow clicking if biome health is already zero
-        if (gameState.currentBiome.currentHealth <= 0) return;
-
         // Don't respond to clicks when a question is being shown
         if (showQuestion) return;
 
@@ -646,7 +641,7 @@ const GameDisplay: React.FC = () => {
                 gameState={gameState}
                 onUnlockBiome={handleUnlock}
                 onSelectBiome={handleSelectBiome}
-                selectionMode={gameState.currentBiome.currentHealth <= 0 || biomeDestroyed}
+                selectionMode={true}
             />
 
             {/* Buy Blocks Modal */}

@@ -209,7 +209,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 20,
         "critical": 0.90,
         "cost": {
-            "amount": 2000,
+            "amount": 200,
             "itemType": "endstone"
         },
         "power": "Teleport Strike",
@@ -223,7 +223,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 25,
         "critical": 0.95,
         "cost": {
-            "amount": 500,
+            "amount": 50,
             "itemType": "struct"
         },
         "power": "Structure",
@@ -237,7 +237,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 25,
         "critical": 0.95,
         "cost": {
-            "amount": 500,
+            "amount": 35,
             "itemType": "enum_crystal"
         },
         "power": "Enchantment",
@@ -251,7 +251,7 @@ const pickaxes: Pickaxe[] = [
         "strength": 25,
         "critical": 0.95,
         "cost": {
-            "amount": 7500,
+            "amount": 25,
             "itemType": "null"
         },
         "power": "Null",
@@ -385,6 +385,20 @@ const pickaxes: Pickaxe[] = [
         "description": "A pickaxe made from ancient scrolls of knowledge.",
         "notes": "Easy to read and a portable whacking stick, Can be found in Scroll Chest.",
         "maxHealth": 115,
+    },
+    {
+        "name": "candy",
+        "strength": 10,
+        "critical": 0.25,
+        "cost": {
+            "amount": 10,
+            "itemType": "winter_candy"
+        },
+        "power": "Candy Craze",
+        "rarity": "Seasonal",
+        "description": "A pickaxe made from candy.",
+        "notes": "Candy 4.0, Special thanks to Ananasek.",
+        "maxHealth": 125,
     }
 ]
 
