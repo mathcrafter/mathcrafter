@@ -2316,3 +2316,24 @@
     transform: none;
     background-color: #888;
 }
+
+.noPickaxes {
+    color: #888;
+    font-style: italic;
+    font-size: 0.9rem;
+    padding: 5px;
+    text-align: center;
+}
+
+.availablePickaxes {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.availablePickaxes span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #72CB3B;
+}

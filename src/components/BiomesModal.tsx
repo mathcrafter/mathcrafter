@@ -169,6 +169,26 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                             </div>
                                         </div>
 
+                                        <div className={styles.availablePickaxes}>
+                                            <span>Available Pickaxes:</span>
+                                            <div className={styles.blockImagesContainer}>
+                                                {biome.availablePickaxes.length > 0 ? (
+                                                    biome.availablePickaxes.map((pickaxeName) => (
+                                                        <div key={pickaxeName} className={styles.blockImageWrapper}>
+                                                            <img
+                                                                src={`/assets/pickaxes/${pickaxeName}.png`}
+                                                                alt={pickaxeName}
+                                                                className={styles.blockImage}
+                                                            />
+                                                            <div className={styles.blockName}>{pickaxeName}</div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className={styles.noPickaxes}>No pickaxes available</div>
+                                                )}
+                                            </div>
+                                        </div>
+
                                         <div className={styles.itemInfo}>
                                             <div className={styles.itemDescription}>{biome.description}</div>
 

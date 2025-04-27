@@ -14,7 +14,7 @@ const biomes: Biome[] = [
         description: "A flat, grassy biome.",
         availableBlocks: ["dirt", "wood", "clay", "pumpkin"],
         availablePickaxes: ["wood", "clay", "pumpkin"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: null,
     },
     {
@@ -22,7 +22,7 @@ const biomes: Biome[] = [
         description: "A dry, sandy biome.",
         availableBlocks: ["sand", "glass", "sandstone", "cactus"],
         availablePickaxes: ["cactus", "sandstone", "glass"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "pumpkin"
@@ -33,7 +33,7 @@ const biomes: Biome[] = [
         description: "A cold, snowy biome.",
         availableBlocks: ["snow", "ice", "birchwood", "sapphire", "winter_candy"],
         availablePickaxes: ["birchwood", "ice", "sapphire", "candy"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "sandstone"
@@ -44,7 +44,7 @@ const biomes: Biome[] = [
         description: "A dark, underground biome.",
         availableBlocks: ["stone", "gravel", "coal", "iron", "gold", "diamond", "redstone", "copper"],
         availablePickaxes: ["stone", "iron", "gold", "diamond", "copper"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "sapphire"
@@ -55,7 +55,7 @@ const biomes: Biome[] = [
         description: "A deep, dark biome.",
         availableBlocks: ["emerald", "jasper", "lapis_lazuli", "deepslate", "calcite", "bedrock"],
         availablePickaxes: ["emerald", "jasper", "lapis", "deepslate"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "copper"
@@ -66,7 +66,7 @@ const biomes: Biome[] = [
         description: "A hot, sandy biome.",
         availableBlocks: ["red_sand", "hardened_clay", "red_sandstone", "red_cactus", "topaz", "tumbleweed"],
         availablePickaxes: ["red_sandstone", "red_cactus", "topaz"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "bedrock"
@@ -77,7 +77,7 @@ const biomes: Biome[] = [
         description: "A dense, tropical biome.",
         availableBlocks: ["dandelion_seeds", "coffee_beans", "podzol", "jungle_log", "orchid_seeds", "jade"],
         availablePickaxes: ["flower", "jade"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "topaz"
@@ -88,7 +88,7 @@ const biomes: Biome[] = [
         description: "A deep, blue biome.",
         availableBlocks: ["coral", "ocean_sand", "sponge", "live_rock", "prismarine", "pearl"],
         availablePickaxes: ["coral", "trident", "pearl"],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "jade"
@@ -99,7 +99,7 @@ const biomes: Biome[] = [
         description: "A void biome.",
         availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
         availablePickaxes: [],
-        maxHealth: 100,
+        maxHealth: 1000,
         cost: null,
     }
 ]
