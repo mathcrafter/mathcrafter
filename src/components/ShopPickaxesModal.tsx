@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { pickaxeStore } from '@/stores/PickaxeStore';
+import { getAssetPath } from '@/utils/assetPath';
 
 // Function to get rarity color
 const getRarityColor = (rarity: string): string => {
@@ -28,7 +29,6 @@ interface ShopPickaxesModalProps {
 }
 
 const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
-    const [hoveredPickaxe, setHoveredPickaxe] = useState<string | null>(null);
     const [showBiomePickaxesOnly, setShowBiomePickaxesOnly] = useState<boolean>(true);
     const drawerContentRef = useRef<HTMLDivElement>(null);
 
@@ -137,7 +137,7 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                                     >
                                         <div className={styles.pickaxeImageContainer}>
                                             <img
-                                                src={`/assets/pickaxes/${pickaxe.name.toLowerCase()}.png`}
+                                                src={`${getAssetPath(`/assets/pickaxes/${pickaxe.name.toLowerCase()}.png`)}`}
                                                 alt={`${pickaxe.name} Pickaxe`}
                                                 className={styles.pickaxeItemImg}
                                             />

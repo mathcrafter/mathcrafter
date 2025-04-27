@@ -1,6 +1,7 @@
 import { generateId } from "@/controllers/GameController";
 import { pickaxeStore } from "@/stores/PickaxeStore";
 import { Biome } from "./Biome";
+import { getAssetPath } from "@/utils/assetPath";
 
 export interface Cost {
     amount: number;
@@ -41,7 +42,7 @@ export class PlayerPickaxe {
     }
 
     public getImageUrl(): string {
-        return `/assets/pickaxes/${this.getPickaxe().name.toLowerCase()}.png`;
+        return `${getAssetPath(`/assets/pickaxes/${this.getPickaxe().name.toLowerCase()}.png`)}`;
     }
 
     public getPicks(): number {

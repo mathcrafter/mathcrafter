@@ -1,4 +1,5 @@
 import { blockStore } from "@/stores/BlockStore";
+import { getAssetPath } from "@/utils/assetPath";
 
 export interface Block {
     name: string;
@@ -19,6 +20,6 @@ export class PlayerBlock {
     }
 
     public getImageUrl(): string {
-        return `/assets/blocks/${this.getBlock().name.toLowerCase()}.png`;
+        return `${getAssetPath(`/assets/blocks/${this.getBlock().name.toLowerCase()}.png`)}`;
     }
 }

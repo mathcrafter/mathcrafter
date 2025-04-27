@@ -1,5 +1,6 @@
 import { generateId } from "@/controllers/GameController";
 import { biomeStore } from "@/stores/BiomeStore";
+import { getAssetPath } from "@/utils/assetPath";
 
 export interface Biome {
     name: string;
@@ -29,7 +30,7 @@ export class PlayerBiome {
     }
 
     public getImageUrl(): string {
-        return `/assets/biomes/${this.getBiome().name.toLowerCase()}.png`;
+        return `${getAssetPath(`/assets/biomes/${this.getBiome().name.toLowerCase()}.png`)}`;
     }
 
     public withDamage(amount: number): PlayerBiome {
