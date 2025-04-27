@@ -1,5 +1,6 @@
 permissions:
   contents: write
+  pages: write
 
 name: Deploy to GitHub Pages
 
@@ -31,7 +32,7 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /mathcrafter
 
       - name: Export static files
-        run: npx next export || npm run export || echo "Next export command not available, continuing with build output"
+        run: npx next export
 
       - name: Configure output directory
         run: |

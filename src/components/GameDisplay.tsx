@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
@@ -55,6 +55,7 @@ const GameDisplay: React.FC = () => {
     const [minedBlock, setMinedBlock] = useState<{ name: string; imageUrl: string } | null>(null);
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
+    const answerInputRef = useRef<HTMLInputElement>(null);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -91,6 +92,15 @@ const GameDisplay: React.FC = () => {
             // User can open biomes modal manually now
         }
     }, [gameState]);
+
+    // Focus the answer input when the question modal appears
+    useEffect(() => {
+        if (showQuestion && answerInputRef.current) {
+            setTimeout(() => {
+                answerInputRef.current?.focus();
+            }, 100);
+        }
+    }, [showQuestion]);
 
     // Generate a new math problem
     const generateNewProblem = () => {
@@ -336,6 +346,11 @@ const GameDisplay: React.FC = () => {
         setShowBuyBlocks(prev => !prev);
     };
 
+    // Close the question modal
+    const closeQuestionModal = () => {
+        setShowQuestion(false);
+    };
+
     // Handle unlocking a biome
     const handleUnlock = (biomeName: string) => {
         // Don't do anything if the biome is already unlocked
@@ -560,7 +575,19 @@ const GameDisplay: React.FC = () => {
                     minedBlock={minedBlock}
                 />
 
-                {showQuestion && (
+                <QuickInventory
+                    gameState={gameState}
+                    onSelectPickaxe={handleSelectPickaxe}
+                />
+            </div>
+
+            {/* Question Modal */}
+            <div className={`${styles.modal} ${showQuestion ? styles.modalShow : ''}`}>
+                <div className={`${styles.modalContent} ${styles.questionModalContent}`}>
+                    <div className={styles.modalHeader}>
+                        <h2>Math Problem</h2>
+                        <button className={styles.closeBtn} onClick={closeQuestionModal}>×</button>
+                    </div>
                     <form
                         className={`${styles.mathProblem} ${wrongAnswer ? styles.wrongAnswerShake + ' ' + styles.wrongAnswerFlash : ''}`}
                         onSubmit={handleSubmit}
@@ -570,6 +597,7 @@ const GameDisplay: React.FC = () => {
                         </div>
                         <div className={styles.answerArea}>
                             <input
+                                ref={answerInputRef}
                                 type="number"
                                 className={styles.answer}
                                 value={answer}
@@ -606,17 +634,12 @@ const GameDisplay: React.FC = () => {
                             </button>
                         </div>
                     </form>
-                )}
-
-                {isIncorrect && (
-                    <div className={styles.incorrectText}>INCORRECT!</div>
-                )}
-
-                <QuickInventory
-                    gameState={gameState}
-                    onSelectPickaxe={handleSelectPickaxe}
-                />
+                </div>
             </div>
+
+            {isIncorrect && (
+                <div className={styles.incorrectText}>INCORRECT!</div>
+            )}
 
             {/* Shop Modal */}
             <ShopPickaxesModal
