@@ -16,8 +16,17 @@ interface ShopPickaxesModalProps {
 
 const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
     const [hoveredPickaxe, setHoveredPickaxe] = useState<string | null>(null);
+    const [showBiomePickaxesOnly, setShowBiomePickaxesOnly] = useState<boolean>(true);
     const drawerContentRef = useRef<HTMLDivElement>(null);
-    const pickaxes = pickaxeStore.items;
+
+    // Get all pickaxes
+    const allPickaxes = pickaxeStore.items;
+
+    // Filter pickaxes based on toggle state
+    const pickaxes = showBiomePickaxesOnly
+        ? allPickaxes.filter(pickaxe =>
+            gameState.currentBiome.getBiome().availablePickaxes.includes(pickaxe.name.toLowerCase()))
+        : allPickaxes;
 
     // Check for scrollable content and apply hasScroll class
     useEffect(() => {
@@ -66,6 +75,11 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
         return `Buy (${amount} ${itemType})`;
     };
 
+    // Toggle handler
+    const handleToggleChange = () => {
+        setShowBiomePickaxesOnly(prev => !prev);
+    };
+
     return (
         <>
             {/* Darkened overlay when drawer is open */}
@@ -81,12 +95,25 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
 
                 <div className={styles.biomesDrawerHeader}>
                     <h2>Shop Pickaxes</h2>
+                    <div className={styles.toggleContainer}>
+                        <label className={styles.toggleSwitch}>
+                            <input
+                                type="checkbox"
+                                checked={showBiomePickaxesOnly}
+                                onChange={handleToggleChange}
+                            />
+                            <span className={styles.toggleSlider}></span>
+                        </label>
+                        <span className={styles.toggleLabel}>
+                            {showBiomePickaxesOnly ? 'Showing biome pickaxes only' : 'Showing all pickaxes'}
+                        </span>
+                    </div>
                 </div>
 
                 <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="pickaxes">
                     <div className={styles.biomesSection}>
                         <div className={styles.pickaxesGrid}>
-                            {pickaxeStore.items.map((pickaxe) => {
+                            {pickaxes.map((pickaxe) => {
                                 const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
                                 return (
                                     <div

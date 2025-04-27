@@ -1861,6 +1861,7 @@
 
 .biomesDrawerHeader {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 15px 10px;
@@ -1872,9 +1873,69 @@
 .biomesDrawerHeader h2 {
     font-size: 1.8rem;
     color: #72CB3B;
-    margin: 0;
+    margin: 0 0 10px 0;
     text-align: center;
     width: 100%;
+}
+
+/* Toggle Switch Styles */
+.toggleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.toggleSwitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggleSlider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggleSlider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.toggleSwitch input:checked+.toggleSlider {
+    background-color: #72CB3B;
+}
+
+.toggleSwitch input:checked+.toggleSlider:before {
+    transform: translateX(26px);
+}
+
+.toggleLabel {
+    font-size: 0.9rem;
+    color: #ccc;
 }
 
 .biomesOverlay {
