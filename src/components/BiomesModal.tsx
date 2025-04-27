@@ -5,6 +5,7 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { biomeStore } from '@/stores/BiomeStore';
 import { Biome } from '@/models/Biome';
+import { getAssetPath } from '../utils/assetPath';
 
 interface BiomesModalProps {
     isOpen: boolean;
@@ -133,14 +134,14 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                     >
                                         <div className={styles.biomeImageContainer}>
                                             <img
-                                                src={`/assets/biomes/${biome.name.toLowerCase()}.png`}
+                                                src={getAssetPath(`/assets/biomes/${biome.name.toLowerCase()}.png`)}
                                                 alt={biome.name}
                                                 className={styles.biomeItemImg}
                                             />
                                             {!isUnlocked && (
                                                 <div className={styles.lockOverlay}>
                                                     <img
-                                                        src="/assets/padlock.svg"
+                                                        src={getAssetPath('/assets/padlock.svg')}
                                                         alt="Locked"
                                                         className={styles.lockIcon}
                                                     />
@@ -159,7 +160,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                                 {biome.availableBlocks.map((blockName) => (
                                                     <div key={blockName} className={styles.blockImageWrapper}>
                                                         <img
-                                                            src={`/assets/blocks/${blockName}.png`}
+                                                            src={getAssetPath(`/assets/blocks/${blockName}.png`)}
                                                             alt={blockName}
                                                             className={styles.blockImage}
                                                         />
@@ -176,7 +177,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                                     biome.availablePickaxes.map((pickaxeName) => (
                                                         <div key={pickaxeName} className={styles.blockImageWrapper}>
                                                             <img
-                                                                src={`/assets/pickaxes/${pickaxeName}.png`}
+                                                                src={getAssetPath(`/assets/pickaxes/${pickaxeName}.png`)}
                                                                 alt={pickaxeName}
                                                                 className={styles.blockImage}
                                                             />

@@ -19,6 +19,7 @@ import { PlayerBlock } from '@/models/Block';
 import { pickaxeStore } from '@/stores/PickaxeStore';
 import BuyBlocksModal from './BuyBlocksModal';
 import { biomeStore } from '@/stores/BiomeStore';
+import { getAssetPath } from '../utils/assetPath';
 
 /**
  * MathCrafter Game
@@ -528,7 +529,7 @@ const GameDisplay: React.FC = () => {
                 <h1>MathCrafter</h1>
                 <div className={styles.avatar}>
                     <img
-                        src="/assets/avatars/avatar.png"
+                        src={getAssetPath('/assets/avatars/avatar.png')}
                         alt="Player Avatar"
                         className={styles.avatarImage}
                         onClick={toggleInventory}
@@ -537,7 +538,7 @@ const GameDisplay: React.FC = () => {
                 </div>
                 <div className={styles.stats}>
                     <div className={styles.statItem}>
-                        <img src="/assets/picks.png" alt="Picks" className={styles.picksIcon} />
+                        <img src={getAssetPath('/assets/picks.png')} alt="Picks" className={styles.picksIcon} />
                         <span>{gameState.picks}</span>
                     </div>
                 </div>
@@ -546,21 +547,21 @@ const GameDisplay: React.FC = () => {
                         className={styles.pickaxesButton}
                         onClick={toggleShop}
                     >
-                        <img src="/assets/shop_pickaxe.png" alt="Pickaxes" className={styles.buttonIcon} />
+                        <img src={getAssetPath('/assets/shop_pickaxe.png')} alt="Pickaxes" className={styles.buttonIcon} />
                         Pickaxes
                     </button>
                     <button
                         className={styles.unlockBiomesButton}
                         onClick={toggleBiomes}
                     >
-                        <img src="/assets/unlock_biome.png" alt="Biomes" className={styles.buttonIcon} />
+                        <img src={getAssetPath('/assets/unlock_biome.png')} alt="Biomes" className={styles.buttonIcon} />
                         Biomes
                     </button>
                     <button
                         className={styles.buyBlocksButton}
                         onClick={toggleBuyBlocks}
                     >
-                        <img src="/assets/blocks.png" alt="Blocks" className={styles.buttonIcon} />
+                        <img src={getAssetPath('/assets/blocks.png')} alt="Blocks" className={styles.buttonIcon} />
                         Blocks
                     </button>
                 </div>

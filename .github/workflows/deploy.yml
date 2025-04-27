@@ -33,6 +33,9 @@ jobs:
 
       - name: Export static files
         run: npx next export
+        env:
+          # Ensure the environment variable is also set for the export step
+          NEXT_PUBLIC_BASE_PATH: /mathcrafter
 
       - name: Configure output directory
         run: |
@@ -47,6 +50,9 @@ jobs:
             touch ${OUTPUT_DIR}/.nojekyll
           fi
           echo "OUTPUT_DIR=${OUTPUT_DIR}" >> $GITHUB_ENV
+
+          # Add a .nojekyll file to output dir to ensure GitHub Pages processes files correctly
+          touch ${OUTPUT_DIR}/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

@@ -5,9 +5,11 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
+        "build": "next build && node scripts/fix-manifest.js && node scripts/update-asset-paths.js",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "update-asset-paths": "node scripts/update-asset-paths.js",
+        "verify-assets": "node scripts/verify-assets.js"
     },
     "dependencies": {
         "next": "^14.0.0",
