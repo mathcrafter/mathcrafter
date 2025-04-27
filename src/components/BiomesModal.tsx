@@ -135,7 +135,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                             <img
                                                 src={`/assets/biomes/${biome.name.toLowerCase()}.png`}
                                                 alt={biome.name}
-                                                className={`${styles.biomeItemImg} ${!isUnlocked ? styles.biomeLockedImg : ''}`}
+                                                className={styles.biomeItemImg}
                                             />
                                             {!isUnlocked && (
                                                 <div className={styles.lockOverlay}>

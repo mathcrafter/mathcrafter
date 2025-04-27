@@ -1316,12 +1316,6 @@
 .biomeLocked {
     background-color: #444;
     border: 3px solid #555;
-    opacity: 0.8;
-}
-
-.biomeLockedImg {
-    filter: grayscale(1);
-    opacity: 0.7;
 }
 
 .lockOverlay {

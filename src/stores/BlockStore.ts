@@ -272,6 +272,38 @@ const blocks: Block[] = [
         name: "alien_crystal",
         rarity: "Legendary",
     },
+    {
+        name: "magma_block",
+        rarity: "Common",
+    },
+    {
+        name: "andesite",
+        rarity: "Uncommon",
+    },
+    {
+        name: "rhyolite",
+        rarity: "Uncommon",
+    },
+    {
+        name: "pumice",
+        rarity: "Uncommon",
+    },
+    {
+        name: "basalt",
+        rarity: "Uncommon",
+    },
+    {
+        name: "cinnabar",
+        rarity: "Rare",
+    },
+    {
+        name: "volcanic_quartz",
+        rarity: "Rare",
+    },
+    {
+        name: "obsidian",
+        rarity: "Legendary",
+    },
 ]
 
 export const blockStore = new BlockStore(blocks);

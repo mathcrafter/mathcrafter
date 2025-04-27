@@ -95,14 +95,58 @@ const biomes: Biome[] = [
         }
     },
     {
-        name: "the_void",
-        description: "A void biome.",
-        availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
+        name: "lava_fields",
+        description: "A hot, lava biome.",
+        availableBlocks: ["magma_block", "andesite", "rhyolite", "pumice", "basalt", "cinnabar", "volcanic_quartz", "obsidian"],
+        availablePickaxes: ["basalt", "cinnabar", "molten"],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "pearl"
+        },
+    },
+    {
+        name: "nether",
+        description: "A dark, fiery biome.",
+        availableBlocks: [],
         availablePickaxes: [],
         maxHealth: 1000,
         cost: {
             amount: 1,
-            itemType: "graviton"
+            itemType: "obsidian"
+        },
+    },
+    {
+        name: "warped_woods",
+        description: "A dark, warped biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "ruby"
+        },
+    },
+    {
+        name: "twilight_forest",
+        description: "A dark, forest biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "shroomlight"
+        },
+    },
+    {
+        name: "the_end",
+        description: "A bright, end biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "amber"
         },
     },
     {
@@ -126,7 +170,51 @@ const biomes: Biome[] = [
             amount: 1,
             itemType: "alien_ooze"
         },
-    }
+    },
+    {
+        name: "blighted_planet",
+        description: "A blighted biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "opal"
+        },
+    },
+    {
+        name: "sun",
+        description: "A sun biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "rocket_fuel"
+        },
+    },
+    {
+        name: "chronos_lair",
+        description: "A chronos biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "time_key"
+        },
+    },
+    {
+        name: "the_void",
+        description: "A void biome.",
+        availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "graviton"
+        },
+    },
 ]
 
 export const biomeStore = new BiomeStore(biomes);
