@@ -15,6 +15,7 @@ export const generateId = (): string => {
     return Math.random().toString(36).substring(2, 9);
 }
 
+
 class LocalStorageGameStateStorage implements IGameStateStorage {
     constructor(private readonly key: string = 'mathCrafterGameState') {
         this.key = key;
@@ -94,11 +95,17 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
     }
 }
 
+interface IMathProblemGenerator {
+    generateMathProblem(): MathProblem;
+}
+
 export class GameController {
     private storage: IGameStateStorage;
+    private mathProblemGenerator: IMathProblemGenerator;
 
-    constructor(storage: IGameStateStorage) {
+    constructor(storage: IGameStateStorage, mathProblemGenerator: IMathProblemGenerator) {
         this.storage = storage;
+        this.mathProblemGenerator = mathProblemGenerator;
     }
 
     public loadGameState(): GameState {
@@ -125,27 +132,74 @@ export class GameController {
 
     // Generate a math problem based on difficulty
     public generateMathProblem(): MathProblem {
-        // For now, simple addition and subtraction within 20
-        const operation: '+' | '-' = Math.random() > 0.5 ? '+' : '-';
+        return this.mathProblemGenerator.generateMathProblem();
+    };
 
-        let num1: number, num2: number;
+}
 
-        if (operation === '+') {
-            num1 = Math.floor(Math.random() * 10) + 1;
-            num2 = Math.floor(Math.random() * 10) + 1;
-        } else {
-            num1 = Math.floor(Math.random() * 10) + 10; // Ensure larger number first
-            num2 = Math.floor(Math.random() * num1) + 1;
+class MathProblemGenerator implements IMathProblemGenerator {
+    private history: MathProblem[] = [];
+
+    private generateAdditionProblem(): MathProblem {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        return {
+            num1,
+            num2,
+            operator: '+',
+            answer: num1 + num2
+        };
+    }
+
+    private generateSubtractionProblem(): MathProblem {
+        let num1 = Math.floor(Math.random() * 20) + 1;
+        let num2 = Math.floor(Math.random() * 20) + 1;
+
+        if (num1 < num2) {
+            [num1, num2] = [num2, num1];
         }
 
         return {
             num1,
             num2,
-            operator: operation,
-            answer: operation === '+' ? num1 + num2 : num1 - num2
+            operator: '-',
+            answer: num1 - num2
         };
-    };
+    }
 
+    private chooseRandom<T>(array: T[]): T {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
+    private generateMultiplicationProblem(): MathProblem {
+        let num1 = this.chooseRandom([0, 1, 2, 3, 5, 10, 11]);
+        let num2 = Math.floor(Math.random() * 12);
+
+        if (Math.random() < 0.5) {
+            [num1, num2] = [num2, num1];
+        }
+
+        return {
+            num1,
+            num2,
+            operator: '*',
+            answer: num1 * num2
+        };
+    }
+
+    public generateMathProblem(): MathProblem {
+        const operator = this.chooseRandom(['+', '-', '*']);
+        switch (operator) {
+            case '+':
+                return this.generateAdditionProblem();
+            case '-':
+                return this.generateSubtractionProblem();
+            case '*':
+                return this.generateMultiplicationProblem();
+            default:
+                throw new Error('Invalid operator');
+        }
+    }
 }
 
-export default new GameController(new LocalStorageGameStateStorage());
+export default new GameController(new LocalStorageGameStateStorage(), new MathProblemGenerator());
