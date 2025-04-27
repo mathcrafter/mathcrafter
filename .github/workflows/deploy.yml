@@ -31,24 +31,11 @@ jobs:
           # This is required for Next.js static export
           NEXT_PUBLIC_BASE_PATH: /mathcrafter
 
-      - name: Export static files
-        run: npx next export
-        env:
-          # Ensure the environment variable is also set for the export step
-          NEXT_PUBLIC_BASE_PATH: /mathcrafter
-
       - name: Configure output directory
         run: |
-          # Check if 'out' directory exists, otherwise use '.next'
-          if [ -d "out" ]; then
-            echo "Using 'out' directory for deployment"
-            OUTPUT_DIR="out"
-          else
-            echo "Using '.next' directory for deployment"
-            OUTPUT_DIR=".next"
-            # Create a .nojekyll file to prevent GitHub Pages from ignoring files that begin with an underscore
-            touch ${OUTPUT_DIR}/.nojekyll
-          fi
+          # Output directory is already 'out' when using output: 'export' in next.config.js
+          OUTPUT_DIR="out"
+          echo "Using 'out' directory for deployment"
           echo "OUTPUT_DIR=${OUTPUT_DIR}" >> $GITHUB_ENV
 
           # Add a .nojekyll file to output dir to ensure GitHub Pages processes files correctly
