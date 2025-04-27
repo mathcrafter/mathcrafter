@@ -44,8 +44,8 @@
     gap: 5px;
     font-family: 'VT323', monospace;
     font-size: 1.3rem;
-    background-color: #888888;
-    border: 3px solid #666666;
+    background-color: #7B68EE;
+    border: 3px solid #5D4AA8;
     border-radius: 5px;
     color: #333;
     padding: 5px 12px;
@@ -54,7 +54,7 @@
 }
 
 .pickaxesButton:hover {
-    background-color: #666666;
+    background-color: #5D4AA8;
     transform: translateY(-2px);
 }
 
