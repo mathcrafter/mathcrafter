@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/mathcrafter",
   reactStrictMode: true,
   output: 'export',
   images: {
