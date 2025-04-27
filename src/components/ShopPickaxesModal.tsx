@@ -5,6 +5,19 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { pickaxeStore } from '@/stores/PickaxeStore';
 
+// Function to get rarity color
+const getRarityColor = (rarity: string): string => {
+    switch (rarity) {
+        case 'Common': return '#aaaaaa';
+        case 'Uncommon': return '#55ff55';
+        case 'Rare': return '#5555ff';
+        case 'Epic': return '#aa00aa';
+        case 'Seasonal': return '#ff5555';
+        case 'Legendary': return '#ffaa00';
+        default: return '#aaaaaa';
+    }
+};
+
 interface ShopPickaxesModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -115,6 +128,8 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                         <div className={styles.pickaxesGrid}>
                             {pickaxes.map((pickaxe) => {
                                 const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
+                                const rarityColor = getRarityColor(pickaxe.rarity);
+
                                 return (
                                     <div
                                         key={pickaxe.name}
@@ -126,6 +141,16 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                                                 alt={`${pickaxe.name} Pickaxe`}
                                                 className={styles.pickaxeItemImg}
                                             />
+                                            <div
+                                                className={styles.rarityBadge}
+                                                style={{
+                                                    backgroundColor: rarityColor,
+                                                    top: 'auto',
+                                                    bottom: '5px'
+                                                }}
+                                            >
+                                                {pickaxe.rarity}
+                                            </div>
                                         </div>
                                         <div className={styles.pickaxeItemContent}>
                                             <div className={styles.pickaxeInfo}>
