@@ -54,7 +54,7 @@ const biomes: Biome[] = [
         name: "deep_caverns",
         description: "A deep, dark biome.",
         availableBlocks: ["emerald", "jasper", "lapis_lazuli", "deepslate", "calcite", "bedrock"],
-        availablePickaxes: ["emerald", "jasper", "lapis", "deepslate"],
+        availablePickaxes: ["emerald", "lapis"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -109,13 +109,24 @@ const biomes: Biome[] = [
         name: "moon",
         description: "A moon biome.",
         availableBlocks: ["moon_rock", "aluminum", "diorite", "lunar_meteorite", "alien_ooze", "cheese"],
-        availablePickaxes: ["moon_rock", "asteroid", "alien"],
+        availablePickaxes: ["moon", "asteroid", "alien"],
         maxHealth: 1000,
         cost: {
             amount: 1,
             itemType: "enderium"
         },
     },
+    {
+        name: "mars",
+        description: "A mars biome.",
+        availableBlocks: ["martian_soil", "granite", "carbon_snow", "carbon_ice", "opal", "alien_crystal"],
+        availablePickaxes: ["martian", "opal"],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "alien_ooze"
+        },
+    }
 ]
 
 export const biomeStore = new BiomeStore(biomes);

@@ -342,7 +342,7 @@ const pickaxes: Pickaxe[] = [
         "rarity": "Legendary",
         "description": "A spooky candly pickaxe with eerie origins.",
         "notes": "Light the way, Special thanks to Ananasek.",
-        "maxHealth": 100,
+        "maxHealth": 10,
     },
     {
         "name": "transport",
@@ -356,7 +356,7 @@ const pickaxes: Pickaxe[] = [
         "rarity": "Epic",
         "description": "A pickaxe from another world. It seems mechanical.",
         "notes": "ROAD TRIP! Special Thanks to Welshx7.",
-        "maxHealth": 110,
+        "maxHealth": 10,
     },
     {
         "name": "beast",
@@ -370,7 +370,7 @@ const pickaxes: Pickaxe[] = [
         "rarity": "Seasonal",
         "description": "A fearsome pickaxe with animalistic power.",
         "notes": "Its a shame he was split into 5 pieces, Can be found in Scroll Chest.",
-        "maxHealth": 125,
+        "maxHealth": 10,
     },
     {
         "name": "scroll",
@@ -384,7 +384,7 @@ const pickaxes: Pickaxe[] = [
         "rarity": "Seasonal",
         "description": "A pickaxe made from ancient scrolls of knowledge.",
         "notes": "Easy to read and a portable whacking stick, Can be found in Scroll Chest.",
-        "maxHealth": 115,
+        "maxHealth": 10,
     },
     {
         "name": "candy",
@@ -398,7 +398,35 @@ const pickaxes: Pickaxe[] = [
         "rarity": "Seasonal",
         "description": "A pickaxe made from candy.",
         "notes": "Candy 4.0, Special thanks to Ananasek.",
-        "maxHealth": 125,
+        "maxHealth": 10,
+    },
+    {
+        "name": "martian",
+        "strength": 27,
+        "critical": 0.15,
+        "cost": {
+            "amount": 50,
+            "itemType": "martian_soil"
+        },
+        "power": "Martian Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from martian.",
+        "notes": "Martian 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "opal",
+        "strength": 28,
+        "critical": 0.15,
+        "cost": {
+            "amount": 50,
+            "itemType": "opal"
+        },
+        "power": "Opal Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from opal.",
+        "notes": "Opal 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
     }
 ]
 
