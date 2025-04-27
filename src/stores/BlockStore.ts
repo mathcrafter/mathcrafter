@@ -188,6 +188,42 @@ const blocks: Block[] = [
         name: "pearl",
         rarity: "Legendary",
     },
+    {
+        name: "static",
+        rarity: "Common",
+    },
+    {
+        name: "struct",
+        rarity: "Common",
+    },
+    {
+        name: "null",
+        rarity: "Common",
+    },
+    {
+        name: "enum_crystal",
+        rarity: "Rare",
+    },
+    {
+        name: "bool",
+        rarity: "Common",
+    },
+    {
+        name: "graviton",
+        rarity: "Legendary",
+    },
+    {
+        name: "off_bit",
+        rarity: "Legendary",
+    },
+    {
+        name: "on_bit",
+        rarity: "Legendary",
+    },
+    {
+        name: "c_sharp",
+        rarity: "Legendary",
+    },
 ]
 
 export const blockStore = new BlockStore(blocks);

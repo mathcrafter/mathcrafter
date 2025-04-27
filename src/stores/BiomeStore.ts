@@ -94,6 +94,14 @@ const biomes: Biome[] = [
             itemType: "jade"
         }
     },
+    {
+        name: "the_void",
+        description: "A void biome.",
+        availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
+        availablePickaxes: [],
+        maxHealth: 100,
+        cost: null,
+    }
 ]
 
 export const biomeStore = new BiomeStore(biomes);
