@@ -22,7 +22,7 @@
 [x] Blocks panel in inventory
 
 # Production Hosting
-[ ] Host on Github Pages
+[x] Host on Github Pages
 
 # Bugs
 [x] When a pickaxe loses all its health points, it does not break but the health bar is back to 100%
