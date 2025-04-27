@@ -427,7 +427,64 @@ const pickaxes: Pickaxe[] = [
         "description": "A pickaxe made from opal.",
         "notes": "Opal 1.0, Special thanks to Ananasek.",
         "maxHealth": 5,
-    }
+    },
+    {
+        "name": "moon",
+        "strength": 24,
+        "critical": 0.45,
+        "cost": {
+            "amount": 50,
+            "itemType": "moon_rock"
+        },
+        "power": "Moon Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from moon.",
+        "notes": "Moon 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "asteroid",
+        "strength": 26,
+        "critical": 0.50,
+        "cost": {
+            "amount": 50,
+            "itemType": "lunar_meteorite"
+        },
+        "power": "Asteroid Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from asteroid.",
+        "notes": "Asteroid 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "alien",
+        "strength": 26,
+        "critical": 0.90,
+        "cost": {
+            "amount": 50,
+            "itemType": "alien_ooze"
+        },
+        "power": "Alien Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from alien.",
+        "notes": "Alien 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "martian",
+        "strength": 26,
+        "critical": 0.85,
+        "cost": {
+            "amount": 50,
+            "itemType": "martian_soil"
+        },
+        "power": "Martian Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from martian soil.",
+        "notes": "Martian 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
+    },
+
 ]
 
 export const pickaxeStore = new PickaxeStore(pickaxes);
