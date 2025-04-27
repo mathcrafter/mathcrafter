@@ -306,4 +306,12 @@ const blocks: Block[] = [
     },
 ]
 
+/**
+["netherrack", "soul_sand", "nether_brick", "nether_quartz", "glowstone_dust", "ruby"]
+["nylium", "warp_wart", "blackstone", "malachite", "shroomlight", "ender_dust"]
+["brown_mushroom", "red_mushroom", "cursed_earth", "dawn_stone", "dusk_stone", "mucelium", "acacia_wood", "amber", "green_mushroom", "acorn", "circadian_dust"]
+["endstone", "purpur", "chorus_plant", "chorus_flower", "endstone_bricks", "amethyst", "enderlium", "ender_essence"]
+["sand_of_clock", "clock_gear", "book_of_time", "secret_of_time", "time_stone", "time_key_fragment", "time_key", "circuit_board", "clock_spring"]
+ * 
+ */
 export const blockStore = new BlockStore(blocks);

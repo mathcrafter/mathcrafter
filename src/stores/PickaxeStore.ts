@@ -471,20 +471,33 @@ const pickaxes: Pickaxe[] = [
         "maxHealth": 5,
     },
     {
-        "name": "martian",
-        "strength": 26,
+        "name": "glowstone",
+        "strength": 14,
+        "critical": 0.25,
+        "cost": {
+            "amount": 50,
+            "itemType": "glowstone_dust"
+        },
+        "power": "Glowstone Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from glowstone.",
+        "notes": "Glowstone 1.0, Special thanks to Ananasek.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "ruby",
+        "strength": 15,
         "critical": 0.85,
         "cost": {
             "amount": 50,
-            "itemType": "martian_soil"
+            "itemType": "ruby"
         },
-        "power": "Martian Power",
-        "rarity": "Common",
-        "description": "A pickaxe made from martian soil.",
-        "notes": "Martian 1.0, Special thanks to Ananasek.",
+        "power": "Ruby Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from ruby.",
+        "notes": "Ruby 1.0, Special thanks to Ananasek.",
         "maxHealth": 5,
-    },
-
+    }
 ]
 
 export const pickaxeStore = new PickaxeStore(pickaxes);

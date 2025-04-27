@@ -108,8 +108,8 @@ const biomes: Biome[] = [
     {
         name: "nether",
         description: "A dark, fiery biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["netherrack", "soul_sand", "nether_brick", "nether_quartz", "glowstone_dust", "ruby"],
+        availablePickaxes: ["glowstone", "ruby"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -119,8 +119,8 @@ const biomes: Biome[] = [
     {
         name: "warped_woods",
         description: "A dark, warped biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["nylium", "warp_wart", "blackstone", "malachite", "shroomlight", "ender_dust"],
+        availablePickaxes: ["blackstone", "malachite"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -130,8 +130,8 @@ const biomes: Biome[] = [
     {
         name: "twilight_forest",
         description: "A dark, forest biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["brown_mushroom", "red_mushroom", "cursed_earth", "dawn_stone", "dusk_stone", "mucelium", "acacia_wood", "amber", "green_mushroom", "acorn", "circadian_dust"],
+        availablePickaxes: ["mushroom", "amber", "circadian"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -141,8 +141,8 @@ const biomes: Biome[] = [
     {
         name: "the_end",
         description: "A bright, end biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["endstone", "purpur", "chorus_plant", "chorus_flower", "endstone_bricks", "amethyst", "enderlium", "ender_essence"],
+        availablePickaxes: ["amethyst", "enderlium", "endstone", "purpur"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -174,8 +174,8 @@ const biomes: Biome[] = [
     {
         name: "blighted_planet",
         description: "A blighted biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["blight_vine", "blighted_soil", "ivory_wood", "komatiite", "mana_crystal", "astral_silver", "orichalcum", "adamantine", "wizard_wood", "enchanted_soil", "purity_shard", "signalite", "blighted_goo", "unicorn_horn"],
+        availablePickaxes: ["blight", "ivory_wood", "mana", "orichalcum", "adamantine", "astral_silver", "purity", "unicorn"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -185,8 +185,8 @@ const biomes: Biome[] = [
     {
         name: "sun",
         description: "A sun biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["sunstone", "sunspot", "plasma", "star_core", "tritium", "hydrogen", "qbit", "rocket_fuel", "dyson_sphere_part", "quantum_chip", "comet_dust"],
+        availablePickaxes: ["star_core", "plasma", "tritium"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -196,8 +196,8 @@ const biomes: Biome[] = [
     {
         name: "chronos_lair",
         description: "A chronos biome.",
-        availableBlocks: [],
-        availablePickaxes: [],
+        availableBlocks: ["sand_of_clock", "clock_gear", "book_of_time", "secret_of_time", "time_stone", "time_key_fragment", "time_key", "circuit_board", "clock_spring"],
+        availablePickaxes: ["chronos_lair", "clock_gear"],
         maxHealth: 1000,
         cost: {
             amount: 1,
@@ -208,7 +208,7 @@ const biomes: Biome[] = [
         name: "the_void",
         description: "A void biome.",
         availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
-        availablePickaxes: [],
+        availablePickaxes: ["enum", "struct", "null"],
         maxHealth: 1000,
         cost: {
             amount: 1,
