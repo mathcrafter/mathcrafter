@@ -157,10 +157,15 @@ const GameDisplay: React.FC = () => {
 
         // Damage the biome
         setGameState(prev => {
+            const currentPickaxe = prev.pickaxeInventory.getCurrentItem();
+            if (!currentPickaxe) {
+                console.log("No current pickaxe found");
+                return prev;
+            }
             // Increase picks with calculated score
             const withPicks = prev.increasePicks(picks || 0);
 
-            if (currentPickaxe && dealDamageToBiome) {
+            if (dealDamageToBiome) {
                 const damagedBiome = prev.currentBiome.withDamage(currentPickaxe.getDamageToBiome(prev.currentBiome.getBiome()));
                 console.log(`Biome health: ${damagedBiome.currentHealth}/${damagedBiome.getBiome().maxHealth}`);
 
@@ -168,7 +173,6 @@ const GameDisplay: React.FC = () => {
 
                 return updatedState;
             }
-            console.log("No current pickaxe found");
             return prev;
         });
     };
@@ -313,7 +317,7 @@ const GameDisplay: React.FC = () => {
             generateNewProblem();
         } else {
             // Skip the question and directly mine the biome
-            handleCorrectAnswer(currentPickaxe.getPickaxe().strength, false);
+            handleCorrectAnswer(currentPickaxe.getPickaxe().strength, true);
         }
     };
 
