@@ -100,8 +100,22 @@ const biomes: Biome[] = [
         availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
         availablePickaxes: [],
         maxHealth: 1000,
-        cost: null,
-    }
+        cost: {
+            amount: 1,
+            itemType: "graviton"
+        },
+    },
+    {
+        name: "moon",
+        description: "A moon biome.",
+        availableBlocks: [],
+        availablePickaxes: [],
+        maxHealth: 1000,
+        cost: {
+            amount: 1,
+            itemType: "enderium"
+        },
+    },
 ]
 
 export const biomeStore = new BiomeStore(biomes);
