@@ -130,6 +130,71 @@ export class GameController {
         this.storage.removeGameState();
     }
 
+    // Export game state as base64 encoded JSON
+    public exportGameState(gameState: GameState): string {
+        const stateJson = JSON.stringify(gameState);
+        if (typeof window === 'undefined') {
+            throw new Error('Window is not available in the browser');
+        }
+
+        return btoa(stateJson);
+    }
+
+    // Import game state from base64 encoded JSON
+    public importGameState(base64State: string): GameState | null {
+        try {
+            if (typeof window === 'undefined') {
+                throw new Error('Window is not available in the browser');
+            }
+
+            const stateJson = atob(base64State);
+            const parsedState = JSON.parse(stateJson) as IGameState;
+
+            // Properly reconstruct class instances
+            const pickaxeItems = parsedState.pickaxeInventory.items.map(item =>
+                new PlayerPickaxe({
+                    id: item.id,
+                    type: item.type,
+                    health: item.health
+                })
+            );
+
+            const blockItems = parsedState.blockInventory.items.map(item =>
+                new PlayerBlock({
+                    name: item.name,
+                    quantity: item.quantity
+                })
+            );
+
+            const currentItem = parsedState.pickaxeInventory.currentItem;
+            const pickaxeInventory = new PickaxeInventory({
+                items: pickaxeItems,
+                currentItem: currentItem
+            });
+
+            const blockInventory = new BlockInventory({
+                items: blockItems
+            });
+
+            const currentBiome = new PlayerBiome({
+                id: parsedState.currentBiome.id,
+                type: parsedState.currentBiome.type,
+                currentHealth: parsedState.currentBiome.currentHealth
+            });
+
+            return new GameState({
+                picks: parsedState.picks,
+                pickaxeInventory: pickaxeInventory,
+                blockInventory: blockInventory,
+                unlockedBiomes: parsedState.unlockedBiomes,
+                currentBiome: currentBiome
+            });
+        } catch (e) {
+            console.error('Failed to import game state', e);
+            return null;
+        }
+    }
+
     // Generate a math problem based on difficulty
     public generateMathProblem(): MathProblem {
         return this.mathProblemGenerator.generateMathProblem();

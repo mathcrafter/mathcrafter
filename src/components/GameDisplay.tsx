@@ -20,6 +20,7 @@ import { pickaxeStore } from '@/stores/PickaxeStore';
 import BuyBlocksModal from './BuyBlocksModal';
 import { biomeStore } from '@/stores/BiomeStore';
 import { getAssetPath } from '../utils/assetPath';
+import ExportGameModal from './ExportGameModal';
 
 /**
  * MathCrafter Game
@@ -56,6 +57,7 @@ const GameDisplay: React.FC = () => {
     const [minedBlock, setMinedBlock] = useState<{ name: string; imageUrl: string } | null>(null);
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
+    const [showExportGame, setShowExportGame] = useState<boolean>(false);
     const answerInputRef = useRef<HTMLInputElement>(null);
 
     // Initialize client-side only data after component mounts
@@ -351,6 +353,11 @@ const GameDisplay: React.FC = () => {
         setShowBuyBlocks(prev => !prev);
     };
 
+    // Toggle export game modal visibility
+    const toggleExportGame = () => {
+        setShowExportGame(prev => !prev);
+    };
+
     // Close the question modal
     const closeQuestionModal = () => {
         setShowQuestion(false);
@@ -568,6 +575,12 @@ const GameDisplay: React.FC = () => {
                         <img src={getAssetPath('/assets/blocks.png')} alt="Blocks" className={styles.buttonIcon} />
                         Blocks
                     </button>
+                    <button
+                        className={styles.exportGameButton}
+                        onClick={toggleExportGame}
+                    >
+                        Export
+                    </button>
                 </div>
             </div>
 
@@ -678,6 +691,13 @@ const GameDisplay: React.FC = () => {
                 onClose={toggleBuyBlocks}
                 gameState={gameState}
                 onBuyBlock={handleBuyBlock}
+            />
+
+            {/* Export Game Modal */}
+            <ExportGameModal
+                isOpen={showExportGame}
+                onClose={toggleExportGame}
+                gameState={gameState}
             />
 
             {/* Game Over Modal */}
