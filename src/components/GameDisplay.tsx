@@ -558,21 +558,18 @@ const GameDisplay: React.FC = () => {
                         className={styles.pickaxesButton}
                         onClick={toggleShop}
                     >
-                        <img src={getAssetPath('/assets/shop_pickaxe.png')} alt="Pickaxes" className={styles.buttonIcon} />
                         Pickaxes
                     </button>
                     <button
                         className={styles.unlockBiomesButton}
                         onClick={toggleBiomes}
                     >
-                        <img src={getAssetPath('/assets/unlock_biome.png')} alt="Biomes" className={styles.buttonIcon} />
                         Biomes
                     </button>
                     <button
                         className={styles.buyBlocksButton}
                         onClick={toggleBuyBlocks}
                     >
-                        <img src={getAssetPath('/assets/blocks.png')} alt="Blocks" className={styles.buttonIcon} />
                         Blocks
                     </button>
                     <button
