@@ -130,7 +130,7 @@ const biomes: Biome[] = [
     {
         name: "twilight_forest",
         description: "A dark, forest biome.",
-        availableBlocks: ["brown_mushroom", "red_mushroom", "cursed_earth", "dawn_stone", "dusk_stone", "mucelium", "acacia_wood", "amber", "green_mushroom", "acorn", "circadian_dust"],
+        availableBlocks: ["brown_mushroom", "red_mushroom", "cursed_earth", "dawn_stone", "dusk_stone", "mycelium", "acacia_wood", "amber", "green_mushroom", "acorn", "circadian_dust"],
         availablePickaxes: ["mushroom", "amber", "circadian"],
         maxHealth: 1000,
         cost: {
@@ -141,8 +141,8 @@ const biomes: Biome[] = [
     {
         name: "the_end",
         description: "A bright, end biome.",
-        availableBlocks: ["endstone", "purpur", "chorus_plant", "chorus_flower", "endstone_bricks", "amethyst", "enderlium", "ender_essence"],
-        availablePickaxes: ["amethyst", "enderlium", "endstone", "purpur"],
+        availableBlocks: ["endstone", "purpur", "chorus_plant", "chorus_flower", "endstone_bricks", "amethyst", "enderium", "ender_essence"],
+        availablePickaxes: ["amethyst", "enderium", "endstone", "purpur"],
         maxHealth: 1000,
         cost: {
             amount: 1,

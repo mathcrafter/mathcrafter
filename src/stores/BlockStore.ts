@@ -304,14 +304,266 @@ const blocks: Block[] = [
         name: "obsidian",
         rarity: "Legendary",
     },
+    {
+        name: "netherrack",
+        rarity: "Common",
+    },
+    {
+        name: "soul_sand",
+        rarity: "Common",
+    },
+    {
+        name: "nether_brick",
+        rarity: "Common",
+    },
+    {
+        name: "nether_quartz",
+        rarity: "Rare",
+    },
+    {
+        name: "glowstone_dust",
+        rarity: "Common",
+    },
+    {
+        name: "ruby",
+        rarity: "Rare",
+    },
+    {
+        name: "nylium",
+        rarity: "Common",
+    },
+    {
+        name: "warp_wart",
+        rarity: "Common",
+    },
+    {
+        name: "blackstone",
+        rarity: "Common",
+    },
+    {
+        name: "malachite",
+        rarity: "Rare",
+    },
+    {
+        name: "shroomlight",
+        rarity: "Common",
+    },
+    {
+        name: "ender_dust",
+        rarity: "Common",
+    },
+    {
+        name: "brown_mushroom",
+        rarity: "Common",
+    },
+    {
+        name: "red_mushroom",
+        rarity: "Common",
+    },
+    {
+        name: "cursed_earth",
+        rarity: "Common",
+    },
+    {
+        name: "dawn_stone",
+        rarity: "Common",
+    },
+    {
+        name: "dusk_stone",
+        rarity: "Common",
+    },
+    {
+        name: "mycelium",
+        rarity: "Common",
+    },
+    {
+        name: "acacia_wood",
+        rarity: "Common",
+    },
+    {
+        name: "amber",
+        rarity: "Common",
+    },
+    {
+        name: "green_mushroom",
+        rarity: "Common",
+    },
+    {
+        name: "acorn",
+        rarity: "Common",
+    },
+    {
+        name: "circadian_dust",
+        rarity: "Common",
+    },
+    {
+        name: "endstone",
+        rarity: "Common",
+    },
+    {
+        name: "purpur",
+        rarity: "Common",
+    },
+    {
+        name: "chorus_plant",
+        rarity: "Common",
+    },
+    {
+        name: "chorus_flower",
+        rarity: "Common",
+    },
+    {
+        name: "endstone_bricks",
+        rarity: "Common",
+    },
+    {
+        name: "amethyst",
+        rarity: "Common",
+    },
+    {
+        name: "enderium",
+        rarity: "Common",
+    },
+    {
+        name: "ender_essence",
+        rarity: "Common",
+    },
+    {
+        name: "sand_of_clock",
+        rarity: "Common",
+    },
+    {
+        name: "clock_gear",
+        rarity: "Common",
+    },
+    {
+        name: "book_of_time",
+        rarity: "Common",
+    },
+    {
+        name: "secret_of_time",
+        rarity: "Common",
+    },
+    {
+        name: "time_stone",
+        rarity: "Common",
+    },
+    {
+        name: "time_key_fragment",
+        rarity: "Common",
+    },
+    {
+        name: "time_key",
+        rarity: "Common",
+    },
+    {
+        name: "circuit_board",
+        rarity: "Common",
+    },
+    {
+        name: "clock_spring",
+        rarity: "Common",
+    },
+    {
+        name: "blight_vine",
+        rarity: "Common",
+    },
+    {
+        name: "blighted_soil",
+        rarity: "Common",
+    },
+    {
+        name: "ivory_wood",
+        rarity: "Common",
+    },
+    {
+        name: "komatiite",
+        rarity: "Common",
+    },
+    {
+        name: "mana_crystal",
+        rarity: "Common",
+    },
+    {
+        name: "astral_silver",
+        rarity: "Common",
+    },
+    {
+        name: "orichalcum",
+        rarity: "Uncommon",
+    },
+    {
+        name: "adamantine",
+        rarity: "Uncommon",
+    },
+    {
+        name: "wizard_wood",
+        rarity: "Rare",
+    },
+    {
+        name: "enchanted_soil",
+        rarity: "Rare",
+    },
+    {
+        name: "purity_shard",
+        rarity: "Rare",
+    },
+    {
+        name: "signalite",
+        rarity: "Rare",
+    },
+    {
+        name: "blighted_goo",
+        rarity: "Rare",
+    },
+    {
+        name: "unicorn_horn",
+        rarity: "Legendary",
+    },
+    {
+        name: "sunstone",
+        rarity: "Common",
+    },
+    {
+        name: "sunspot",
+        rarity: "Common",
+    },
+    {
+        name: "plasma",
+        rarity: "Common",
+    },
+    {
+        name: "star_core",
+        rarity: "Uncommon",
+    },
+    {
+        name: "tritium",
+        rarity: "Rare",
+    },
+    {
+        name: "hydrogen",
+        rarity: "Rare",
+    },
+    {
+        name: "qbit",
+        rarity: "Rare",
+    },
+    {
+        name: "rocket_fuel",
+        rarity: "Rare",
+    },
+    {
+        name: "dyson_sphere_part",
+        rarity: "Legendary",
+    },
+    {
+        name: "quantum_chip",
+        rarity: "Legendary",
+    },
+    {
+        name: "comet_dust",
+        rarity: "Legendary",
+    },
 ]
 
-/**
-["netherrack", "soul_sand", "nether_brick", "nether_quartz", "glowstone_dust", "ruby"]
-["nylium", "warp_wart", "blackstone", "malachite", "shroomlight", "ender_dust"]
-["brown_mushroom", "red_mushroom", "cursed_earth", "dawn_stone", "dusk_stone", "mucelium", "acacia_wood", "amber", "green_mushroom", "acorn", "circadian_dust"]
-["endstone", "purpur", "chorus_plant", "chorus_flower", "endstone_bricks", "amethyst", "enderlium", "ender_essence"]
-["sand_of_clock", "clock_gear", "book_of_time", "secret_of_time", "time_stone", "time_key_fragment", "time_key", "circuit_board", "clock_spring"]
- * 
- */
 export const blockStore = new BlockStore(blocks);
