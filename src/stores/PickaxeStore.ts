@@ -511,6 +511,510 @@ const pickaxes: Pickaxe[] = [
         "description": "A pickaxe made from fire.",
         "notes": "Fire 1.0, Special thanks to Ananasek.",
         "maxHealth": 5,
+    },
+    {
+        "name": "sandstone",
+        "strength": 4,
+        "critical": 0.25,
+        "cost": {
+            "amount": 10,
+            "itemType": "sandstone"
+        },
+        "power": "Desert Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from sandstone.",
+        "notes": "From the desert biome.",
+        "maxHealth": 15,
+    },
+    {
+        "name": "ice",
+        "strength": 5,
+        "critical": 0.30,
+        "cost": {
+            "amount": 10,
+            "itemType": "ice"
+        },
+        "power": "Freezing Touch",
+        "rarity": "Common",
+        "description": "A pickaxe made from ice.",
+        "notes": "Slippery when wet.",
+        "maxHealth": 15,
+    },
+    {
+        "name": "sapphire",
+        "strength": 8,
+        "critical": 0.40,
+        "cost": {
+            "amount": 50,
+            "itemType": "sapphire"
+        },
+        "power": "Blue Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from sapphire.",
+        "notes": "A brilliant blue gem.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "lapis",
+        "strength": 7,
+        "critical": 0.35,
+        "cost": {
+            "amount": 30,
+            "itemType": "lapis_lazuli"
+        },
+        "power": "Enchanting Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from lapis lazuli.",
+        "notes": "Used for enchanting.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "red_sandstone",
+        "strength": 5,
+        "critical": 0.25,
+        "cost": {
+            "amount": 15,
+            "itemType": "red_sandstone"
+        },
+        "power": "Mesa Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from red sandstone.",
+        "notes": "From the mesa biome.",
+        "maxHealth": 20,
+    },
+    {
+        "name": "red_cactus",
+        "strength": 6,
+        "critical": 0.30,
+        "cost": {
+            "amount": 20,
+            "itemType": "red_cactus"
+        },
+        "power": "Spiky Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from red cactus.",
+        "notes": "Extra spiky.",
+        "maxHealth": 20,
+    },
+    {
+        "name": "topaz",
+        "strength": 9,
+        "critical": 0.45,
+        "cost": {
+            "amount": 40,
+            "itemType": "topaz"
+        },
+        "power": "Golden Glow",
+        "rarity": "Rare",
+        "description": "A pickaxe made from topaz.",
+        "notes": "Shines with a golden hue.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "flower",
+        "strength": 3,
+        "critical": 0.20,
+        "cost": {
+            "amount": 10,
+            "itemType": "dandelion_seeds"
+        },
+        "power": "Pollen Power",
+        "rarity": "Common",
+        "description": "A pickaxe made from flowers.",
+        "notes": "Surprisingly sturdy for a floral tool.",
+        "maxHealth": 10,
+    },
+    {
+        "name": "jade",
+        "strength": 8,
+        "critical": 0.40,
+        "cost": {
+            "amount": 35,
+            "itemType": "jade"
+        },
+        "power": "Jungle Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from jade.",
+        "notes": "Green as the jungle.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "coral",
+        "strength": 6,
+        "critical": 0.30,
+        "cost": {
+            "amount": 20,
+            "itemType": "coral"
+        },
+        "power": "Ocean Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from coral.",
+        "notes": "Formed in the depths.",
+        "maxHealth": 20,
+    },
+    {
+        "name": "trident",
+        "strength": 12,
+        "critical": 0.50,
+        "cost": {
+            "amount": 75,
+            "itemType": "prismarine"
+        },
+        "power": "Neptune's Fury",
+        "rarity": "Rare",
+        "description": "A trident-shaped pickaxe.",
+        "notes": "Weapon of the sea god.",
+        "maxHealth": 40,
+    },
+    {
+        "name": "pearl",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 50,
+            "itemType": "pearl"
+        },
+        "power": "Luster",
+        "rarity": "Rare",
+        "description": "A pickaxe made from pearl.",
+        "notes": "Shimmers with an iridescent glow.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "basalt",
+        "strength": 7,
+        "critical": 0.35,
+        "cost": {
+            "amount": 30,
+            "itemType": "basalt"
+        },
+        "power": "Volcanic Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from basalt.",
+        "notes": "Formed from cooled lava.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "cinnabar",
+        "strength": 9,
+        "critical": 0.40,
+        "cost": {
+            "amount": 40,
+            "itemType": "cinnabar"
+        },
+        "power": "Mercury Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from cinnabar.",
+        "notes": "Contains traces of mercury.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "molten",
+        "strength": 11,
+        "critical": 0.50,
+        "cost": {
+            "amount": 60,
+            "itemType": "magma_block"
+        },
+        "power": "Molten Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from molten material.",
+        "notes": "Still hot to the touch.",
+        "maxHealth": 35,
+    },
+    {
+        "name": "blackstone",
+        "strength": 8,
+        "critical": 0.35,
+        "cost": {
+            "amount": 30,
+            "itemType": "blackstone"
+        },
+        "power": "Warped Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from blackstone.",
+        "notes": "From the warped woods.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "malachite",
+        "strength": 9,
+        "critical": 0.40,
+        "cost": {
+            "amount": 40,
+            "itemType": "malachite"
+        },
+        "power": "Green Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from malachite.",
+        "notes": "With beautiful green patterns.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "mushroom",
+        "strength": 6,
+        "critical": 0.30,
+        "cost": {
+            "amount": 20,
+            "itemType": "red_mushroom"
+        },
+        "power": "Fungal Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from mushrooms.",
+        "notes": "Surprisingly sturdy for a fungal tool.",
+        "maxHealth": 20,
+    },
+    {
+        "name": "amber",
+        "strength": 8,
+        "critical": 0.40,
+        "cost": {
+            "amount": 35,
+            "itemType": "amber"
+        },
+        "power": "Preservation",
+        "rarity": "Rare",
+        "description": "A pickaxe made from amber.",
+        "notes": "Contains ancient insects.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "circadian",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 50,
+            "itemType": "circadian_dust"
+        },
+        "power": "Time Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from circadian material.",
+        "notes": "Seems to manipulate time.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "amethyst",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 50,
+            "itemType": "amethyst"
+        },
+        "power": "Purple Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from amethyst.",
+        "notes": "Glows with a purple hue.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "endstone",
+        "strength": 8,
+        "critical": 0.35,
+        "cost": {
+            "amount": 30,
+            "itemType": "endstone"
+        },
+        "power": "End Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from endstone.",
+        "notes": "From the end dimension.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "purpur",
+        "strength": 9,
+        "critical": 0.40,
+        "cost": {
+            "amount": 40,
+            "itemType": "purpur"
+        },
+        "power": "End City Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from purpur.",
+        "notes": "From end cities.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "blight",
+        "strength": 11,
+        "critical": 0.50,
+        "cost": {
+            "amount": 60,
+            "itemType": "blight_vine"
+        },
+        "power": "Corruption",
+        "rarity": "Rare",
+        "description": "A pickaxe made from blighted material.",
+        "notes": "Seems to corrupt what it touches.",
+        "maxHealth": 35,
+    },
+    {
+        "name": "ivory_wood",
+        "strength": 7,
+        "critical": 0.35,
+        "cost": {
+            "amount": 30,
+            "itemType": "ivory_wood"
+        },
+        "power": "Pale Power",
+        "rarity": "Uncommon",
+        "description": "A pickaxe made from ivory wood.",
+        "notes": "White as bone.",
+        "maxHealth": 25,
+    },
+    {
+        "name": "mana",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 50,
+            "itemType": "mana_crystal"
+        },
+        "power": "Magical Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from mana crystals.",
+        "notes": "Flows with magical energy.",
+        "maxHealth": 30,
+    },
+    {
+        "name": "orichalcum",
+        "strength": 12,
+        "critical": 0.55,
+        "cost": {
+            "amount": 70,
+            "itemType": "orichalcum"
+        },
+        "power": "Ancient Power",
+        "rarity": "Epic",
+        "description": "A pickaxe made from orichalcum.",
+        "notes": "A legendary metal of myths.",
+        "maxHealth": 40,
+    },
+    {
+        "name": "adamantine",
+        "strength": 14,
+        "critical": 0.60,
+        "cost": {
+            "amount": 80,
+            "itemType": "adamantine"
+        },
+        "power": "Unyielding",
+        "rarity": "Epic",
+        "description": "A pickaxe made from adamantine.",
+        "notes": "Nearly indestructible.",
+        "maxHealth": 45,
+    },
+    {
+        "name": "astral_silver",
+        "strength": 11,
+        "critical": 0.50,
+        "cost": {
+            "amount": 60,
+            "itemType": "astral_silver"
+        },
+        "power": "Starlight",
+        "rarity": "Rare",
+        "description": "A pickaxe made from astral silver.",
+        "notes": "Forged with starlight.",
+        "maxHealth": 35,
+    },
+    {
+        "name": "purity",
+        "strength": 13,
+        "critical": 0.55,
+        "cost": {
+            "amount": 75,
+            "itemType": "purity_shard"
+        },
+        "power": "Cleansing",
+        "rarity": "Epic",
+        "description": "A pickaxe made from purity shards.",
+        "notes": "Cleanses corruption.",
+        "maxHealth": 40,
+    },
+    {
+        "name": "unicorn",
+        "strength": 15,
+        "critical": 0.65,
+        "cost": {
+            "amount": 100,
+            "itemType": "unicorn_horn"
+        },
+        "power": "Rainbow Power",
+        "rarity": "Legendary",
+        "description": "A pickaxe made from unicorn horn.",
+        "notes": "Rare and magical.",
+        "maxHealth": 50,
+    },
+    {
+        "name": "star_core",
+        "strength": 16,
+        "critical": 0.70,
+        "cost": {
+            "amount": 100,
+            "itemType": "star_core"
+        },
+        "power": "Stellar Power",
+        "rarity": "Legendary",
+        "description": "A pickaxe made from star core.",
+        "notes": "Contains the power of a star.",
+        "maxHealth": 55,
+    },
+    {
+        "name": "plasma",
+        "strength": 17,
+        "critical": 0.75,
+        "cost": {
+            "amount": 120,
+            "itemType": "plasma"
+        },
+        "power": "Plasma Power",
+        "rarity": "Legendary",
+        "description": "A pickaxe made from plasma.",
+        "notes": "Fourth state of matter.",
+        "maxHealth": 60,
+    },
+    {
+        "name": "tritium",
+        "strength": 18,
+        "critical": 0.80,
+        "cost": {
+            "amount": 150,
+            "itemType": "tritium"
+        },
+        "power": "Isotope Power",
+        "rarity": "Legendary",
+        "description": "A pickaxe made from tritium.",
+        "notes": "Radioactive isotope.",
+        "maxHealth": 65,
+    },
+    {
+        "name": "chronos_lair",
+        "strength": 19,
+        "critical": 0.85,
+        "cost": {
+            "amount": 200,
+            "itemType": "time_key"
+        },
+        "power": "Time Control",
+        "rarity": "Legendary",
+        "description": "A pickaxe from Chronos' Lair.",
+        "notes": "Can manipulate the flow of time.",
+        "maxHealth": 70,
+    },
+    {
+        "name": "clock_gear",
+        "strength": 16,
+        "critical": 0.70,
+        "cost": {
+            "amount": 100,
+            "itemType": "clock_gear"
+        },
+        "power": "Clockwork",
+        "rarity": "Epic",
+        "description": "A pickaxe made from clock gears.",
+        "notes": "Ticks with every swing.",
+        "maxHealth": 55,
     }
 ]
 
