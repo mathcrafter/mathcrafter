@@ -1374,6 +1374,47 @@
     text-align: center;
 }
 
+.costItemContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    gap: 8px;
+}
+
+.costItemImgWrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+.costItemImg {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+    vertical-align: middle;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #333;
+}
+
+.costItemBadge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
 .unlockButtonDisabled {
     background-color: #777;
     border-color: #666;
@@ -1383,8 +1424,8 @@
 }
 
 .unlockButtonDisabled:hover {
-    background-color: #777;
     transform: none;
+    background-color: #777;
 }
 
 .biomeSelected {

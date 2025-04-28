@@ -198,9 +198,20 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                                     <div className={styles.unlockCost}>
                                                         {biome.cost ? (
                                                             <>
-                                                                Cost: <span className={canUnlock ? styles.affordableCost : styles.unaffordableCost}>
-                                                                    {biome.cost.amount} {biome.cost.itemType}
-                                                                </span>
+                                                                Cost:
+                                                                <div className={styles.costItemContainer}>
+                                                                    <div className={styles.costItemImgWrapper}>
+                                                                        <img
+                                                                            src={getAssetPath(`/assets/blocks/${biome.cost.itemType}.png`)}
+                                                                            alt={biome.cost.itemType}
+                                                                            className={styles.costItemImg}
+                                                                        />
+                                                                        <span className={styles.costItemBadge}>{biome.cost.amount}</span>
+                                                                    </div>
+                                                                    <span className={canUnlock ? styles.affordableCost : styles.unaffordableCost}>
+                                                                        {biome.cost.itemType.replace(/_/g, ' ')}
+                                                                    </span>
+                                                                </div>
                                                             </>
                                                         ) : (
                                                             <span className={styles.affordableCost}>Free</span>
