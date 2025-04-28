@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { biomeStore } from '@/stores/BiomeStore';
 import { Biome } from '@/models/Biome';
 import { getAssetPath } from '../utils/assetPath';
+import BlockDetails from './BlockDetails';
 
 interface BiomesModalProps {
     isOpen: boolean;
@@ -29,6 +30,7 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
     const currentBiomeType = gameState.currentBiome.type;
     const isBiomeDestroyed = gameState.currentBiome.currentHealth <= 0;
     const drawerContentRef = useRef<HTMLDivElement>(null);
+    const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
 
     // Log for debugging
     console.log(`BiomesModal opened - Selection mode: ${selectionMode}, Biome destroyed: ${isBiomeDestroyed}, Current health: ${gameState.currentBiome.currentHealth}`);
@@ -74,8 +76,9 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
         }
     };
 
-    const handleSelect = (biomeName: string) => {
-        if (onSelectBiome && isBiomeUnlocked(biomeName)) {
+    const handleSelect = (e: React.MouseEvent, biomeName: string) => {
+        e.stopPropagation(); // Prevent any parent click handlers
+        if (onSelectBiome && isBiomeUnlocked(biomeName) && biomeName.toLowerCase() !== currentBiomeType) {
             onSelectBiome(biomeName.toLowerCase());
             onClose();
         }
@@ -96,6 +99,15 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
 
         // Check if the player has the required items
         return gameState.blockInventory.hasBlock(biome.cost.itemType, biome.cost.amount);
+    };
+
+    const handleBlockClick = (e: React.MouseEvent, blockName: string) => {
+        e.stopPropagation();
+        setSelectedBlock(blockName);
+    };
+
+    const handleCloseBlockDetails = () => {
+        setSelectedBlock(null);
     };
 
     return (
@@ -129,8 +141,6 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                         className={`${styles.biomeItem} 
                                                 ${isUnlocked ? styles.biomeUnlocked : styles.biomeLocked}
                                                 ${isCurrentBiome ? styles.biomeSelected : ''}`}
-                                        onClick={() => isUnlocked && selectionMode ? handleSelect(biome.name) : null}
-                                        style={{ cursor: isUnlocked && selectionMode ? 'pointer' : 'default' }}
                                     >
                                         <div className={styles.biomeImageContainer}>
                                             <img
@@ -158,7 +168,12 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                             <span>Available Blocks:</span>
                                             <div className={styles.blockImagesContainer}>
                                                 {biome.availableBlocks.map((blockName) => (
-                                                    <div key={blockName} className={styles.blockImageWrapper}>
+                                                    <div
+                                                        key={blockName}
+                                                        className={styles.blockImageWrapper}
+                                                        onClick={(e) => handleBlockClick(e, blockName)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    >
                                                         <img
                                                             src={getAssetPath(`/assets/blocks/${blockName}.png`)}
                                                             alt={blockName}
@@ -229,10 +244,15 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                                             {isUnlocked && selectionMode && !isCurrentBiome && (
                                                 <button
                                                     className={styles.selectButton}
-                                                    onClick={() => handleSelect(biome.name)}
+                                                    onClick={(e) => handleSelect(e, biome.name)}
                                                 >
                                                     Select
                                                 </button>
+                                            )}
+                                            {isUnlocked && selectionMode && isCurrentBiome && (
+                                                <div className={styles.currentlyEquipped}>
+                                                    Currently Selected
+                                                </div>
                                             )}
                                         </div>
                                     </div>
@@ -242,6 +262,13 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
                     </div>
                 </div>
             </div>
+
+            {/* Block Details */}
+            <BlockDetails
+                isOpen={selectedBlock !== null}
+                onClose={handleCloseBlockDetails}
+                blockName={selectedBlock || ''}
+            />
         </>
     );
 };

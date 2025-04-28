@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { PlayerBlock } from '@/models/Block';
+import BlockDetails from './BlockDetails';
 
 // Function to get block cost based on rarity
 const getBlockCost = (rarity: string): number => {
@@ -36,6 +37,7 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
     const currentBiome = gameState.currentBiome.getBiome();
     const availableBlocks = currentBiome.availableBlocks || [];
     const drawerContentRef = useRef<HTMLDivElement>(null);
+    const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
 
     // Check for scrollable content and apply hasScroll class
     useEffect(() => {
@@ -67,6 +69,14 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
             };
         }
     }, [isOpen, availableBlocks]);
+
+    const handleBlockClick = (blockName: string) => {
+        setSelectedBlock(blockName);
+    };
+
+    const handleCloseBlockDetails = () => {
+        setSelectedBlock(null);
+    };
 
     return (
         <>
@@ -102,7 +112,12 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
                                     const rarityColor = getRarityColor(blockRarity);
 
                                     return (
-                                        <div key={blockName} className={styles.blockItem}>
+                                        <div
+                                            key={blockName}
+                                            className={styles.blockItem}
+                                            onClick={() => handleBlockClick(blockName)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
                                             <div className={styles.blockImageContainer}>
                                                 <img
                                                     src={blockImageUrl}
@@ -123,7 +138,10 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
                                                 </div>
                                                 <button
                                                     className={`${styles.buyBlockButton} ${!hasEnoughPicks ? styles.buyBlockButtonDisabled : ''}`}
-                                                    onClick={() => onBuyBlock(blockName)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Prevent triggering block click
+                                                        if (hasEnoughPicks) onBuyBlock(blockName);
+                                                    }}
                                                     disabled={!hasEnoughPicks}
                                                 >
                                                     {hasEnoughPicks ? `Buy (${blockCost} picks)` : `Need ${blockCost} picks`}
@@ -137,6 +155,13 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
                     </div>
                 </div>
             </div>
+
+            {/* Block Details Drawer */}
+            <BlockDetails
+                isOpen={selectedBlock !== null}
+                onClose={handleCloseBlockDetails}
+                blockName={selectedBlock || ''}
+            />
         </>
     );
 };
