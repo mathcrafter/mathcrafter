@@ -7,6 +7,7 @@
     border: 5px solid #555;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
 }
 
 /* Game Header */
@@ -15,10 +16,13 @@
     grid-template-columns: 1fr auto auto 1fr;
     align-items: center;
     margin-bottom: 20px;
-    max-width: 1400px;
-    margin-left: auto;
+    max-width: 800px;
+    margin-left: 480px;
+    /* Increase from 400px by 20% */
     margin-right: auto;
-    width: 100%;
+    width: calc(100% - 500px);
+    /* Adjust from 420px to 500px for 20% wider drawer */
+    padding-left: 20px;
 }
 
 .gameHeader h1 {
@@ -141,10 +145,13 @@
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin-left: auto;
+    width: calc(100% - 500px);
+    /* Adjust from 420px to 500px for 20% wider drawer */
+    max-width: 800px;
+    margin-left: 480px;
+    /* Increase from 400px by 20% */
     margin-right: auto;
+    padding-left: 20px;
 }
 
 /* Biome container with health bar */
@@ -1780,9 +1787,10 @@
 .biomesDrawer {
     position: fixed;
     top: 0;
-    left: -400px;
-    /* Off-screen by default */
-    width: 400px;
+    left: -480px;
+    /* Increase from -400px by 20% */
+    width: 480px;
+    /* Increase from 400px by 20% */
     height: 100vh;
     background-color: #333;
     border-right: 5px solid #555;
@@ -1796,7 +1804,8 @@
 }
 
 .biomesDrawerOpen {
-    transform: translateX(400px);
+    transform: translateX(480px);
+    /* Increase from 400px by 20% */
 }
 
 .biomesDrawerHandle {
@@ -2743,4 +2752,59 @@
 .cancelButton:hover {
     background-color: #757575;
     transform: translateY(-2px);
+}
+
+/* Tools Drawer Styles */
+.toolsTabs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 100%;
+    border-bottom: 2px solid #555;
+    padding-bottom: 5px;
+}
+
+.toolsTab {
+    background-color: #555;
+    border: none;
+    border-radius: 4px 4px 0 0;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 8px 15px;
+    transition: all 0.2s;
+    flex: 1;
+    margin: 0 5px;
+    position: relative;
+    top: 2px;
+}
+
+.toolsTab:hover {
+    background-color: #666;
+    color: #fff;
+}
+
+.toolsTabActive {
+    background-color: #72CB3B;
+    color: #333;
+    font-weight: bold;
+}
+
+.toolsTabContent {
+    padding: 10px 5px;
+}
+
+/* Update the biomesDrawer styles to be always visible for tools drawer */
+.alwaysOpenDrawer {
+    transform: translateX(480px);
+    /* Increase from 400px by 20% */
+    position: absolute;
+    left: -480px;
+    /* Increase from -400px by 20% */
+    top: 0;
+    /* Change from 80px to 0 to take full height */
+    height: 100vh;
+    /* Change from calc(100vh - 80px) to 100vh */
+    border-top: none;
+    /* Remove top border as it's at the top now */
 }

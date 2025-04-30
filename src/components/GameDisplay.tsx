@@ -21,6 +21,7 @@ import BuyBlocksModal from './BuyBlocksModal';
 import { biomeStore } from '@/stores/BiomeStore';
 import { getAssetPath } from '../utils/assetPath';
 import ExportGameModal from './ExportGameModal';
+import ToolsDrawer from './ToolsDrawer';
 
 /**
  * MathCrafter Game
@@ -59,6 +60,9 @@ const GameDisplay: React.FC = () => {
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
     const [showExportGame, setShowExportGame] = useState<boolean>(false);
     const answerInputRef = useRef<HTMLInputElement>(null);
+
+    // Replace separate modal states with a single tools drawer tab state
+    const [activeToolsTab, setActiveToolsTab] = useState<string>('pickaxes');
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -529,6 +533,11 @@ const GameDisplay: React.FC = () => {
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
+    // Replace the individual toggle functions
+    const toggleToolsTab = (tab: string) => {
+        setActiveToolsTab(tab);
+    };
+
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {
         return <div className={styles.gameContainer}>Loading...</div>;
@@ -555,24 +564,6 @@ const GameDisplay: React.FC = () => {
                 </div>
                 <div className={styles.headerButtons}>
                     <button
-                        className={styles.pickaxesButton}
-                        onClick={toggleShop}
-                    >
-                        Pickaxes
-                    </button>
-                    <button
-                        className={styles.unlockBiomesButton}
-                        onClick={toggleBiomes}
-                    >
-                        Biomes
-                    </button>
-                    <button
-                        className={styles.buyBlocksButton}
-                        onClick={toggleBuyBlocks}
-                    >
-                        Blocks
-                    </button>
-                    <button
                         className={styles.exportGameButton}
                         onClick={toggleExportGame}
                     >
@@ -595,6 +586,18 @@ const GameDisplay: React.FC = () => {
                     onSelectPickaxe={handleSelectPickaxe}
                 />
             </div>
+
+            {/* Tools Drawer (always open) */}
+            <ToolsDrawer
+                isOpen={true}
+                onClose={() => { }}
+                gameState={gameState}
+                onBuyPickaxe={handleBuyPickaxe}
+                onUnlockBiome={handleUnlock}
+                onSelectBiome={handleSelectBiome}
+                onBuyBlock={handleBuyBlock}
+                activeTab={activeToolsTab}
+            />
 
             {/* Question Modal */}
             <div className={`${styles.modal} ${showQuestion ? styles.modalShow : ''}`}>
@@ -656,38 +659,12 @@ const GameDisplay: React.FC = () => {
                 <div className={styles.incorrectText}>INCORRECT!</div>
             )}
 
-            {/* Shop Modal */}
-            <ShopPickaxesModal
-                isOpen={showShop}
-                onClose={toggleShop}
-                gameState={gameState}
-                onBuyItem={handleBuyPickaxe}
-            />
-
             {/* Inventory Modal */}
             <InventoryModal
                 isOpen={showInventory}
                 onClose={toggleInventory}
                 gameState={gameState}
                 onSelectPickaxe={handleSelectPickaxe}
-            />
-
-            {/* Biomes Modal */}
-            <BiomesModal
-                isOpen={showBiomes}
-                onClose={toggleBiomes}
-                gameState={gameState}
-                onUnlockBiome={handleUnlock}
-                onSelectBiome={handleSelectBiome}
-                selectionMode={true}
-            />
-
-            {/* Buy Blocks Modal */}
-            <BuyBlocksModal
-                isOpen={showBuyBlocks}
-                onClose={toggleBuyBlocks}
-                gameState={gameState}
-                onBuyBlock={handleBuyBlock}
             />
 
             {/* Export Game Modal */}

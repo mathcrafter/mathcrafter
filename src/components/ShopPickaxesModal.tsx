@@ -95,93 +95,75 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
 
     return (
         <>
-            {/* Darkened overlay when drawer is open */}
-            <div
-                className={`${styles.biomesOverlay} ${isOpen ? styles.biomesOverlayOpen : ''}`}
-                onClick={onClose}
-            />
+            <div className={styles.toggleContainer}>
+                <label className={styles.toggleSwitch}>
+                    <input
+                        type="checkbox"
+                        checked={showBiomePickaxesOnly}
+                        onChange={handleToggleChange}
+                    />
+                    <span className={styles.toggleSlider}></span>
+                </label>
+                <span className={styles.toggleLabel}>
+                    {showBiomePickaxesOnly ? 'Showing biome pickaxes only' : 'Showing all pickaxes'}
+                </span>
+            </div>
+            <div className={styles.biomesSection}>
+                <div className={styles.pickaxesGrid}>
+                    {pickaxes.map((pickaxe) => {
+                        const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
+                        const rarityColor = getRarityColor(pickaxe.rarity);
 
-            {/* Drawer component */}
-            <div className={`${styles.biomesDrawer} ${isOpen ? styles.biomesDrawerOpen : ''}`}>
-                {/* Handle to open/close the drawer */}
-                <div className={styles.biomesDrawerHandle} onClick={onClose} />
-
-                <div className={styles.biomesDrawerHeader}>
-                    <h2>Shop Pickaxes</h2>
-                    <div className={styles.toggleContainer}>
-                        <label className={styles.toggleSwitch}>
-                            <input
-                                type="checkbox"
-                                checked={showBiomePickaxesOnly}
-                                onChange={handleToggleChange}
-                            />
-                            <span className={styles.toggleSlider}></span>
-                        </label>
-                        <span className={styles.toggleLabel}>
-                            {showBiomePickaxesOnly ? 'Showing biome pickaxes only' : 'Showing all pickaxes'}
-                        </span>
-                    </div>
-                </div>
-
-                <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="pickaxes">
-                    <div className={styles.biomesSection}>
-                        <div className={styles.pickaxesGrid}>
-                            {pickaxes.map((pickaxe) => {
-                                const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
-                                const rarityColor = getRarityColor(pickaxe.rarity);
-
-                                return (
+                        return (
+                            <div
+                                key={pickaxe.name}
+                                className={styles.pickaxeItem}
+                            >
+                                <div className={styles.pickaxeImageContainer}>
+                                    <img
+                                        src={`${getAssetPath(`/assets/pickaxes/${pickaxe.name.toLowerCase()}.png`)}`}
+                                        alt={`${pickaxe.name} Pickaxe`}
+                                        className={styles.pickaxeItemImg}
+                                    />
                                     <div
-                                        key={pickaxe.name}
-                                        className={styles.pickaxeItem}
+                                        className={styles.rarityBadge}
+                                        style={{
+                                            backgroundColor: rarityColor,
+                                            top: 'auto',
+                                            bottom: '5px'
+                                        }}
                                     >
-                                        <div className={styles.pickaxeImageContainer}>
-                                            <img
-                                                src={`${getAssetPath(`/assets/pickaxes/${pickaxe.name.toLowerCase()}.png`)}`}
-                                                alt={`${pickaxe.name} Pickaxe`}
-                                                className={styles.pickaxeItemImg}
-                                            />
-                                            <div
-                                                className={styles.rarityBadge}
-                                                style={{
-                                                    backgroundColor: rarityColor,
-                                                    top: 'auto',
-                                                    bottom: '5px'
-                                                }}
-                                            >
-                                                {pickaxe.rarity}
-                                            </div>
+                                        {pickaxe.rarity}
+                                    </div>
+                                </div>
+                                <div className={styles.pickaxeItemContent}>
+                                    <div className={styles.pickaxeInfo}>
+                                        <div className={styles.itemName}>
+                                            {pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1)} Pickaxe
                                         </div>
-                                        <div className={styles.pickaxeItemContent}>
-                                            <div className={styles.pickaxeInfo}>
-                                                <div className={styles.itemName}>
-                                                    {pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1)} Pickaxe
-                                                </div>
-                                                <div className={styles.itemDescription}>
-                                                    Strength: {pickaxe.strength} | Durability: {pickaxe.maxHealth} | Crit: {pickaxe.critical * 100}%
-                                                </div>
-                                                <div className={styles.unlockCost}>
-                                                    Cost: <span className={canBuy ? styles.affordableCost : styles.unaffordableCost}>
-                                                        {pickaxe.cost.amount} {pickaxe.cost.itemType}
-                                                    </span>
-                                                    <div>
-                                                        (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
-                                                    </div>
-                                                </div>
+                                        <div className={styles.itemDescription}>
+                                            Strength: {pickaxe.strength} | Durability: {pickaxe.maxHealth} | Crit: {pickaxe.critical * 100}%
+                                        </div>
+                                        <div className={styles.unlockCost}>
+                                            Cost: <span className={canBuy ? styles.affordableCost : styles.unaffordableCost}>
+                                                {pickaxe.cost.amount} {pickaxe.cost.itemType}
+                                            </span>
+                                            <div>
+                                                (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
                                             </div>
-                                            <button
-                                                className={`${styles.buyPickaxeButton} ${!canBuy ? styles.buyPickaxeButtonDisabled : ''}`}
-                                                onClick={() => onBuyItem(pickaxe.name, 0)}
-                                                disabled={!canBuy}
-                                            >
-                                                {getBuyButtonText(pickaxe)}
-                                            </button>
                                         </div>
                                     </div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                                    <button
+                                        className={`${styles.buyPickaxeButton} ${!canBuy ? styles.buyPickaxeButtonDisabled : ''}`}
+                                        onClick={() => onBuyItem(pickaxe.name, 0)}
+                                        disabled={!canBuy}
+                                    >
+                                        {getBuyButtonText(pickaxe)}
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </>
