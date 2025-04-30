@@ -22,6 +22,7 @@ import { biomeStore } from '@/stores/BiomeStore';
 import { getAssetPath } from '../utils/assetPath';
 import ExportGameModal from './ExportGameModal';
 import ToolsDrawer from './ToolsDrawer';
+import { blockStore } from '@/stores/BlockStore';
 
 /**
  * MathCrafter Game
@@ -187,43 +188,79 @@ const GameDisplay: React.FC = () => {
     // Attempt to mine a block with the configured chance
     const attemptToMineBlock = () => {
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
-        if (currentPickaxe && Math.random() < currentPickaxe.getPickaxe().critical) {
-            const currentBiome = gameState.currentBiome;
-            if (!currentBiome) return;
+        if (!currentPickaxe) return;
 
-            const biomeData = currentBiome.getBiome();
-            const availableBlocks = biomeData.availableBlocks;
+        const currentBiome = gameState.currentBiome;
+        if (!currentBiome) return;
 
-            if (availableBlocks && availableBlocks.length > 0) {
-                // Select a random block from the available ones
+        const biomeData = currentBiome.getBiome();
+        const availableBlocks = biomeData.availableBlocks;
+
+        // Check for critical hit chance to determine if any block will be mined
+        const isCriticalHit = Math.random() < currentPickaxe.getPickaxe().critical;
+
+        if (isCriticalHit && availableBlocks && availableBlocks.length > 0) {
+            // Determine if we're mining a biome-specific block or a common block
+            // 15% chance to mine a common block from any biome, otherwise mine biome-specific
+            const shouldMineCommonBlock = Math.random() < 0.15;
+
+            if (shouldMineCommonBlock) {
+                // Mine a common block (any block with "Common" rarity)
+                // First, collect all common blocks from the biome's available blocks
+                const commonBiomeBlocks = availableBlocks.filter(blockName => {
+                    try {
+                        const blockData = blockStore.getItemByName(blockName);
+                        return blockData.rarity === "Common";
+                    } catch (e) {
+                        return false;
+                    }
+                });
+
+                if (commonBiomeBlocks.length > 0) {
+                    // Choose a random common block from the biome
+                    const randomIndex = Math.floor(Math.random() * commonBiomeBlocks.length);
+                    const blockName = commonBiomeBlocks[randomIndex];
+                    addBlockToInventory(blockName);
+                } else {
+                    // If no common blocks in this biome, fall back to biome-specific blocks
+                    const randomIndex = Math.floor(Math.random() * availableBlocks.length);
+                    const blockName = availableBlocks[randomIndex];
+                    addBlockToInventory(blockName);
+                }
+            } else {
+                // Mine a biome-specific block
                 const randomIndex = Math.floor(Math.random() * availableBlocks.length);
                 const blockName = availableBlocks[randomIndex];
-
-                // Create temporary block to get image URL
-                const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
-                const blockImageUrl = tempBlock.getImageUrl();
-
-                // Set the mined block for animation
-                setMinedBlock({
-                    name: blockName,
-                    imageUrl: blockImageUrl
-                });
-
-                // Set block added notification
-                setBlockAdded(tempBlock);
-
-                // Clear block added notification after 3 seconds
-                setTimeout(() => {
-                    setBlockAdded(null);
-                }, 3000);
-
-                // Add the block to inventory
-                setGameState(prev => {
-                    const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
-                    return prev.withBlockInventory(updatedBlockInventory);
-                });
+                addBlockToInventory(blockName);
             }
         }
+    };
+
+    // Helper function to add blocks to inventory and show notifications
+    const addBlockToInventory = (blockName: string) => {
+        // Create temporary block to get image URL
+        const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
+        const blockImageUrl = tempBlock.getImageUrl();
+
+        // Set the mined block for animation
+        setMinedBlock({
+            name: blockName,
+            imageUrl: blockImageUrl
+        });
+
+        // Set block added notification
+        setBlockAdded(tempBlock);
+
+        // Clear block added notification after 3 seconds
+        setTimeout(() => {
+            setBlockAdded(null);
+        }, 3000);
+
+        // Add the block to inventory
+        setGameState(prev => {
+            const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
+            return prev.withBlockInventory(updatedBlockInventory);
+        });
     };
 
     // Handle wrong answer
