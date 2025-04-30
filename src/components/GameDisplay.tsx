@@ -5,11 +5,9 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
 import { PlayerBiome } from '../models/Biome';
-import ShopPickaxesModal from './ShopPickaxesModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
 import InventoryModal from './InventoryModal';
-import BiomesModal from './BiomesModal';
 import QuickInventory from './QuickInventory';
 import gameController from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
@@ -32,6 +30,9 @@ import { blockStore } from '@/stores/BlockStore';
  * - When biome health reaches zero, player is rewarded
  * - Different biomes have different health levels
  */
+
+// Get the type that blockStore.getItemByName returns
+type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
@@ -196,44 +197,48 @@ const GameDisplay: React.FC = () => {
         const biomeData = currentBiome.getBiome();
         const availableBlocks = biomeData.availableBlocks;
 
-        // Check for critical hit chance to determine if any block will be mined
-        const isCriticalHit = Math.random() < currentPickaxe.getPickaxe().critical;
+        const blocksByRarity: Record<string, BlockType[]> = {
+            Common: [],
+            Uncommon: [],
+            Rare: [],
+            Legendary: []
+        };
 
-        if (isCriticalHit && availableBlocks && availableBlocks.length > 0) {
-            // Determine if we're mining a biome-specific block or a common block
-            // 15% chance to mine a common block from any biome, otherwise mine biome-specific
-            const shouldMineCommonBlock = Math.random() < 0.15;
+        const rarityChances: Record<string, number> = {
+            Common: 0.55,
+            Uncommon: 0.3,
+            Rare: 0.1,
+            Legendary: 0.05
+        };
 
-            if (shouldMineCommonBlock) {
-                // Mine a common block (any block with "Common" rarity)
-                // First, collect all common blocks from the biome's available blocks
-                const commonBiomeBlocks = availableBlocks.filter(blockName => {
-                    try {
-                        const blockData = blockStore.getItemByName(blockName);
-                        return blockData.rarity === "Common";
-                    } catch (e) {
-                        return false;
-                    }
-                });
-
-                if (commonBiomeBlocks.length > 0) {
-                    // Choose a random common block from the biome
-                    const randomIndex = Math.floor(Math.random() * commonBiomeBlocks.length);
-                    const blockName = commonBiomeBlocks[randomIndex];
-                    addBlockToInventory(blockName);
-                } else {
-                    // If no common blocks in this biome, fall back to biome-specific blocks
-                    const randomIndex = Math.floor(Math.random() * availableBlocks.length);
-                    const blockName = availableBlocks[randomIndex];
-                    addBlockToInventory(blockName);
-                }
-            } else {
-                // Mine a biome-specific block
-                const randomIndex = Math.floor(Math.random() * availableBlocks.length);
-                const blockName = availableBlocks[randomIndex];
-                addBlockToInventory(blockName);
+        availableBlocks.forEach(blockName => {
+            const blockData = blockStore.getItemByName(blockName);
+            if (blockData === null) {
+                console.error(`Block with name ${blockName} not found`);
+                return;
             }
+            blocksByRarity[blockData.rarity].push(blockData);
+        });
+
+        // Determine the rarity of the block to mine
+        const rarity = Object.keys(rarityChances).find(rarity => Math.random() <= rarityChances[rarity]);
+
+        if (!rarity) {
+            console.error("No rarity found");
+            return;
         }
+
+        // Get a random block from the rarity
+        const randomIndex = Math.floor(Math.random() * blocksByRarity[rarity].length);
+        const randomBlock = blocksByRarity[rarity][randomIndex];
+
+        if (!randomBlock) {
+            console.error("No block found");
+            return;
+        }
+
+        // Add the block to inventory
+        addBlockToInventory(randomBlock.name);
     };
 
     // Helper function to add blocks to inventory and show notifications
