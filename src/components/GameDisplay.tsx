@@ -622,7 +622,7 @@ const GameDisplay: React.FC = () => {
             {showBlocksPanel && (
                 <div className={styles.globalBlocksPanel}>
                     <div className={styles.globalBlocksPanelHeader}>
-                        <h2>Buy Blocks from {gameState.currentBiome.getBiome().name} biome</h2>
+                        <h2>&nbsp;</h2>
                         <button className={styles.closeBlocksPanelBtn} onClick={toggleBlocksPanel}>▲</button>
                     </div>
                     <div className={styles.globalBlocksPanelContent}>
