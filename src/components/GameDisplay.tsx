@@ -63,6 +63,7 @@ const GameDisplay: React.FC = () => {
 
     // Replace separate modal states with a single tools drawer tab state
     const [activeToolsTab, setActiveToolsTab] = useState<string>('pickaxes');
+    const [showBlocksPanel, setShowBlocksPanel] = useState<boolean>(false);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -533,7 +534,12 @@ const GameDisplay: React.FC = () => {
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
-    // Replace the individual toggle functions
+    // Toggle blocks panel
+    const toggleBlocksPanel = () => {
+        setShowBlocksPanel(prev => !prev);
+    };
+
+    // Toggle tools drawer tab
     const toggleToolsTab = (tab: string) => {
         setActiveToolsTab(tab);
     };
@@ -564,6 +570,12 @@ const GameDisplay: React.FC = () => {
                 </div>
                 <div className={styles.headerButtons}>
                     <button
+                        className={`${styles.blocksPulldownButton} ${showBlocksPanel ? styles.blocksPulldownButtonActive : ''}`}
+                        onClick={toggleBlocksPanel}
+                    >
+                        Blocks <span className={styles.pulldownArrow}>{showBlocksPanel ? '▲' : '▼'}</span>
+                    </button>
+                    <button
                         className={styles.exportGameButton}
                         onClick={toggleExportGame}
                     >
@@ -571,6 +583,24 @@ const GameDisplay: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Global Blocks Panel */}
+            {showBlocksPanel && (
+                <div className={styles.globalBlocksPanel}>
+                    <div className={styles.globalBlocksPanelHeader}>
+                        <h2>Buy Blocks from {gameState.currentBiome.getBiome().name} biome</h2>
+                        <button className={styles.closeBlocksPanelBtn} onClick={toggleBlocksPanel}>▲</button>
+                    </div>
+                    <div className={styles.globalBlocksPanelContent}>
+                        <BuyBlocksModal
+                            isOpen={true}
+                            onClose={() => { }}
+                            gameState={gameState}
+                            onBuyBlock={handleBuyBlock}
+                        />
+                    </div>
+                </div>
+            )}
 
             <div className={styles.gameArea}>
                 <Biome
@@ -595,7 +625,6 @@ const GameDisplay: React.FC = () => {
                 onBuyPickaxe={handleBuyPickaxe}
                 onUnlockBiome={handleUnlock}
                 onSelectBiome={handleSelectBiome}
-                onBuyBlock={handleBuyBlock}
                 activeTab={activeToolsTab}
             />
 

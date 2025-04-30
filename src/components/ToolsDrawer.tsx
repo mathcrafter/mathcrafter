@@ -3,7 +3,6 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import ShopPickaxesModal from './ShopPickaxesModal';
 import BiomesModal from './BiomesModal';
-import BuyBlocksModal from './BuyBlocksModal';
 
 interface ToolsDrawerProps {
     isOpen: boolean;
@@ -12,7 +11,6 @@ interface ToolsDrawerProps {
     onBuyPickaxe: (pickaxeName: string, cost: number) => void;
     onUnlockBiome: (biomeName: string) => void;
     onSelectBiome: (biomeName: string) => void;
-    onBuyBlock: (blockName: string) => void;
     activeTab?: string;
 }
 
@@ -23,7 +21,6 @@ const ToolsDrawer: React.FC<ToolsDrawerProps> = ({
     onBuyPickaxe,
     onUnlockBiome,
     onSelectBiome,
-    onBuyBlock,
     activeTab = 'pickaxes'
 }) => {
     const [currentTab, setCurrentTab] = useState(activeTab);
@@ -75,8 +72,6 @@ const ToolsDrawer: React.FC<ToolsDrawerProps> = ({
                 return 'Shop Pickaxes';
             case 'biomes':
                 return gameState.currentBiome.currentHealth <= 0 ? 'Select Biome' : 'Available Biomes';
-            case 'blocks':
-                return `Buy Blocks from ${gameState.currentBiome.getBiome().name} biome`;
             default:
                 return 'Tools';
         }
@@ -100,12 +95,6 @@ const ToolsDrawer: React.FC<ToolsDrawerProps> = ({
                             onClick={() => handleTabChange('biomes')}
                         >
                             Biomes
-                        </button>
-                        <button
-                            className={`${styles.toolsTab} ${currentTab === 'blocks' ? styles.toolsTabActive : ''}`}
-                            onClick={() => handleTabChange('blocks')}
-                        >
-                            Blocks
                         </button>
                     </div>
                 </div>
@@ -131,17 +120,6 @@ const ToolsDrawer: React.FC<ToolsDrawerProps> = ({
                                 onUnlockBiome={onUnlockBiome}
                                 onSelectBiome={onSelectBiome}
                                 selectionMode={true}
-                            />
-                        </div>
-                    )}
-
-                    {currentTab === 'blocks' && (
-                        <div className={styles.toolsTabContent}>
-                            <BuyBlocksModal
-                                isOpen={true}
-                                onClose={() => { }}
-                                gameState={gameState}
-                                onBuyBlock={onBuyBlock}
                             />
                         </div>
                     )}

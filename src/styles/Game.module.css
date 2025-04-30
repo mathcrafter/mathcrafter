@@ -2826,3 +2826,177 @@
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+
+/* Blocks pull-down button styles */
+.blocksPulldownButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: #FECC33;
+    border: 3px solid #D4A929;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 10px;
+}
+
+.blocksPulldownButton:hover {
+    background-color: #D4A929;
+    transform: translateY(-2px);
+}
+
+.blocksPulldownButton:active {
+    transform: translateY(1px);
+}
+
+.blocksPulldownButtonActive {
+    background-color: #FFA500;
+    border-color: #FF8C00;
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
+}
+
+.pulldownArrow {
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+.blocksPulldownPanel {
+    background-color: #3a3a3a;
+    border: 2px solid #555;
+    border-radius: 5px;
+    margin: 0 0 15px 0;
+    padding: 15px;
+    animation: expandPanel 0.3s ease-out;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+@keyframes expandPanel {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        max-height: 400px;
+        transform: translateY(0);
+    }
+}
+
+/* Global Blocks Panel */
+.globalBlocksPanel {
+    position: relative;
+    width: calc(100% - 500px);
+    max-width: 800px;
+    margin-left: 480px;
+    margin-right: auto;
+    margin-bottom: 15px;
+    background-color: #333;
+    border: 3px solid #555;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    animation: slideDown 0.3s ease-out;
+    z-index: 50;
+    overflow: hidden;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.globalBlocksPanelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #555;
+    border-bottom: 2px solid #666;
+}
+
+.globalBlocksPanelHeader h2 {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
+    color: #72CB3B;
+    margin: 0;
+    text-shadow: 1px 1px 0 #333;
+    letter-spacing: 1px;
+}
+
+.closeBlocksPanelBtn {
+    background: none;
+    border: none;
+    color: #FECC33;
+    font-size: 1.4rem;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 8px 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.closeBlocksPanelBtn:hover {
+    color: #FFA500;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.globalBlocksPanelContent {
+    padding: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Header Blocks button */
+.blocksPulldownButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: #FECC33;
+    border: 3px solid #D4A929;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 10px;
+}
+
+.blocksPulldownButton:hover {
+    background-color: #D4A929;
+    transform: translateY(-2px);
+}
+
+.blocksPulldownButton:active {
+    transform: translateY(1px);
+}
+
+.blocksPulldownButtonActive {
+    background-color: #FFA500;
+    border-color: #FF8C00;
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
+}
+
+.pulldownArrow {
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
