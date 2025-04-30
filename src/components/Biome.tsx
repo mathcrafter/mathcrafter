@@ -3,6 +3,7 @@ import styles from '../styles/Game.module.css';
 import { PlayerPickaxe } from '../models/Pickaxe';
 import { PlayerBiome } from '../models/Biome';
 import { getAssetPath } from '@/utils/assetPath';
+import blockSoundPlayer from '@/utils/BlockSoundPlayer';
 
 interface BiomeProps {
     onBiomeClick: () => void;
@@ -10,6 +11,15 @@ interface BiomeProps {
     currentBiome: any;
     picksToShow?: number | null;
     minedBlock?: { name: string; imageUrl: string } | null;
+}
+
+// Interface for falling block
+interface FallingBlock {
+    id: string;
+    name: string;
+    imageUrl: string;
+    x: number;
+    y: number;
 }
 
 const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiome, picksToShow, minedBlock }) => {
@@ -21,6 +31,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
     const [picksValue, setPicksValue] = useState<number | null>(null);
     const [showBlock, setShowBlock] = useState<boolean>(false);
     const [blockData, setBlockData] = useState<{ name: string; imageUrl: string } | null>(null);
+    const [fallingBlocks, setFallingBlocks] = useState<FallingBlock[]>([]);
 
     const biomeRef = useRef<HTMLDivElement>(null);
 
@@ -46,18 +57,70 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
         }
     }, [picksToShow]);
 
-    // Handle mined block display
+    // Generate a random number between min and max
+    const getRandomNumber = (min: number, max: number): number => {
+        return Math.random() * (max - min) + min;
+    };
+
+    // Generate a unique ID
+    const generateId = (): string => {
+        return Math.random().toString(36).substring(2, 9);
+    };
+
+    // Handle mined block display with multiple falling blocks
     useEffect(() => {
         if (minedBlock) {
+            // Store original block data for notification
             setBlockData(minedBlock);
             setShowBlock(true);
 
-            // Hide block after animation completes
-            const timer = setTimeout(() => {
-                setShowBlock(false);
-            }, 1500);
+            // Create 3-6 falling blocks with random positions
+            const numberOfBlocks = Math.floor(getRandomNumber(3, 7));
+            const newFallingBlocks: FallingBlock[] = [];
 
-            return () => clearTimeout(timer);
+            if (biomeRef.current) {
+                const biomeWidth = biomeRef.current.offsetWidth;
+                const biomeHeight = biomeRef.current.offsetHeight;
+
+                // Generate falling blocks
+                for (let i = 0; i < numberOfBlocks; i++) {
+                    newFallingBlocks.push({
+                        id: generateId(),
+                        name: minedBlock.name,
+                        imageUrl: minedBlock.imageUrl,
+                        x: getRandomNumber(biomeWidth * 0.3, biomeWidth * 0.7),
+                        y: getRandomNumber(biomeHeight * 0.3, biomeHeight * 0.7)
+                    });
+                }
+
+                setFallingBlocks(prevBlocks => [...prevBlocks, ...newFallingBlocks]);
+
+                // Play falling block sound effects
+                try {
+                    // Initialize on first use (needs to be triggered by user interaction)
+                    blockSoundPlayer.initialize();
+                    blockSoundPlayer.resumeAudioContext();
+
+                    // Play sound based on block type
+                    blockSoundPlayer.playMultipleBlockFallSounds(
+                        minedBlock.name.toLowerCase(),
+                        numberOfBlocks
+                    );
+                } catch (error) {
+                    console.warn('Error playing block sound:', error);
+                    // Continue even if sound fails - animation will still work
+                }
+
+                // Remove blocks after animation completes
+                setTimeout(() => {
+                    setShowBlock(false);
+                    setFallingBlocks(prevBlocks =>
+                        prevBlocks.filter(block =>
+                            !newFallingBlocks.some(newBlock => newBlock.id === block.id)
+                        )
+                    );
+                }, 1800);
+            }
         }
     }, [minedBlock]);
 
@@ -92,6 +155,13 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
     const handleClick = () => {
         onBiomeClick();
         animatePickaxeSwing();
+
+        // Resume audio context if it was suspended (browsers require user interaction)
+        try {
+            blockSoundPlayer.resumeAudioContext();
+        } catch (e) {
+            console.warn('Failed to resume audio context:', e);
+        }
     };
 
     // Animate pickaxe swing
@@ -130,20 +200,21 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                     </div>
                 )}
 
-                {/* Mined block display */}
-                {showBlock && blockData && (
+                {/* Falling blocks display */}
+                {fallingBlocks.map((block) => (
                     <div
+                        key={block.id}
                         className={styles.minedBlock}
                         style={{
-                            top: '50%',
-                            left: '50%',
-                            backgroundImage: `url(${blockData.imageUrl})`,
+                            left: `${block.x}px`,
+                            top: `${block.y}px`,
+                            backgroundImage: `url(${block.imageUrl})`,
                             backgroundSize: 'contain',
                             backgroundRepeat: 'no-repeat',
                             backgroundPosition: 'center'
                         }}
                     />
-                )}
+                ))}
 
                 {/* Crack overlay that appears based on damage */}
                 {healthPercentage < 100 && (

@@ -1630,17 +1630,114 @@
     }
 }
 
+/* Mined block display */
 .minedBlock {
     position: absolute;
     width: 64px;
     height: 64px;
     z-index: 1000;
     image-rendering: pixelated;
-    animation: blockPopUp 1.5s forwards;
+    animation: blockFall 1.5s forwards;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
     border-radius: 8px;
+    transform-origin: center;
 }
 
+/* Create multiple variants of the falling animation */
+.minedBlock:nth-of-type(3n) {
+    animation: blockFall 1.5s forwards;
+}
+
+.minedBlock:nth-of-type(3n+1) {
+    animation: blockFallAlt1 1.6s forwards;
+}
+
+.minedBlock:nth-of-type(3n+2) {
+    animation: blockFallAlt2 1.4s forwards;
+}
+
+@keyframes blockFall {
+    0% {
+        opacity: 0;
+        transform: scale(0) translate(-50%, -50%) rotate(0deg);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1.2) translate(-50%, -50%) rotate(0deg);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1) translate(-50%, -30%) rotate(5deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1) translate(-40%, 40%) rotate(10deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translate(-20%, 150%) rotate(15deg);
+    }
+}
+
+@keyframes blockFallAlt1 {
+    0% {
+        opacity: 0;
+        transform: scale(0) translate(-50%, -50%) rotate(0deg);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1.2) translate(-50%, -50%) rotate(0deg);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1) translate(-55%, -30%) rotate(-5deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1) translate(-60%, 40%) rotate(-15deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translate(-80%, 150%) rotate(-25deg);
+    }
+}
+
+@keyframes blockFallAlt2 {
+    0% {
+        opacity: 0;
+        transform: scale(0) translate(-50%, -50%) rotate(0deg);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1.2) translate(-50%, -50%) rotate(0deg);
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1) translate(-45%, -30%) rotate(0deg);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1) translate(-20%, 40%) rotate(20deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translate(20%, 150%) rotate(30deg);
+    }
+}
+
+/* Old animation kept for reference
 @keyframes blockPopUp {
     0% {
         opacity: 0;
@@ -1662,6 +1759,7 @@
         transform: scale(0.8) translate(-50%, -200%);
     }
 }
+*/
 
 .blockAddedNotification {
     position: fixed;
