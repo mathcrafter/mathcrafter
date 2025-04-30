@@ -568,17 +568,9 @@ const GameDisplay: React.FC = () => {
         });
     };
 
-    // Calculate total pickaxes
-    const totalPickaxes = gameState.pickaxeInventory.length;
-
     // Toggle blocks panel
     const toggleBlocksPanel = () => {
         setShowBlocksPanel(prev => !prev);
-    };
-
-    // Toggle tools drawer tab
-    const toggleToolsTab = (tab: string) => {
-        setActiveToolsTab(tab);
     };
 
     // Don't render anything substantial on the server to avoid hydration mismatches

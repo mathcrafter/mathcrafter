@@ -65,24 +65,11 @@ const ToolsDrawer: React.FC<ToolsDrawerProps> = ({
         setCurrentTab(tab);
     };
 
-    // Get the title based on current tab
-    const getTabTitle = () => {
-        switch (currentTab) {
-            case 'pickaxes':
-                return 'Shop Pickaxes';
-            case 'biomes':
-                return gameState.currentBiome.currentHealth <= 0 ? 'Select Biome' : 'Available Biomes';
-            default:
-                return 'Tools';
-        }
-    };
-
     return (
         <>
             {/* Drawer component */}
             <div className={`${styles.biomesDrawer} ${styles.alwaysOpenDrawer}`}>
                 <div className={styles.biomesDrawerHeader}>
-                    <h2>{getTabTitle()}</h2>
                     <div className={styles.toolsTabs}>
                         <button
                             className={`${styles.toolsTab} ${currentTab === 'pickaxes' ? styles.toolsTabActive : ''}`}
