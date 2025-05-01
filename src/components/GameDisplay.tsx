@@ -22,6 +22,8 @@ import { biomeStore } from '@/stores/BiomeStore';
 import { getAssetPath } from '../utils/assetPath';
 import ExportGameModal from './ExportGameModal';
 import { blockStore } from '@/stores/BlockStore';
+import FurnaceModal from './FurnaceModal';
+import { Recipe } from '@/models/Recipe';
 
 type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
@@ -582,31 +584,62 @@ const GameDisplay: React.FC = () => {
         });
     };
 
+    // Function to get block cost based on rarity
+    const getBlockCost = (rarity: string): number => {
+        switch (rarity) {
+            case 'Common': return 100;
+            case 'Uncommon': return 200;
+            case 'Rare': return 500;
+            case 'Legendary': return 2000;
+            default: return 100;
+        }
+    };
+
     // Handle buying a block
     const handleBuyBlock = (blockName: string) => {
-        // Check if player has enough picks
-        if (gameState.picks < 100) {
-            return;
+        console.log("handleBuyBlock", blockName);
+        // Find the block in the blockStore
+        const block = blockStore.getItemByName(blockName);
+
+        // If the block exists, subtract the cost from the player's picks
+        if (block) {
+            const blockCost = getBlockCost(block.rarity);
+            if (gameState.picks >= blockCost) {
+                const updatedState = gameState
+                    .increasePicks(-blockCost) // Subtract the cost
+                    .withBlockInventory(gameState.blockInventory.addBlock(blockName, 1)); // Add the block to inventory
+
+                setGameState(updatedState);
+                soundManager.playSound('buy');
+            }
         }
+    };
 
-        // Deduct picks and add block to inventory
-        setGameState(prev => {
-            // Deduct 100 picks
-            const updatedState = prev.increasePicks(-100);
+    // Handle crafting a recipe
+    const handleCraftRecipe = (recipe: Recipe) => {
+        console.log("handleCraftRecipe", recipe);
 
-            // Add the block to inventory
-            const updatedBlockInventory = updatedState.blockInventory.addBlock(blockName, 1);
+        // Play craft sound
+        soundManager.playSound('craft');
 
-            // Set block added notification
-            setBlockAdded(new PlayerBlock({ name: blockName, quantity: 1 }));
+        // Show item added notification
+        const craftedBlock = new PlayerBlock({ name: recipe.name, quantity: 1 });
+        setBlockAdded(craftedBlock);
 
-            // Clear block added notification after 3 seconds
-            setTimeout(() => {
-                setBlockAdded(null);
-            }, 3000);
+        // Hide the notification after a delay
+        setTimeout(() => {
+            setBlockAdded(null);
+        }, 2000);
 
-            return updatedState.withBlockInventory(updatedBlockInventory);
-        });
+        // Force a game state reload to ensure we have the latest state after crafting
+        // This will trigger a re-render with the updated state from the FurnaceModal
+        setGameState(current => new GameState({
+            pickaxeInventory: current.pickaxeInventory,
+            blockInventory: current.blockInventory,
+            picks: current.picks,
+            unlockedBiomes: current.unlockedBiomes,
+            currentBiome: current.currentBiome
+        }));
     };
 
     // Calculate total pickaxes
@@ -800,6 +833,14 @@ const GameDisplay: React.FC = () => {
                 isOpen={showExportGame}
                 onClose={toggleExportGame}
                 gameState={gameState}
+            />
+
+            {/* Furnace Modal */}
+            <FurnaceModal
+                isOpen={showFurnace}
+                onClose={toggleFurnace}
+                gameState={gameState}
+                onCraft={handleCraftRecipe}
             />
 
             {/* Game Over Modal */}

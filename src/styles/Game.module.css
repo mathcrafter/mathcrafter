@@ -2526,3 +2526,293 @@
         opacity: 0.8;
     }
 }
+
+/* Furnace Modal Styles */
+.recipesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+.recipeCard {
+    background-color: #444;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.selectableRecipe {
+    border-color: #72CB3B;
+}
+
+.selectableRecipe:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.unavailableRecipe {
+    opacity: 0.6;
+    border-color: #777;
+}
+
+.recipeOutput {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #555;
+}
+
+.recipeImage {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    object-fit: contain;
+}
+
+.recipeName {
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.recipeIngredients {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ingredientItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    background-color: #333;
+    border-radius: 4px;
+}
+
+.missingIngredient {
+    background-color: rgba(255, 59, 59, 0.2);
+    border: 1px solid rgba(255, 59, 59, 0.5);
+}
+
+.ingredientImage {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+    object-fit: contain;
+}
+
+.ingredientDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ingredientName {
+    font-size: 0.9rem;
+    color: #ddd;
+    text-transform: capitalize;
+}
+
+.ingredientAmount {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+/* Recipe Detail Overlay */
+.recipeDetailsOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recipeDetailsContainer {
+    background-color: #333;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.recipeDetailsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #555;
+}
+
+.recipeDetailsHeader h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.3rem;
+    text-transform: capitalize;
+}
+
+.recipeDetailsContent {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.recipeOutputDetails {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: #444;
+    border-radius: 8px;
+}
+
+.recipeOutputImage {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+}
+
+.recipeOutputName {
+    font-size: 1.2rem;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.recipeIngredientsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recipeIngredientsList h4 {
+    margin: 0;
+    color: #ddd;
+    font-size: 1.1rem;
+}
+
+.recipeIngredientDetail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #444;
+    border-radius: 6px;
+}
+
+.missingIngredientDetail {
+    background-color: rgba(255, 59, 59, 0.2);
+    border: 1px solid rgba(255, 59, 59, 0.5);
+}
+
+.ingredientDetailImage {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+}
+
+.ingredientDetailInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ingredientDetailName {
+    font-size: 1rem;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.ingredientDetailAmount {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.craftButton {
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    padding: 12px;
+    background-color: #72CB3B;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+}
+
+.craftButton:hover {
+    background-color: #8BFF4A;
+    transform: translateY(-2px);
+}
+
+.craftButtonDisabled {
+    background-color: #555;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.craftButtonDisabled:hover {
+    transform: none;
+    background-color: #555;
+}
+
+/* Handle letter for furnace */
+[data-drawer-type="furnace"]+.biomesDrawerHandle::before {
+    content: 'F';
+    color: #f44336;
+}
+
+/* Crafting Success Message */
+.craftingSuccess {
+    background-color: rgba(114, 203, 59, 0.2);
+    border: 2px solid rgba(114, 203, 59, 0.5);
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.craftedItemImage {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+}
+
+.craftedItemText {
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
