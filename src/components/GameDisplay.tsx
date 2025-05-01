@@ -21,6 +21,9 @@ import BuyBlocksModal from './BuyBlocksModal';
 import { biomeStore } from '@/stores/BiomeStore';
 import { getAssetPath } from '../utils/assetPath';
 import ExportGameModal from './ExportGameModal';
+import { blockStore } from '@/stores/BlockStore';
+
+type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
 /**
  * MathCrafter Game
@@ -182,43 +185,82 @@ const GameDisplay: React.FC = () => {
     // Attempt to mine a block with the configured chance
     const attemptToMineBlock = () => {
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
-        if (currentPickaxe && Math.random() < currentPickaxe.getPickaxe().critical) {
-            const currentBiome = gameState.currentBiome;
-            if (!currentBiome) return;
+        if (!currentPickaxe) return;
 
-            const biomeData = currentBiome.getBiome();
-            const availableBlocks = biomeData.availableBlocks;
+        const currentBiome = gameState.currentBiome;
+        if (!currentBiome) return;
 
-            if (availableBlocks && availableBlocks.length > 0) {
-                // Select a random block from the available ones
-                const randomIndex = Math.floor(Math.random() * availableBlocks.length);
-                const blockName = availableBlocks[randomIndex];
+        const biomeData = currentBiome.getBiome();
+        const availableBlocks = biomeData.availableBlocks;
 
-                // Create temporary block to get image URL
-                const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
-                const blockImageUrl = tempBlock.getImageUrl();
+        const blocksByRarity: Record<string, BlockType[]> = {
+            Common: [],
+            Uncommon: [],
+            Rare: [],
+            Legendary: []
+        };
 
-                // Set the mined block for animation
-                setMinedBlock({
-                    name: blockName,
-                    imageUrl: blockImageUrl
-                });
+        const rarityChances: Record<string, number> = {
+            Common: 0.55,
+            Uncommon: 0.3,
+            Rare: 0.1,
+            Legendary: 0.05
+        };
 
-                // Set block added notification
-                setBlockAdded(tempBlock);
-
-                // Clear block added notification after 3 seconds
-                setTimeout(() => {
-                    setBlockAdded(null);
-                }, 3000);
-
-                // Add the block to inventory
-                setGameState(prev => {
-                    const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
-                    return prev.withBlockInventory(updatedBlockInventory);
-                });
+        availableBlocks.forEach(blockName => {
+            const blockData = blockStore.getItemByName(blockName);
+            if (blockData === null) {
+                console.error(`Block with name ${blockName} not found`);
+                return;
             }
+
+            blocksByRarity[blockData.rarity].push(blockData);
+        });
+
+        // Determine the rarity of the block to mine
+        const rarity = Object.keys(rarityChances).find(rarity => Math.random() <= rarityChances[rarity]);
+
+        if (!rarity) {
+            console.error("No rarity found");
+            return;
         }
+
+        const randomIndex = Math.floor(Math.random() * blocksByRarity[rarity].length);
+        const randomBlock = blocksByRarity[rarity][randomIndex];
+
+        if (!randomBlock) {
+            console.error("No block found");
+            return;
+        }
+
+        addBlockToInventory(randomBlock.name);
+    };
+
+    // Helper function to add blocks to inventory and show notifications
+    const addBlockToInventory = (blockName: string) => {
+        // Create temporary block to get image URL
+        const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
+        const blockImageUrl = tempBlock.getImageUrl();
+
+        // Set the mined block for animation
+        setMinedBlock({
+            name: blockName,
+            imageUrl: blockImageUrl
+        });
+
+        // Set block added notification
+        setBlockAdded(tempBlock);
+
+        // Clear block added notification after 3 seconds
+        setTimeout(() => {
+            setBlockAdded(null);
+        }, 3000);
+
+        // Add the block to inventory
+        setGameState(prev => {
+            const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
+            return prev.withBlockInventory(updatedBlockInventory);
+        });
     };
 
     // Handle wrong answer
