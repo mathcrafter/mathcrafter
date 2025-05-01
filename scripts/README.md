@@ -1,38 +1,32 @@
 # MathCrafter Scripts
 
-This directory contains utility scripts for the MathCrafter project.
+This directory contains utility scripts for the MathCrafter game.
 
-## Available Scripts
+## Scripts
 
-### `find-unused-css.js`
+### update_hint_cost.js
 
-This script helps identify and remove unused CSS rules from the project's CSS files.
+Updates the hint cost in the game.
 
-#### Usage
-
+Usage:
 ```bash
-nvm use 22 && node find-unused-css.js
+nvm use 22 && ./scripts/update_hint_cost.js [new_cost]
 ```
 
-The script will:
-1. Scan all CSS files in the `src/styles` directory
-2. Find all CSS class names defined in those files
-3. Search for references to those class names in the source code
-4. Generate cleaned versions of CSS files with unused rules removed
-5. Print a report of removed classes
+- `[new_cost]`: Optional. The new cost in picks for using a hint. Default is 500.
 
-After running the script, review the generated `.cleaned.css` files. If everything looks good, you can replace the original files with the cleaned versions.
-
+Example:
 ```bash
-nvm use 22 && mv src/styles/[filename].cleaned.css src/styles/[filename].css
+# Set hint cost to 1000 picks
+nvm use 22 && ./scripts/update_hint_cost.js 1000
 ```
 
 ## Development
 
-Scripts in this directory use their own dependencies managed with `uv`. To install dependencies:
+When creating new scripts:
 
-```bash
-nvm use 22
-cd scripts
-uv pip install -r requirements.txt  # For Python scripts
-```
+1. Place all scripts in this directory
+2. Make scripts executable with `chmod +x script_name.js`
+3. Use the shebang `#!/usr/bin/env node` at the top of each script
+4. Use `uv` to manage dependencies for this folder
+5. Always prefix the script execution with `nvm use 22`

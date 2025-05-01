@@ -61,7 +61,11 @@ const GameDisplay: React.FC = () => {
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
     const [showExportGame, setShowExportGame] = useState<boolean>(false);
+    const [showHint, setShowHint] = useState<boolean>(false);
+    const [notEnoughPicks, setNotEnoughPicks] = useState<boolean>(false);
+    const [isHintAnswer, setIsHintAnswer] = useState<boolean>(false);
     const answerInputRef = useRef<HTMLInputElement>(null);
+    const HINT_COST = 500;
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -112,6 +116,7 @@ const GameDisplay: React.FC = () => {
     const generateNewProblem = () => {
         setProblem(gameController.generateMathProblem());
         setAnswer('');
+        setShowHint(false);
     };
 
     // Handle answer submission
@@ -138,6 +143,33 @@ const GameDisplay: React.FC = () => {
             setAnswer('');
             // Keep the question panel open so player can try again
         }
+    };
+
+    // Handle showing hint
+    const handleShowHint = () => {
+        // Check if player has enough picks
+        if (gameState.picks < HINT_COST) {
+            setNotEnoughPicks(true);
+            setTimeout(() => {
+                setNotEnoughPicks(false);
+            }, 2000);
+            return;
+        }
+
+        // Deduct picks and show hint
+        setGameState(prev => prev.increasePicks(-HINT_COST));
+        setShowHint(true);
+
+        // Show the correct answer in the input field
+        setIsHintAnswer(true);
+        setAnswer(problem.answer.toString());
+
+        // Clear the hint answer after 2 seconds
+        setTimeout(() => {
+            setIsHintAnswer(false);
+            setAnswer('');
+            answerInputRef.current?.focus();
+        }, 2000);
     };
 
     // Handle correct answer
@@ -655,16 +687,24 @@ const GameDisplay: React.FC = () => {
                         <div className={styles.question}>
                             {problem.num1} {problem.operator} {problem.num2} = ?
                         </div>
+                        {notEnoughPicks && (
+                            <div className={styles.notEnoughPicks}>
+                                Not enough picks! Need 500 picks for a hint.
+                            </div>
+                        )}
                         <div className={styles.answerArea}>
                             <input
                                 ref={answerInputRef}
                                 type="number"
-                                className={styles.answer}
+                                className={`${styles.answer} ${isHintAnswer ? styles.hintAnswer : ''}`}
                                 value={answer}
                                 onChange={(e) => setAnswer(e.target.value)}
+                                readOnly={isHintAnswer}
                                 autoFocus
                             />
-                            <button type="submit" className={styles.submitBtn}>Mine!</button>
+                            <div className={styles.buttonGroup}>
+                                <button type="submit" className={styles.submitBtn}>Mine!</button>
+                            </div>
                         </div>
 
                         <div className={styles.numpad}>
@@ -678,6 +718,14 @@ const GameDisplay: React.FC = () => {
                                     {num}
                                 </button>
                             ))}
+                            <button
+                                type="button"
+                                className={`${styles.numpadBtn} ${styles.hintBtn} ${gameState.picks < HINT_COST ? styles.hintBtnDisabled : ''}`}
+                                onClick={handleShowHint}
+                                disabled={gameState.picks < HINT_COST}
+                            >
+                                Hint ({HINT_COST})
+                            </button>
                             <button
                                 type="button"
                                 className={`${styles.numpadBtn} ${styles.clearBtn}`}
