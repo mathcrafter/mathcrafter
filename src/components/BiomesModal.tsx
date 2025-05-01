@@ -112,136 +112,154 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
 
     return (
         <>
-            <div className={styles.biomesSection}>
-                <div className={styles.biomesGrid}>
-                    {availableBiomes.map((biome: Biome) => {
-                        const isUnlocked = isBiomeUnlocked(biome.name);
-                        const canUnlock = canUnlockBiome(biome.name);
-                        const isCurrentBiome = biome.name.toLowerCase() === currentBiomeType;
+            {/* Darkened overlay when drawer is open */}
+            <div
+                className={`${styles.biomesOverlay} ${isOpen ? styles.biomesOverlayOpen : ''}`}
+                onClick={onClose}
+            />
 
-                        return (
-                            <div
-                                key={biome.name}
-                                className={`${styles.biomeItem} 
-                                        ${isUnlocked ? styles.biomeUnlocked : styles.biomeLocked}
-                                        ${isCurrentBiome ? styles.biomeSelected : ''}`}
-                            >
-                                <div className={styles.biomeImageContainer}>
-                                    <img
-                                        src={getAssetPath(`/assets/biomes/${biome.name.toLowerCase()}.png`)}
-                                        alt={biome.name}
-                                        className={styles.biomeItemImg}
-                                    />
-                                    {!isUnlocked && (
-                                        <div className={styles.lockOverlay}>
+            {/* Drawer component */}
+            <div className={`${styles.biomesDrawer} ${isOpen ? styles.biomesDrawerOpen : ''}`}>
+                {/* Handle to open/close the drawer */}
+                <div className={styles.biomesDrawerHandle} onClick={onClose} />
+
+                <div className={styles.biomesDrawerHeader}>
+                    <h2>{selectionMode ? 'Select Biome' : 'Available Biomes'}</h2>
+                </div>
+
+                <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="biomes">
+                    <div className={styles.biomesSection}>
+                        <div className={styles.biomesGrid}>
+                            {availableBiomes.map((biome: Biome) => {
+                                const isUnlocked = isBiomeUnlocked(biome.name);
+                                const canUnlock = canUnlockBiome(biome.name);
+                                const isCurrentBiome = biome.name.toLowerCase() === currentBiomeType;
+
+                                return (
+                                    <div
+                                        key={biome.name}
+                                        className={`${styles.biomeItem} 
+                                                ${isUnlocked ? styles.biomeUnlocked : styles.biomeLocked}
+                                                ${isCurrentBiome ? styles.biomeSelected : ''}`}
+                                    >
+                                        <div className={styles.biomeImageContainer}>
                                             <img
-                                                src={getAssetPath('/assets/padlock.svg')}
-                                                alt="Locked"
-                                                className={styles.lockIcon}
+                                                src={getAssetPath(`/assets/biomes/${biome.name.toLowerCase()}.png`)}
+                                                alt={biome.name}
+                                                className={styles.biomeItemImg}
                                             />
-                                        </div>
-                                    )}
-                                    <div className={styles.biomeNameOverlay}>
-                                        {biome.name}
-                                        {isUnlocked && <span className={styles.unlockedIndicator}>✓</span>}
-                                        {isCurrentBiome && <span className={styles.currentIndicator}> (Current)</span>}
-                                    </div>
-                                </div>
-
-                                <div className={styles.availableBlocks}>
-                                    <span>Available Blocks:</span>
-                                    <div className={styles.blockImagesContainer}>
-                                        {biome.availableBlocks.map((blockName) => (
-                                            <div
-                                                key={blockName}
-                                                className={styles.blockImageWrapper}
-                                                onClick={(e) => handleBlockClick(e, blockName)}
-                                                style={{ cursor: 'pointer' }}
-                                            >
-                                                <img
-                                                    src={getAssetPath(`/assets/blocks/${blockName}.png`)}
-                                                    alt={blockName}
-                                                    className={styles.blockImage}
-                                                />
-                                                <div className={styles.blockName}>{blockName}</div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className={styles.availablePickaxes}>
-                                    <span>Available Pickaxes:</span>
-                                    <div className={styles.blockImagesContainer}>
-                                        {biome.availablePickaxes.length > 0 ? (
-                                            biome.availablePickaxes.map((pickaxeName) => (
-                                                <div key={pickaxeName} className={styles.blockImageWrapper}>
+                                            {!isUnlocked && (
+                                                <div className={styles.lockOverlay}>
                                                     <img
-                                                        src={getAssetPath(`/assets/pickaxes/${pickaxeName}.png`)}
-                                                        alt={pickaxeName}
-                                                        className={styles.blockImage}
+                                                        src={getAssetPath('/assets/padlock.svg')}
+                                                        alt="Locked"
+                                                        className={styles.lockIcon}
                                                     />
-                                                    <div className={styles.blockName}>{pickaxeName}</div>
                                                 </div>
-                                            ))
-                                        ) : (
-                                            <div className={styles.noPickaxes}>No pickaxes available</div>
-                                        )}
-                                    </div>
-                                </div>
+                                            )}
+                                            <div className={styles.biomeNameOverlay}>
+                                                {biome.name}
+                                                {isUnlocked && <span className={styles.unlockedIndicator}>✓</span>}
+                                                {isCurrentBiome && <span className={styles.currentIndicator}> (Current)</span>}
+                                            </div>
+                                        </div>
 
-                                <div className={styles.itemInfo}>
-                                    <div className={styles.itemDescription}>{biome.description}</div>
+                                        <div className={styles.availableBlocks}>
+                                            <span>Available Blocks:</span>
+                                            <div className={styles.blockImagesContainer}>
+                                                {biome.availableBlocks.map((blockName) => (
+                                                    <div
+                                                        key={blockName}
+                                                        className={styles.blockImageWrapper}
+                                                        onClick={(e) => handleBlockClick(e, blockName)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    >
+                                                        <img
+                                                            src={getAssetPath(`/assets/blocks/${blockName}.png`)}
+                                                            alt={blockName}
+                                                            className={styles.blockImage}
+                                                        />
+                                                        <div className={styles.blockName}>{blockName}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
 
-                                    {!isUnlocked && (
-                                        <>
-                                            <div className={styles.unlockCost}>
-                                                {biome.cost ? (
-                                                    <>
-                                                        Cost:
-                                                        <div className={styles.costItemContainer}>
-                                                            <div className={styles.costItemImgWrapper}>
-                                                                <img
-                                                                    src={getAssetPath(`/assets/blocks/${biome.cost.itemType}.png`)}
-                                                                    alt={biome.cost.itemType}
-                                                                    className={styles.costItemImg}
-                                                                />
-                                                                <span className={styles.costItemBadge}>{biome.cost.amount}</span>
-                                                            </div>
-                                                            <span className={canUnlock ? styles.affordableCost : styles.unaffordableCost}>
-                                                                {biome.cost.itemType.replace(/_/g, ' ')}
-                                                            </span>
+                                        <div className={styles.availablePickaxes}>
+                                            <span>Available Pickaxes:</span>
+                                            <div className={styles.blockImagesContainer}>
+                                                {biome.availablePickaxes.length > 0 ? (
+                                                    biome.availablePickaxes.map((pickaxeName) => (
+                                                        <div key={pickaxeName} className={styles.blockImageWrapper}>
+                                                            <img
+                                                                src={getAssetPath(`/assets/pickaxes/${pickaxeName}.png`)}
+                                                                alt={pickaxeName}
+                                                                className={styles.blockImage}
+                                                            />
+                                                            <div className={styles.blockName}>{pickaxeName}</div>
                                                         </div>
-                                                    </>
+                                                    ))
                                                 ) : (
-                                                    <span className={styles.affordableCost}>Free</span>
+                                                    <div className={styles.noPickaxes}>No pickaxes available</div>
                                                 )}
                                             </div>
-                                            <button
-                                                className={`${styles.unlockButton} ${!canUnlock ? styles.unlockButtonDisabled : ''}`}
-                                                onClick={() => handleUnlock(biome.name)}
-                                                disabled={!canUnlock}
-                                            >
-                                                {canUnlock ? 'Unlock' : 'Not enough resources'}
-                                            </button>
-                                        </>
-                                    )}
-                                    {isUnlocked && selectionMode && !isCurrentBiome && (
-                                        <button
-                                            className={styles.selectButton}
-                                            onClick={(e) => handleSelect(e, biome.name)}
-                                        >
-                                            Select
-                                        </button>
-                                    )}
-                                    {isUnlocked && selectionMode && isCurrentBiome && (
-                                        <div className={styles.currentlyEquipped}>
-                                            Currently Selected
                                         </div>
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
+
+                                        <div className={styles.itemInfo}>
+                                            <div className={styles.itemDescription}>{biome.description}</div>
+
+                                            {!isUnlocked && (
+                                                <>
+                                                    <div className={styles.unlockCost}>
+                                                        {biome.cost ? (
+                                                            <>
+                                                                Cost:
+                                                                <div className={styles.costItemContainer}>
+                                                                    <div className={styles.costItemImgWrapper}>
+                                                                        <img
+                                                                            src={getAssetPath(`/assets/blocks/${biome.cost.itemType}.png`)}
+                                                                            alt={biome.cost.itemType}
+                                                                            className={styles.costItemImg}
+                                                                        />
+                                                                        <span className={styles.costItemBadge}>{biome.cost.amount}</span>
+                                                                    </div>
+                                                                    <span className={canUnlock ? styles.affordableCost : styles.unaffordableCost}>
+                                                                        {biome.cost.itemType.replace(/_/g, ' ')}
+                                                                    </span>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <span className={styles.affordableCost}>Free</span>
+                                                        )}
+                                                    </div>
+                                                    <button
+                                                        className={`${styles.unlockButton} ${!canUnlock ? styles.unlockButtonDisabled : ''}`}
+                                                        onClick={() => handleUnlock(biome.name)}
+                                                        disabled={!canUnlock}
+                                                    >
+                                                        {canUnlock ? 'Unlock' : 'Not enough resources'}
+                                                    </button>
+                                                </>
+                                            )}
+                                            {isUnlocked && selectionMode && !isCurrentBiome && (
+                                                <button
+                                                    className={styles.selectButton}
+                                                    onClick={(e) => handleSelect(e, biome.name)}
+                                                >
+                                                    Select
+                                                </button>
+                                            )}
+                                            {isUnlocked && selectionMode && isCurrentBiome && (
+                                                <div className={styles.currentlyEquipped}>
+                                                    Currently Selected
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
 

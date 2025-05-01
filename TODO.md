@@ -9,7 +9,7 @@
 
 # Pickaxes
 [x] Show the health of the pickaxe on the sidebar
-[x] Swing has a critical chance of not answering a question and still get rewards
+[ ] Swing has a critical chance of not answering a question and still get rewards
 
 # Biomes
 [x] Biome panel that shows all the locked and unlocked biomes
@@ -20,9 +20,6 @@
 # Blocks
 [x] Buy blocks
 [x] Blocks panel in inventory
-
-# Furnace
-[ ] A furnace can be used to make legendary blocks
 
 # Production Hosting
 [x] Host on Github Pages

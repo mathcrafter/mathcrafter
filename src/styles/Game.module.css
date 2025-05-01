@@ -7,7 +7,6 @@
     border: 5px solid #555;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    position: relative;
 }
 
 /* Game Header */
@@ -16,13 +15,10 @@
     grid-template-columns: 1fr auto auto 1fr;
     align-items: center;
     margin-bottom: 20px;
-    max-width: 800px;
-    margin-left: 480px;
-    /* Increase from 400px by 20% */
+    max-width: 1400px;
+    margin-left: auto;
     margin-right: auto;
-    width: calc(100% - 500px);
-    /* Adjust from 420px to 500px for 20% wider drawer */
-    padding-left: 20px;
+    width: 100%;
 }
 
 .gameHeader h1 {
@@ -145,13 +141,10 @@
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
-    width: calc(100% - 500px);
-    /* Adjust from 420px to 500px for 20% wider drawer */
-    max-width: 800px;
-    margin-left: 480px;
-    /* Increase from 400px by 20% */
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
     margin-right: auto;
-    padding-left: 20px;
 }
 
 /* Biome container with health bar */
@@ -1630,114 +1623,17 @@
     }
 }
 
-/* Mined block display */
 .minedBlock {
     position: absolute;
     width: 64px;
     height: 64px;
     z-index: 1000;
     image-rendering: pixelated;
-    animation: blockFall 1.5s forwards;
+    animation: blockPopUp 1.5s forwards;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
     border-radius: 8px;
-    transform-origin: center;
 }
 
-/* Create multiple variants of the falling animation */
-.minedBlock:nth-of-type(3n) {
-    animation: blockFall 1.5s forwards;
-}
-
-.minedBlock:nth-of-type(3n+1) {
-    animation: blockFallAlt1 1.6s forwards;
-}
-
-.minedBlock:nth-of-type(3n+2) {
-    animation: blockFallAlt2 1.4s forwards;
-}
-
-@keyframes blockFall {
-    0% {
-        opacity: 0;
-        transform: scale(0) translate(-50%, -50%) rotate(0deg);
-    }
-
-    20% {
-        opacity: 1;
-        transform: scale(1.2) translate(-50%, -50%) rotate(0deg);
-    }
-
-    30% {
-        opacity: 1;
-        transform: scale(1) translate(-50%, -30%) rotate(5deg);
-    }
-
-    60% {
-        opacity: 1;
-        transform: scale(1) translate(-40%, 40%) rotate(10deg);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(0.8) translate(-20%, 150%) rotate(15deg);
-    }
-}
-
-@keyframes blockFallAlt1 {
-    0% {
-        opacity: 0;
-        transform: scale(0) translate(-50%, -50%) rotate(0deg);
-    }
-
-    20% {
-        opacity: 1;
-        transform: scale(1.2) translate(-50%, -50%) rotate(0deg);
-    }
-
-    30% {
-        opacity: 1;
-        transform: scale(1) translate(-55%, -30%) rotate(-5deg);
-    }
-
-    60% {
-        opacity: 1;
-        transform: scale(1) translate(-60%, 40%) rotate(-15deg);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(0.8) translate(-80%, 150%) rotate(-25deg);
-    }
-}
-
-@keyframes blockFallAlt2 {
-    0% {
-        opacity: 0;
-        transform: scale(0) translate(-50%, -50%) rotate(0deg);
-    }
-
-    20% {
-        opacity: 1;
-        transform: scale(1.2) translate(-50%, -50%) rotate(0deg);
-    }
-
-    30% {
-        opacity: 1;
-        transform: scale(1) translate(-45%, -30%) rotate(0deg);
-    }
-
-    60% {
-        opacity: 1;
-        transform: scale(1) translate(-20%, 40%) rotate(20deg);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(0.8) translate(20%, 150%) rotate(30deg);
-    }
-}
-
-/* Old animation kept for reference
 @keyframes blockPopUp {
     0% {
         opacity: 0;
@@ -1759,7 +1655,6 @@
         transform: scale(0.8) translate(-50%, -200%);
     }
 }
-*/
 
 .blockAddedNotification {
     position: fixed;
@@ -1885,10 +1780,9 @@
 .biomesDrawer {
     position: fixed;
     top: 0;
-    left: -480px;
-    /* Increase from -400px by 20% */
-    width: 480px;
-    /* Increase from 400px by 20% */
+    left: -400px;
+    /* Off-screen by default */
+    width: 400px;
     height: 100vh;
     background-color: #333;
     border-right: 5px solid #555;
@@ -1902,8 +1796,7 @@
 }
 
 .biomesDrawerOpen {
-    transform: translateX(480px);
-    /* Increase from 400px by 20% */
+    transform: translateX(400px);
 }
 
 .biomesDrawerHandle {
@@ -2850,251 +2743,4 @@
 .cancelButton:hover {
     background-color: #757575;
     transform: translateY(-2px);
-}
-
-/* Tools Drawer Styles */
-.toolsTabs {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    width: 100%;
-    border-bottom: 2px solid #555;
-    padding-bottom: 5px;
-}
-
-.toolsTab {
-    background-color: #555;
-    border: 3px solid #666;
-    border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    color: #ccc;
-    cursor: pointer;
-    font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    padding: 8px 15px;
-    transition: all 0.2s;
-    flex: 1;
-    margin: 0 5px;
-    position: relative;
-    top: 2px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.toolsTab:hover {
-    background-color: #666;
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-.toolsTabActive {
-    background-color: #72CB3B;
-    border-color: #5B9E2D;
-    color: #333;
-    font-weight: bold;
-}
-
-.toolsTabContent {
-    padding: 10px 5px;
-}
-
-/* Update the biomesDrawer styles to be always visible for tools drawer */
-.alwaysOpenDrawer {
-    transform: translateX(480px);
-    /* Increase from 400px by 20% */
-    position: absolute;
-    left: -480px;
-    /* Increase from -400px by 20% */
-    top: 0;
-    /* Change from 80px to 0 to take full height */
-    height: 100vh;
-    /* Change from calc(100vh - 80px) to 100vh */
-    border-top: none;
-    /* Remove top border as it's at the top now */
-}
-
-.biomesDrawerHeader h2 {
-    font-size: 1.8rem;
-    font-family: 'VT323', monospace;
-    color: #72CB3B;
-    margin: 0 0 10px 0;
-    text-align: center;
-    width: 100%;
-    text-shadow: 2px 2px 0 #333;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-/* Blocks pull-down button styles */
-.blocksPulldownButton {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    background-color: #FECC33;
-    border: 3px solid #D4A929;
-    border-radius: 5px;
-    color: #333;
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-right: 10px;
-}
-
-.blocksPulldownButton:hover {
-    background-color: #D4A929;
-    transform: translateY(-2px);
-}
-
-.blocksPulldownButton:active {
-    transform: translateY(1px);
-}
-
-.blocksPulldownButtonActive {
-    background-color: #FFA500;
-    border-color: #FF8C00;
-    box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
-}
-
-.pulldownArrow {
-    font-size: 1.2rem;
-    margin-left: 5px;
-}
-
-.blocksPulldownPanel {
-    background-color: #3a3a3a;
-    border: 2px solid #555;
-    border-radius: 5px;
-    margin: 0 0 15px 0;
-    padding: 15px;
-    animation: expandPanel 0.3s ease-out;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-@keyframes expandPanel {
-    from {
-        opacity: 0;
-        max-height: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        max-height: 400px;
-        transform: translateY(0);
-    }
-}
-
-/* Global Blocks Panel */
-.globalBlocksPanel {
-    position: relative;
-    width: calc(100% - 500px);
-    max-width: 800px;
-    margin-left: 480px;
-    margin-right: auto;
-    margin-bottom: 15px;
-    background-color: #333;
-    border: 3px solid #555;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-    animation: slideDown 0.3s ease-out;
-    z-index: 50;
-    overflow: hidden;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.globalBlocksPanelHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: #555;
-    border-bottom: 2px solid #666;
-}
-
-.globalBlocksPanelHeader h2 {
-    font-family: 'VT323', monospace;
-    font-size: 1.6rem;
-    color: #72CB3B;
-    margin: 0;
-    text-shadow: 1px 1px 0 #333;
-    letter-spacing: 1px;
-}
-
-.closeBlocksPanelBtn {
-    background: none;
-    border: none;
-    color: #FECC33;
-    font-size: 1.4rem;
-    cursor: pointer;
-    font-family: inherit;
-    padding: 8px 10px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.closeBlocksPanelBtn:hover {
-    color: #FFA500;
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-}
-
-.globalBlocksPanelContent {
-    padding: 15px;
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-/* Header Blocks button */
-.blocksPulldownButton {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    background-color: #FECC33;
-    border: 3px solid #D4A929;
-    border-radius: 5px;
-    color: #333;
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-right: 10px;
-}
-
-.blocksPulldownButton:hover {
-    background-color: #D4A929;
-    transform: translateY(-2px);
-}
-
-.blocksPulldownButton:active {
-    transform: translateY(1px);
-}
-
-.blocksPulldownButtonActive {
-    background-color: #FFA500;
-    border-color: #FF8C00;
-    box-shadow: 0 0 8px rgba(255, 165, 0, 0.6);
-}
-
-.pulldownArrow {
-    font-size: 1.2rem;
-    margin-left: 5px;
 }

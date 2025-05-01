@@ -80,62 +80,80 @@ const BuyBlocksModal: React.FC<BuyBlocksModalProps> = ({ isOpen, onClose, gameSt
 
     return (
         <>
-            <div className={styles.biomesSection}>
-                <p>Your picks: {gameState.picks}</p>
+            {/* Darkened overlay when drawer is open */}
+            <div
+                className={`${styles.biomesOverlay} ${isOpen ? styles.biomesOverlayOpen : ''}`}
+                onClick={onClose}
+            />
 
-                {availableBlocks.length === 0 ? (
-                    <p>No blocks available in this biome.</p>
-                ) : (
-                    <div className={styles.blocksGrid}>
-                        {availableBlocks.map((blockName) => {
-                            const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
-                            const blockImageUrl = tempBlock.getImageUrl();
-                            const blockRarity = tempBlock.getBlock().rarity;
-                            const blockCost = getBlockCost(blockRarity);
-                            const hasEnoughPicks = gameState.picks >= blockCost;
-                            const rarityColor = getRarityColor(blockRarity);
+            {/* Drawer component */}
+            <div className={`${styles.biomesDrawer} ${isOpen ? styles.biomesDrawerOpen : ''}`}>
+                {/* Handle to open/close the drawer */}
+                <div className={styles.biomesDrawerHandle} onClick={onClose} />
 
-                            return (
-                                <div
-                                    key={blockName}
-                                    className={styles.blockItem}
-                                    onClick={() => handleBlockClick(blockName)}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <div className={styles.blockImageContainer}>
-                                        <img
-                                            src={blockImageUrl}
-                                            alt={blockName}
-                                            className={styles.blockItemImg}
-                                        />
-                                        <div className={styles.blockNameOverlay}>{blockName}</div>
+                <div className={styles.biomesDrawerHeader}>
+                    <h2>Buy Blocks from {currentBiome.name} biome</h2>
+                </div>
+
+                <div ref={drawerContentRef} className={styles.biomesDrawerContent} data-drawer-type="blocks">
+                    <div className={styles.biomesSection}>
+                        <p>Your picks: {gameState.picks}</p>
+
+                        {availableBlocks.length === 0 ? (
+                            <p>No blocks available in this biome.</p>
+                        ) : (
+                            <div className={styles.blocksGrid}>
+                                {availableBlocks.map((blockName) => {
+                                    const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
+                                    const blockImageUrl = tempBlock.getImageUrl();
+                                    const blockRarity = tempBlock.getBlock().rarity;
+                                    const blockCost = getBlockCost(blockRarity);
+                                    const hasEnoughPicks = gameState.picks >= blockCost;
+                                    const rarityColor = getRarityColor(blockRarity);
+
+                                    return (
                                         <div
-                                            className={styles.rarityBadge}
-                                            style={{ backgroundColor: rarityColor }}
+                                            key={blockName}
+                                            className={styles.blockItem}
+                                            onClick={() => handleBlockClick(blockName)}
+                                            style={{ cursor: 'pointer' }}
                                         >
-                                            {blockRarity}
+                                            <div className={styles.blockImageContainer}>
+                                                <img
+                                                    src={blockImageUrl}
+                                                    alt={blockName}
+                                                    className={styles.blockItemImg}
+                                                />
+                                                <div className={styles.blockNameOverlay}>{blockName}</div>
+                                                <div
+                                                    className={styles.rarityBadge}
+                                                    style={{ backgroundColor: rarityColor }}
+                                                >
+                                                    {blockRarity}
+                                                </div>
+                                            </div>
+                                            <div className={styles.blockItemContent}>
+                                                <div className={styles.blockDescription}>
+                                                    A {blockRarity.toLowerCase()} {blockName} block from the {currentBiome.name} biome.
+                                                </div>
+                                                <button
+                                                    className={`${styles.buyBlockButton} ${!hasEnoughPicks ? styles.buyBlockButtonDisabled : ''}`}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Prevent triggering block click
+                                                        if (hasEnoughPicks) onBuyBlock(blockName);
+                                                    }}
+                                                    disabled={!hasEnoughPicks}
+                                                >
+                                                    {hasEnoughPicks ? `Buy (${blockCost} picks)` : `Need ${blockCost} picks`}
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className={styles.blockItemContent}>
-                                        <div className={styles.blockDescription}>
-                                            A {blockRarity.toLowerCase()} {blockName} block from the {currentBiome.name} biome.
-                                        </div>
-                                        <button
-                                            className={`${styles.buyBlockButton} ${!hasEnoughPicks ? styles.buyBlockButtonDisabled : ''}`}
-                                            onClick={(e) => {
-                                                e.stopPropagation(); // Prevent triggering block click
-                                                if (hasEnoughPicks) onBuyBlock(blockName);
-                                            }}
-                                            disabled={!hasEnoughPicks}
-                                        >
-                                            {hasEnoughPicks ? `Buy (${blockCost} picks)` : `Need ${blockCost} picks`}
-                                        </button>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
-                )}
+                </div>
             </div>
 
             {/* Block Details Drawer */}

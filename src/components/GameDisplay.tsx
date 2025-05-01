@@ -5,9 +5,11 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { MathProblem } from '../models/MathProblem';
 import { PlayerBiome } from '../models/Biome';
+import ShopPickaxesModal from './ShopPickaxesModal';
 import GameOverModal from './GameOverModal';
 import Biome from './Biome';
 import InventoryModal from './InventoryModal';
+import BiomesModal from './BiomesModal';
 import QuickInventory from './QuickInventory';
 import gameController from '../controllers/GameController';
 import { PlayerPickaxe } from '@/models/Pickaxe';
@@ -19,8 +21,6 @@ import BuyBlocksModal from './BuyBlocksModal';
 import { biomeStore } from '@/stores/BiomeStore';
 import { getAssetPath } from '../utils/assetPath';
 import ExportGameModal from './ExportGameModal';
-import ToolsDrawer from './ToolsDrawer';
-import { blockStore } from '@/stores/BlockStore';
 
 /**
  * MathCrafter Game
@@ -30,9 +30,6 @@ import { blockStore } from '@/stores/BlockStore';
  * - When biome health reaches zero, player is rewarded
  * - Different biomes have different health levels
  */
-
-// Get the type that blockStore.getItemByName returns
-type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
 const GameDisplay: React.FC = () => {
     // Game state - initialize with empty/default values then populate in useEffect
@@ -62,10 +59,6 @@ const GameDisplay: React.FC = () => {
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
     const [showExportGame, setShowExportGame] = useState<boolean>(false);
     const answerInputRef = useRef<HTMLInputElement>(null);
-
-    // Replace separate modal states with a single tools drawer tab state
-    const [activeToolsTab, setActiveToolsTab] = useState<string>('pickaxes');
-    const [showBlocksPanel, setShowBlocksPanel] = useState<boolean>(false);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -189,83 +182,43 @@ const GameDisplay: React.FC = () => {
     // Attempt to mine a block with the configured chance
     const attemptToMineBlock = () => {
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
-        if (!currentPickaxe) return;
+        if (currentPickaxe && Math.random() < currentPickaxe.getPickaxe().critical) {
+            const currentBiome = gameState.currentBiome;
+            if (!currentBiome) return;
 
-        const currentBiome = gameState.currentBiome;
-        if (!currentBiome) return;
+            const biomeData = currentBiome.getBiome();
+            const availableBlocks = biomeData.availableBlocks;
 
-        const biomeData = currentBiome.getBiome();
-        const availableBlocks = biomeData.availableBlocks;
+            if (availableBlocks && availableBlocks.length > 0) {
+                // Select a random block from the available ones
+                const randomIndex = Math.floor(Math.random() * availableBlocks.length);
+                const blockName = availableBlocks[randomIndex];
 
-        const blocksByRarity: Record<string, BlockType[]> = {
-            Common: [],
-            Uncommon: [],
-            Rare: [],
-            Legendary: []
-        };
+                // Create temporary block to get image URL
+                const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
+                const blockImageUrl = tempBlock.getImageUrl();
 
-        const rarityChances: Record<string, number> = {
-            Common: 0.55,
-            Uncommon: 0.3,
-            Rare: 0.1,
-            Legendary: 0.05
-        };
+                // Set the mined block for animation
+                setMinedBlock({
+                    name: blockName,
+                    imageUrl: blockImageUrl
+                });
 
-        availableBlocks.forEach(blockName => {
-            const blockData = blockStore.getItemByName(blockName);
-            if (blockData === null) {
-                console.error(`Block with name ${blockName} not found`);
-                return;
+                // Set block added notification
+                setBlockAdded(tempBlock);
+
+                // Clear block added notification after 3 seconds
+                setTimeout(() => {
+                    setBlockAdded(null);
+                }, 3000);
+
+                // Add the block to inventory
+                setGameState(prev => {
+                    const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
+                    return prev.withBlockInventory(updatedBlockInventory);
+                });
             }
-            blocksByRarity[blockData.rarity].push(blockData);
-        });
-
-        // Determine the rarity of the block to mine
-        const rarity = Object.keys(rarityChances).find(rarity => Math.random() <= rarityChances[rarity]);
-
-        if (!rarity) {
-            console.error("No rarity found");
-            return;
         }
-
-        // Get a random block from the rarity
-        const randomIndex = Math.floor(Math.random() * blocksByRarity[rarity].length);
-        const randomBlock = blocksByRarity[rarity][randomIndex];
-
-        if (!randomBlock) {
-            console.error("No block found");
-            return;
-        }
-
-        // Add the block to inventory
-        addBlockToInventory(randomBlock.name);
-    };
-
-    // Helper function to add blocks to inventory and show notifications
-    const addBlockToInventory = (blockName: string) => {
-        // Create temporary block to get image URL
-        const tempBlock = new PlayerBlock({ name: blockName, quantity: 1 });
-        const blockImageUrl = tempBlock.getImageUrl();
-
-        // Set the mined block for animation
-        setMinedBlock({
-            name: blockName,
-            imageUrl: blockImageUrl
-        });
-
-        // Set block added notification
-        setBlockAdded(tempBlock);
-
-        // Clear block added notification after 3 seconds
-        setTimeout(() => {
-            setBlockAdded(null);
-        }, 3000);
-
-        // Add the block to inventory
-        setGameState(prev => {
-            const updatedBlockInventory = prev.blockInventory.addBlock(blockName, 1);
-            return prev.withBlockInventory(updatedBlockInventory);
-        });
     };
 
     // Handle wrong answer
@@ -573,10 +526,8 @@ const GameDisplay: React.FC = () => {
         });
     };
 
-    // Toggle blocks panel
-    const toggleBlocksPanel = () => {
-        setShowBlocksPanel(prev => !prev);
-    };
+    // Calculate total pickaxes
+    const totalPickaxes = gameState.pickaxeInventory.length;
 
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {
@@ -604,10 +555,22 @@ const GameDisplay: React.FC = () => {
                 </div>
                 <div className={styles.headerButtons}>
                     <button
-                        className={`${styles.blocksPulldownButton} ${showBlocksPanel ? styles.blocksPulldownButtonActive : ''}`}
-                        onClick={toggleBlocksPanel}
+                        className={styles.pickaxesButton}
+                        onClick={toggleShop}
                     >
-                        Blocks <span className={styles.pulldownArrow}>{showBlocksPanel ? '▲' : '▼'}</span>
+                        Pickaxes
+                    </button>
+                    <button
+                        className={styles.unlockBiomesButton}
+                        onClick={toggleBiomes}
+                    >
+                        Biomes
+                    </button>
+                    <button
+                        className={styles.buyBlocksButton}
+                        onClick={toggleBuyBlocks}
+                    >
+                        Blocks
                     </button>
                     <button
                         className={styles.exportGameButton}
@@ -617,24 +580,6 @@ const GameDisplay: React.FC = () => {
                     </button>
                 </div>
             </div>
-
-            {/* Global Blocks Panel */}
-            {showBlocksPanel && (
-                <div className={styles.globalBlocksPanel}>
-                    <div className={styles.globalBlocksPanelHeader}>
-                        <h2>&nbsp;</h2>
-                        <button className={styles.closeBlocksPanelBtn} onClick={toggleBlocksPanel}>▲</button>
-                    </div>
-                    <div className={styles.globalBlocksPanelContent}>
-                        <BuyBlocksModal
-                            isOpen={true}
-                            onClose={() => { }}
-                            gameState={gameState}
-                            onBuyBlock={handleBuyBlock}
-                        />
-                    </div>
-                </div>
-            )}
 
             <div className={styles.gameArea}>
                 <Biome
@@ -650,17 +595,6 @@ const GameDisplay: React.FC = () => {
                     onSelectPickaxe={handleSelectPickaxe}
                 />
             </div>
-
-            {/* Tools Drawer (always open) */}
-            <ToolsDrawer
-                isOpen={true}
-                onClose={() => { }}
-                gameState={gameState}
-                onBuyPickaxe={handleBuyPickaxe}
-                onUnlockBiome={handleUnlock}
-                onSelectBiome={handleSelectBiome}
-                activeTab={activeToolsTab}
-            />
 
             {/* Question Modal */}
             <div className={`${styles.modal} ${showQuestion ? styles.modalShow : ''}`}>
@@ -722,12 +656,38 @@ const GameDisplay: React.FC = () => {
                 <div className={styles.incorrectText}>INCORRECT!</div>
             )}
 
+            {/* Shop Modal */}
+            <ShopPickaxesModal
+                isOpen={showShop}
+                onClose={toggleShop}
+                gameState={gameState}
+                onBuyItem={handleBuyPickaxe}
+            />
+
             {/* Inventory Modal */}
             <InventoryModal
                 isOpen={showInventory}
                 onClose={toggleInventory}
                 gameState={gameState}
                 onSelectPickaxe={handleSelectPickaxe}
+            />
+
+            {/* Biomes Modal */}
+            <BiomesModal
+                isOpen={showBiomes}
+                onClose={toggleBiomes}
+                gameState={gameState}
+                onUnlockBiome={handleUnlock}
+                onSelectBiome={handleSelectBiome}
+                selectionMode={true}
+            />
+
+            {/* Buy Blocks Modal */}
+            <BuyBlocksModal
+                isOpen={showBuyBlocks}
+                onClose={toggleBuyBlocks}
+                gameState={gameState}
+                onBuyBlock={handleBuyBlock}
             />
 
             {/* Export Game Modal */}
