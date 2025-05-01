@@ -62,10 +62,6 @@
     transform: translateY(1px);
 }
 
-
-
-
-
 .stats {
     display: flex;
     gap: 20px;
@@ -101,7 +97,6 @@
     border: 3px solid #555;
     border-radius: 5px;
 }
-
 
 /* Game Area */
 .gameArea {
@@ -170,7 +165,6 @@
     }
 }
 
-
 .pickaxeCursor {
     position: absolute;
     width: 100px;
@@ -206,11 +200,7 @@
     }
 }
 
-
 /* Grid layout for biome */
-
-
-
 
 /* Impact spots to show damage points */
 
@@ -288,8 +278,6 @@
 
 /* Vertical health bar styles - keeping for reference */
 
-
-
 /* Horizontal health bar styles */
 .horizontalHealthContainer {
     height: 30px;
@@ -320,7 +308,6 @@
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
     white-space: nowrap;
 }
-
 
 @keyframes pop {
     0% {
@@ -460,14 +447,6 @@
 
 /* Shop Panel */
 
-
-
-
-
-
-
-
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -488,12 +467,6 @@
     font-size: 1.2rem;
     margin-bottom: 5px;
 }
-
-
-
-
-
-
 
 .affordableCost {
     color: #4CAF50;
@@ -568,8 +541,6 @@
     text-align: left;
 }
 
-
-
 .restartBtn {
     font-family: 'VT323', monospace;
     padding: 10px 20px;
@@ -596,7 +567,6 @@
     font-size: 1.5rem;
     margin-bottom: 20px;
 }
-
 
 .inventorySlot {
     width: 52px;
@@ -656,7 +626,6 @@
     text-shadow: 1px 1px 0 #000;
 }
 
-
 .durabilityBar {
     position: absolute;
     bottom: -3px;
@@ -670,8 +639,6 @@
     height: 100%;
     background-color: #55aa55;
 }
-
-
 
 /* Inventory styles */
 .inventorySection {
@@ -806,10 +773,6 @@
     /* Ensure it's above other elements */
 }
 
-
-
-
-
 /* Broken Pickaxe Notification */
 .brokenPickaxeNotification {
     position: fixed;
@@ -882,7 +845,6 @@
 .unlockBiomesButton:active {
     transform: translateY(1px);
 }
-
 
 .biomesSection {
     margin-bottom: 20px;
@@ -1203,8 +1165,6 @@
     font-size: 1.2rem;
 }
 
-
-
 @keyframes pulseOverlay {
     0% {
         opacity: 0.7;
@@ -1481,6 +1441,30 @@
     width: 20px;
     height: 20px;
     margin-right: 5px;
+}
+
+.furnaceButton {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    background-color: #f44336;
+    border: 3px solid #d32f2f;
+    border-radius: 5px;
+    color: #333;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.furnaceButton:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.furnaceButton:active {
+    transform: translateY(1px);
 }
 
 .picksIcon {
@@ -2364,9 +2348,6 @@
 .modalBody {
     padding: 0 15px 15px 15px;
 }
-
-
-
 
 .errorMessage {
     background-color: #ffdddd;
