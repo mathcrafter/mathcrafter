@@ -61,6 +61,7 @@ const GameDisplay: React.FC = () => {
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
     const [showExportGame, setShowExportGame] = useState<boolean>(false);
+    const [showFurnace, setShowFurnace] = useState<boolean>(false);
     const [showHint, setShowHint] = useState<boolean>(false);
     const [notEnoughPicks, setNotEnoughPicks] = useState<boolean>(false);
     const [isHintAnswer, setIsHintAnswer] = useState<boolean>(false);
@@ -435,6 +436,11 @@ const GameDisplay: React.FC = () => {
         setShowExportGame(prev => !prev);
     };
 
+    // Toggle furnace modal visibility
+    const toggleFurnace = () => {
+        setShowFurnace(prev => !prev);
+    };
+
     // Close the question modal
     const closeQuestionModal = () => {
         setShowQuestion(false);
@@ -648,6 +654,13 @@ const GameDisplay: React.FC = () => {
                         onClick={toggleBuyBlocks}
                     >
                         Blocks
+                    </button>
+                    <button
+                        className={styles.buyBlocksButton}
+                        onClick={toggleFurnace}
+                        style={{ backgroundColor: '#f44336', borderColor: '#d32f2f' }}
+                    >
+                        Furnace
                     </button>
                     <button
                         className={styles.exportGameButton}
