@@ -21,6 +21,7 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
     const [picksValue, setPicksValue] = useState<number | null>(null);
     const [showBlock, setShowBlock] = useState<boolean>(false);
     const [blockData, setBlockData] = useState<{ name: string; imageUrl: string } | null>(null);
+    const [fallingBlocks, setFallingBlocks] = useState<Array<{ id: string, x: number, y: number, size: number, rotation: number, imageUrl: string, fallX: number, fallY: number, delay: number, fallDuration: number }>>([]);
 
     const biomeRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +53,9 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
             setBlockData(minedBlock);
             setShowBlock(true);
 
+            // Create falling blocks effect
+            createFallingBlocks(minedBlock.imageUrl);
+
             // Hide block after animation completes
             const timer = setTimeout(() => {
                 setShowBlock(false);
@@ -60,6 +64,70 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
             return () => clearTimeout(timer);
         }
     }, [minedBlock]);
+
+    // Create falling blocks effect
+    const createFallingBlocks = (imageUrl: string) => {
+        if (!biomeRef.current) return;
+
+        const biomeRect = biomeRef.current.getBoundingClientRect();
+        const biomeWidth = biomeRect.width;
+        const biomeHeight = biomeRect.height;
+
+        // Use cursor position as center point for falling blocks (default to center if not available)
+        const centerX = cursorPosition.x || biomeWidth / 2;
+        const centerY = cursorPosition.y || biomeHeight / 2;
+
+        // Create 10-15 falling blocks
+        const numBlocks = Math.floor(Math.random() * 5) + 10;
+        const newBlocks = [];
+
+        // Create a row of blocks that will "drop" from the mining position
+        // Simulate a chunk of the biome breaking off and falling down
+        for (let i = 0; i < numBlocks; i++) {
+            // Position blocks in a loose grid around click position
+            const gridSize = 40; // Size of the grid cells
+            const gridX = Math.floor(i / 3); // 3 blocks per row
+            const gridY = i % 3;
+
+            // Add some randomness to the grid positions
+            const randomOffset = 10;
+            const x = centerX + ((gridX - 1.5) * gridSize) + (Math.random() * randomOffset - randomOffset / 2);
+            const y = centerY + ((gridY - 1) * gridSize / 2) + (Math.random() * randomOffset - randomOffset / 2);
+
+            const size = Math.random() * 20 + 20; // Size between 20-40px
+            const rotation = 0; // No rotation initially
+
+            // Pure vertical drop with no horizontal movement
+            const fallX = 0; // No horizontal movement
+            const fallY = biomeHeight - y + 100; // Fall straight down past the biome
+
+            // Vary fall speed slightly based on block size (smaller blocks fall slower)
+            const fallDuration = 0.7 + (Math.random() * 0.3); // 0.7-1.0s
+
+            // Small random delay to stagger the falling
+            const delay = Math.random() * 0.2; // 0-0.2s delay
+
+            newBlocks.push({
+                id: `block-${Date.now()}-${i}`,
+                x,
+                y,
+                size,
+                rotation,
+                fallX,
+                fallY,
+                delay,
+                fallDuration,
+                imageUrl
+            });
+        }
+
+        setFallingBlocks(newBlocks);
+
+        // Clear falling blocks after animation duration
+        setTimeout(() => {
+            setFallingBlocks([]);
+        }, 2000);
+    };
 
     // Track health changes to add shaking effect
     useEffect(() => {
@@ -144,6 +212,30 @@ const Biome: React.FC<BiomeProps> = ({ onBiomeClick, currentPickaxe, currentBiom
                         }}
                     />
                 )}
+
+                {/* Falling blocks animation */}
+                {fallingBlocks.map((block) => (
+                    <div
+                        key={block.id}
+                        className={styles.fallingBlock}
+                        style={{
+                            left: `${block.x}px`,
+                            top: `${block.y}px`,
+                            width: `${block.size}px`,
+                            height: `${block.size}px`,
+                            backgroundImage: `url(${block.imageUrl})`,
+                            backgroundSize: 'contain',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center',
+                            transform: `rotate(${block.rotation}deg)`,
+                            '--rotation': `${block.rotation}deg`,
+                            '--fall-x': `${block.fallX}px`,
+                            '--fall-y': `${block.fallY}px`,
+                            '--delay': `${block.delay}s`,
+                            '--duration': `${block.fallDuration}s`
+                        } as React.CSSProperties}
+                    />
+                ))}
 
                 {/* Crack overlay that appears based on damage */}
                 {healthPercentage < 100 && (

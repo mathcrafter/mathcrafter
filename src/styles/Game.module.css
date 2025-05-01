@@ -2417,3 +2417,46 @@
     background-color: #757575;
     transform: translateY(-2px);
 }
+
+/* Falling blocks animation */
+.fallingBlock {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+    pointer-events: none;
+    z-index: 5;
+    animation: fallingBlockAnim var(--duration, 1s) forwards;
+    animation-delay: var(--delay, 0s);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    will-change: transform, opacity;
+}
+
+@keyframes fallingBlockAnim {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(var(--rotation, 0deg));
+        animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+        /* Start slow, accelerate */
+    }
+
+    70% {
+        opacity: 1;
+        transform: translate(var(--fall-x, 0px), calc(var(--fall-y, 300px) * 0.7)) rotate(var(--rotation, 0deg));
+        animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+        /* Decelerate at bottom */
+    }
+
+    85% {
+        opacity: 1;
+        transform: translate(var(--fall-x, 0px), calc(var(--fall-y, 300px) * 0.95)) rotate(var(--rotation, 0deg));
+        animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+        /* Quick bounce */
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(var(--fall-x, 0px), var(--fall-y, 300px)) rotate(var(--rotation, 0deg));
+    }
+}
