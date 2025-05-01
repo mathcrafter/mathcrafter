@@ -1,30 +1,38 @@
-# MathZDrillz Scripts
+# MathCrafter Scripts
 
-This folder contains utility scripts for the MathZDrillz project.
+This directory contains utility scripts for the MathCrafter project.
 
 ## Available Scripts
 
-### Store Integrity Checker
+### `find-unused-css.js`
 
-Validates the integrity of game stores:
-- Checks that pickaxes referenced in the biome store exist in the pickaxe store
-- Checks that blocks referenced in the biome store exist in the block store
-- Checks that blocks referenced in the pickaxe store exist in the block store
+This script helps identify and remove unused CSS rules from the project's CSS files.
 
-## Usage
-
-To set up dependencies, run:
+#### Usage
 
 ```bash
-cd scripts
-nvm use 22
-uv pip install
+nvm use 22 && node find-unused-css.js
 ```
 
-To run the store integrity check:
+The script will:
+1. Scan all CSS files in the `src/styles` directory
+2. Find all CSS class names defined in those files
+3. Search for references to those class names in the source code
+4. Generate cleaned versions of CSS files with unused rules removed
+5. Print a report of removed classes
+
+After running the script, review the generated `.cleaned.css` files. If everything looks good, you can replace the original files with the cleaned versions.
 
 ```bash
-cd scripts
+nvm use 22 && mv src/styles/[filename].cleaned.css src/styles/[filename].css
+```
+
+## Development
+
+Scripts in this directory use their own dependencies managed with `uv`. To install dependencies:
+
+```bash
 nvm use 22
-npm run check-stores
+cd scripts
+uv pip install -r requirements.txt  # For Python scripts
 ```

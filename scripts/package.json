@@ -1,12 +1,11 @@
 {
-    "name": "mathzdrillz-scripts",
+    "name": "mathcrafter-scripts",
     "version": "1.0.0",
-    "description": "Scripts for MathZDrillz project",
+    "description": "Helper scripts for MathCrafter project",
+    "private": true,
+    "dependencies": {},
+    "devDependencies": {},
     "scripts": {
-        "check-stores": "ts-node check-store-integrity.ts"
-    },
-    "dependencies": {
-        "ts-node": "^10.9.2",
-        "typescript": "^5.3.3"
+        "find-unused-css": "node find-unused-css.js"
     }
 }

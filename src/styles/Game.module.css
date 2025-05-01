@@ -62,35 +62,9 @@
     transform: translateY(1px);
 }
 
-.inventoryButton {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    background-color: #FECC33;
-    border: 3px solid #D4A929;
-    border-radius: 5px;
-    color: #333;
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
 
-.inventoryButton:hover {
-    background-color: #D4A929;
-    transform: translateY(-2px);
-}
 
-.inventoryButton:active {
-    transform: translateY(1px);
-}
 
-.buttonIcon {
-    width: 20px;
-    height: 20px;
-    image-rendering: pixelated;
-}
 
 .stats {
     display: flex;
@@ -128,11 +102,6 @@
     border-radius: 5px;
 }
 
-.statIcon {
-    width: 30px;
-    height: 30px;
-    image-rendering: pixelated;
-}
 
 /* Game Area */
 .gameArea {
@@ -201,10 +170,6 @@
     }
 }
 
-.desert {
-    background-color: #D6B174;
-    background-image: url('/assets/desert-biome.png');
-}
 
 .pickaxeCursor {
     position: absolute;
@@ -241,48 +206,13 @@
     }
 }
 
-.crack {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background-image: url('/assets/crack.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-    opacity: 0.8;
-    z-index: 1;
-}
 
 /* Grid layout for biome */
-.biomeGrid {
-    display: none;
-    /* Hide grid */
-}
 
-.biomeBlock {
-    display: none;
-    /* Hide blocks */
-}
 
-.hoveredBlock {
-    display: none;
-    /* Hide hover effect */
-}
 
-.crackedBlock {
-    display: none;
-    /* Hide cracked effect */
-}
 
 /* Impact spots to show damage points */
-.damageSpot {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 70%);
-    pointer-events: none;
-    z-index: 3;
-    animation: fadeOut 2s forwards;
-}
 
 @keyframes fadeOut {
     0% {
@@ -357,36 +287,8 @@
 }
 
 /* Vertical health bar styles - keeping for reference */
-.verticalHealthContainer {
-    width: 30px;
-    height: 200px;
-    margin-left: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 3px solid #333;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
 
-.verticalHealthBar {
-    width: 100%;
-    background-color: #72CB3B;
-    transition: height 0.3s ease-out;
-}
 
-.verticalHealthText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    color: white;
-    font-size: 0.9rem;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-    white-space: nowrap;
-}
 
 /* Horizontal health bar styles */
 .horizontalHealthContainer {
@@ -419,18 +321,6 @@
     white-space: nowrap;
 }
 
-.gemstone {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-image: url('/assets/gemstone.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    image-rendering: pixelated;
-    z-index: 2;
-    animation: pop 0.5s ease-out;
-    cursor: pointer;
-}
 
 @keyframes pop {
     0% {
@@ -548,84 +438,14 @@
 }
 
 /* Shop Panel */
-.shopPanel {
-    padding: 20px;
-    background-color: #333;
-    border: 3px solid #555;
-    border-radius: 10px;
-}
 
-.shopPanel h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    color: #FECC33;
-    text-align: center;
-}
 
-.pickaxesItems {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 15px;
-}
 
-.pickaxesItem {
-    width: 110px;
-    padding: 15px;
-    background-color: #444;
-    border: 3px solid #555;
-    border-radius: 5px;
-    text-align: center;
-    transition: all 0.2s;
-    position: relative;
-}
 
-.pickaxesItem:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-}
 
-.shopItemImg {
-    width: 64px;
-    height: 64px;
-    image-rendering: pixelated;
-    margin-bottom: 10px;
-    transition: transform 0.2s;
-}
 
-.pickaxesItem:hover .shopItemImg {
-    transform: scale(1.1);
-}
 
-.itemTooltip {
-    position: absolute;
-    top: -130px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 180px;
-    background-color: #333;
-    border: 2px solid #555;
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 100;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    pointer-events: none;
-    opacity: 0;
-    animation: fadeIn 0.2s forwards;
-}
 
-.itemTooltip::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #555;
-}
 
 @keyframes fadeIn {
     from {
@@ -648,52 +468,11 @@
     margin-bottom: 5px;
 }
 
-.itemStats {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    color: #ccc;
-}
 
-.itemCost {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    font-size: 1.1rem;
-    color: #FECC33;
-}
 
-.itemCost img {
-    width: 15px;
-    height: 15px;
-    margin: 0;
-}
 
-.buyBtn {
-    font-family: 'VT323', monospace;
-    width: 100%;
-    padding: 5px 10px;
-    font-size: 1.1rem;
-    background-color: #FECC33;
-    border: 2px solid #D4A929;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s;
-}
 
-.buyBtn:hover:not(:disabled) {
-    background-color: #D4A929;
-}
 
-.buyBtn:disabled {
-    background-color: #777;
-    border-color: #666;
-    color: #999;
-    cursor: not-allowed;
-}
 
 .affordableCost {
     color: #4CAF50;
@@ -768,18 +547,7 @@
     text-align: left;
 }
 
-.pickaxesModalContent {
-    max-width: 80%;
-    width: 900px;
-    text-align: left;
-}
 
-.pickaxesItems {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 20px;
-}
 
 .restartBtn {
     font-family: 'VT323', monospace;
@@ -808,21 +576,6 @@
     margin-bottom: 20px;
 }
 
-.inventoryRow {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 68px;
-    background-color: #4e4e4e;
-    background-image: linear-gradient(to bottom, rgba(80, 80, 80, 0.2) 1px, transparent 1px),
-        linear-gradient(to right, rgba(80, 80, 80, 0.2) 1px, transparent 1px);
-    background-size: 8px 8px;
-    border: 4px solid #3a3a3a;
-    border-radius: 0 0 8px 8px;
-    padding: 6px 0;
-    margin-bottom: 20px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
-}
 
 .inventorySlot {
     width: 52px;
@@ -882,14 +635,6 @@
     text-shadow: 1px 1px 0 #000;
 }
 
-.slotNumber {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    font-size: 0.7rem;
-    color: #aaa;
-    opacity: 0.8;
-}
 
 .durabilityBar {
     position: absolute;
@@ -905,13 +650,7 @@
     background-color: #55aa55;
 }
 
-.durabilityFill.medium {
-    background-color: #ffaa00;
-}
 
-.durabilityFill.low {
-    background-color: #aa0000;
-}
 
 /* Inventory styles */
 .inventorySection {
@@ -1046,27 +785,9 @@
     /* Ensure it's above other elements */
 }
 
-.pickaxeHealth {
-    position: absolute;
-    bottom: 8px;
-    right: 2px;
-    font-size: 0.7rem;
-    color: white;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-    z-index: 2;
-}
 
-.lowHealth {
-    color: #ff4d4d;
-}
 
-.mediumHealth {
-    color: #ffcc00;
-}
 
-.goodHealth {
-    color: #72CB3B;
-}
 
 /* Broken Pickaxe Notification */
 .brokenPickaxeNotification {
@@ -1141,11 +862,6 @@
     transform: translateY(1px);
 }
 
-.biomesModalContent {
-    max-width: 80%;
-    width: 900px;
-    text-align: left;
-}
 
 .biomesSection {
     margin-bottom: 20px;
@@ -1466,29 +1182,7 @@
     font-size: 1.2rem;
 }
 
-.biomeDestroyed {
-    position: relative;
-    overflow: hidden;
-}
 
-.destroyedOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #ff0000;
-    font-size: 3rem;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px #000;
-    z-index: 10;
-    animation: pulseOverlay 2s infinite alternate;
-    letter-spacing: 2px;
-}
 
 @keyframes pulseOverlay {
     0% {
@@ -2650,29 +2344,8 @@
     padding: 0 15px 15px 15px;
 }
 
-.importGameButton {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    background-color: #2196F3;
-    border: 3px solid #1976D2;
-    border-radius: 5px;
-    color: #333;
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
 
-.importGameButton:hover {
-    background-color: #1976D2;
-    transform: translateY(-2px);
-}
 
-.importGameButton:active {
-    transform: translateY(1px);
-}
 
 .errorMessage {
     background-color: #ffdddd;

@@ -145,17 +145,20 @@ const GameDisplay: React.FC = () => {
         // Get current pickaxe to calculate score
         const currentPickaxe = gameState.pickaxeInventory.getCurrentItem();
 
-        if (currentPickaxe) {
-            picks = picks || currentPickaxe.getPicks();
-
-            // Flash the score display
-            setPicksToShow(picks);
-
-            // Reset score display after animation time
-            setTimeout(() => {
-                setPicksToShow(null);
-            }, 2000);
+        if (!currentPickaxe) {
+            console.error("No current pickaxe found");
+            return;
         }
+
+        picks = picks || currentPickaxe.getPicks();
+
+        // Flash the score display
+        setPicksToShow(picks);
+
+        // Reset score display after animation time
+        setTimeout(() => {
+            setPicksToShow(null);
+        }, 2000);
 
         // Attempt to mine a block with the configured chance
         attemptToMineBlock();
