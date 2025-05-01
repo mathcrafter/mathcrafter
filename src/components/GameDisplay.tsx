@@ -656,9 +656,8 @@ const GameDisplay: React.FC = () => {
                         Blocks
                     </button>
                     <button
-                        className={styles.buyBlocksButton}
+                        className={styles.furnaceButton}
                         onClick={toggleFurnace}
-                        style={{ backgroundColor: '#f44336', borderColor: '#d32f2f' }}
                     >
                         Furnace
                     </button>
