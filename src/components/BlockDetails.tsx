@@ -4,6 +4,7 @@ import React from 'react';
 import styles from '../styles/Game.module.css';
 import { PlayerBlock } from '@/models/Block';
 import { getAssetPath } from '../utils/assetPath';
+import { recipeStore } from '@/stores/RecipeStore';
 
 interface BlockDetailsProps {
     isOpen: boolean;
@@ -18,6 +19,12 @@ const BlockDetails: React.FC<BlockDetailsProps> = ({ isOpen, onClose, blockName 
     const block = new PlayerBlock({ name: blockName, quantity: 1 });
     // Get biomes where this block can be found
     const biomes = block.getBiomes();
+
+    // Get recipes where this block is used as an ingredient
+    const recipesUsingThisBlock = block.getRecipesToCraft();
+
+    // Get recipe that produces this block (if any)
+    const recipeForThisBlock = recipeStore.items.find(recipe => recipe.name === blockName);
 
     return (
         <>
@@ -48,6 +55,68 @@ const BlockDetails: React.FC<BlockDetailsProps> = ({ isOpen, onClose, blockName 
                                 }
                             </span>
                         </div>
+
+                        {/* Crafting Recipe */}
+                        {recipeForThisBlock ? (
+                            <>
+                                <div className={styles.blockDetailsStat}>
+                                    <span className={styles.statLabel}>Crafting Recipe:</span>
+                                    <div className={styles.statValue}>
+                                        <ul className={styles.ingredientsList}>
+                                            {recipeForThisBlock.ingredients.map((ingredient, index) => {
+                                                const ingredientBlock = new PlayerBlock({
+                                                    name: ingredient.item,
+                                                    quantity: ingredient.amount
+                                                });
+                                                return (
+                                                    <li key={index} className={styles.ingredientItem}>
+                                                        <img
+                                                            src={ingredientBlock.getImageUrl()}
+                                                            alt={ingredient.item}
+                                                            className={styles.ingredientImage}
+                                                        />
+                                                        <span className={styles.ingredientName}>
+                                                            {ingredient.item} x{ingredient.amount}
+                                                        </span>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </>
+                        ) : null}
+
+                        {/* Used In */}
+                        {recipesUsingThisBlock.length > 0 ? (
+                            <>
+                                <div className={styles.blockDetailsStat}>
+                                    <span className={styles.statLabel}>Used to craft:</span>
+                                    <div className={styles.statValue}>
+                                        <ul className={styles.ingredientsList}>
+                                            {recipesUsingThisBlock.map((recipe, index) => {
+                                                const resultBlock = new PlayerBlock({
+                                                    name: recipe.name,
+                                                    quantity: 1
+                                                });
+                                                return (
+                                                    <li key={index} className={styles.ingredientItem}>
+                                                        <img
+                                                            src={resultBlock.getImageUrl()}
+                                                            alt={recipe.name}
+                                                            className={styles.ingredientImage}
+                                                        />
+                                                        <span className={styles.ingredientName}>
+                                                            {recipe.name}
+                                                        </span>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </>
+                        ) : null}
                     </div>
                 </div>
             </div>

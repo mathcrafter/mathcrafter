@@ -2,6 +2,8 @@ import { blockStore } from "@/stores/BlockStore";
 import { getAssetPath } from "@/utils/assetPath";
 import { biomeStore } from "@/stores/BiomeStore";
 import { Biome } from "./Biome";
+import { recipeStore } from "@/stores/RecipeStore";
+import { Recipe } from "./Recipe";
 
 export interface Block {
     name: string;
@@ -9,6 +11,9 @@ export interface Block {
 
     // Method to get biomes where this block can be found
     getBiomes?(): Biome[];
+
+    // Method to get recipes that use this block as an ingredient
+    getRecipesToCraft?(): Recipe[];
 }
 
 export class PlayerBlock {
@@ -32,6 +37,13 @@ export class PlayerBlock {
         // Get all biomes where this block is available
         return biomeStore.items.filter(biome =>
             biome.availableBlocks.includes(this.name)
+        );
+    }
+
+    public getRecipesToCraft(): Recipe[] {
+        // Get all recipes where this block is used as an ingredient
+        return recipeStore.items.filter(recipe =>
+            recipe.ingredients.some(ingredient => ingredient.item === this.name)
         );
     }
 }
