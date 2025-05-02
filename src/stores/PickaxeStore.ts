@@ -1036,14 +1036,56 @@ const pickaxes: Pickaxe[] = [
         "critical": 0.45,
         "cost": {
             "amount": 10,
-            "itemType": "tumbleweed"
+            "itemType": "runic"
         },
         "power": "Torch Power",
         "rarity": "Rare",
         "description": "A pickaxe made from torch.",
         "notes": "Burns with a torch.",
         "maxHealth": 5,
-    }
+    },
+    {
+        "name": "chest",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 10,
+            "itemType": "runic"
+        },
+        "power": "Chest Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from chest.",
+        "notes": "Contains a chest.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "ender_chest",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 20,
+            "itemType": "runic"
+        },
+        "power": "Ender Chest Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from ender chest.",
+        "notes": "Contains an ender chest.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "unstable",
+        "strength": 20,
+        "critical": 0.90,
+        "cost": {
+            "amount": 20,
+            "itemType": "runic"
+        },
+        "power": "Unstable Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from unstable material.",
+        "notes": "Contains unstable material.",
+        "maxHealth": 5,
+    },
 ]
 
 export const pickaxeStore = new PickaxeStore(pickaxes);
