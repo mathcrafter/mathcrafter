@@ -5,6 +5,7 @@ import styles from '../styles/Game.module.css';
 import { GameState } from '../models/GameState';
 import { pickaxeStore } from '@/stores/PickaxeStore';
 import { getAssetPath } from '@/utils/assetPath';
+import BlockDetails from './BlockDetails';
 
 // Function to get rarity color
 const getRarityColor = (rarity: string): string => {
@@ -19,6 +20,11 @@ const getRarityColor = (rarity: string): string => {
     }
 };
 
+// Function to get block image URL
+const getBlockImageUrl = (blockName: string): string => {
+    return getAssetPath(`/assets/blocks/${blockName}.png`);
+};
+
 interface ShopPickaxesModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -30,6 +36,7 @@ interface ShopPickaxesModalProps {
 
 const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, gameState, onBuyItem }) => {
     const [showBiomePickaxesOnly, setShowBiomePickaxesOnly] = useState<boolean>(true);
+    const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
     const drawerContentRef = useRef<HTMLDivElement>(null);
 
     // Get all pickaxes
@@ -93,6 +100,16 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
         setShowBiomePickaxesOnly(prev => !prev);
     };
 
+    // Block click handler
+    const handleBlockClick = (blockName: string) => {
+        setSelectedBlock(blockName);
+    };
+
+    // Close block details handler
+    const handleCloseBlockDetails = () => {
+        setSelectedBlock(null);
+    };
+
     return (
         <>
             {/* Darkened overlay when drawer is open */}
@@ -129,6 +146,7 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                             {pickaxes.map((pickaxe) => {
                                 const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
                                 const rarityColor = getRarityColor(pickaxe.rarity);
+                                const blockImageUrl = getBlockImageUrl(pickaxe.cost.itemType);
 
                                 return (
                                     <div
@@ -161,9 +179,27 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                                                     Strength: {pickaxe.strength} | Durability: {pickaxe.maxHealth} | Crit: {pickaxe.critical * 100}%
                                                 </div>
                                                 <div className={styles.unlockCost}>
-                                                    Cost: <span className={canBuy ? styles.affordableCost : styles.unaffordableCost}>
-                                                        {pickaxe.cost.amount} {pickaxe.cost.itemType}
-                                                    </span>
+                                                    <div className={styles.costWithImage}>
+                                                        <span>Cost: </span>
+                                                        <div className={styles.costItemImgWrapper} onClick={() => handleBlockClick(pickaxe.cost.itemType)}>
+                                                            <img
+                                                                src={blockImageUrl}
+                                                                alt={pickaxe.cost.itemType}
+                                                                className={styles.costBlockImage}
+                                                                style={{
+                                                                    width: '32px',
+                                                                    height: '32px',
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                            />
+                                                            <div className={styles.costItemBadge}>
+                                                                {pickaxe.cost.amount}
+                                                            </div>
+                                                        </div>
+                                                        <span className={canBuy ? styles.affordableCost : styles.unaffordableCost}>
+                                                            {pickaxe.cost.itemType}
+                                                        </span>
+                                                    </div>
                                                     <div>
                                                         (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
                                                     </div>
@@ -184,6 +220,13 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                     </div>
                 </div>
             </div>
+
+            {/* Block Details Modal */}
+            <BlockDetails
+                isOpen={selectedBlock !== null}
+                onClose={handleCloseBlockDetails}
+                blockName={selectedBlock || ''}
+            />
         </>
     );
 };

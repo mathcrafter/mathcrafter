@@ -1015,6 +1015,20 @@ const pickaxes: Pickaxe[] = [
         "description": "A pickaxe made from clock gears.",
         "notes": "Ticks with every swing.",
         "maxHealth": 55,
+    },
+    {
+        "name": "tumbleweed",
+        "strength": 10,
+        "critical": 0.65,
+        "cost": {
+            "amount": 100,
+            "itemType": "tumbleweed"
+        },
+        "power": "Tumbleweed Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from tumbleweed.",
+        "notes": "Blows away with the wind.",
+        "maxHealth": 5,
     }
 ]
 
