@@ -16,6 +16,8 @@ const BlockDetails: React.FC<BlockDetailsProps> = ({ isOpen, onClose, blockName 
 
     // Create a temporary block to get its properties
     const block = new PlayerBlock({ name: blockName, quantity: 1 });
+    // Get biomes where this block can be found
+    const biomes = block.getBiomes();
 
     return (
         <>
@@ -35,6 +37,16 @@ const BlockDetails: React.FC<BlockDetailsProps> = ({ isOpen, onClose, blockName 
                         <div className={styles.blockDetailsStat}>
                             <span className={styles.statLabel}>Rarity:</span>
                             <span className={styles.statValue}>{block.getBlock().rarity}</span>
+                        </div>
+
+                        <div className={styles.blockDetailsStat}>
+                            <span className={styles.statLabel}>Found in Biomes:</span>
+                            <span className={styles.statValue}>
+                                {biomes.length > 0
+                                    ? biomes.map(biome => biome.name).join(', ')
+                                    : 'None'
+                                }
+                            </span>
                         </div>
                     </div>
                 </div>
