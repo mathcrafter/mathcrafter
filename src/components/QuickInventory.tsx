@@ -9,6 +9,7 @@ import BlockButton from './BlockButton';
 interface QuickInventoryProps {
     gameState: GameState;
     onSelectPickaxe: (pickaxeId: string) => void;
+    onBlockClick?: (blockName: string) => void;
 }
 
 interface InventoryRowProps<T> {
@@ -51,7 +52,7 @@ function InventoryRows<T>({ items, totalSlots, itemType, renderItem, renderEmpty
     return <>{rows}</>;
 }
 
-const QuickInventory: React.FC<QuickInventoryProps> = ({ gameState, onSelectPickaxe }) => {
+const QuickInventory: React.FC<QuickInventoryProps> = ({ gameState, onSelectPickaxe, onBlockClick }) => {
     const pickaxeInventory = gameState.pickaxeInventory;
     const blockInventory = gameState.blockInventory;
     const currentPickaxeId = pickaxeInventory.currentItem;
@@ -62,6 +63,12 @@ const QuickInventory: React.FC<QuickInventoryProps> = ({ gameState, onSelectPick
     const handlePickaxeSelect = (pickaxeId: string) => {
         if (onSelectPickaxe && pickaxeId) {
             onSelectPickaxe(pickaxeId);
+        }
+    };
+
+    const handleBlockClick = (blockName: string) => {
+        if (onBlockClick && blockName) {
+            onBlockClick(blockName);
         }
     };
 
@@ -104,6 +111,7 @@ const QuickInventory: React.FC<QuickInventoryProps> = ({ gameState, onSelectPick
                         <BlockButton
                             key={`block-${block.name}-${rowIndex}-${slotIndex}`}
                             block={block}
+                            onClick={() => handleBlockClick(block.name)}
                         />
                     )}
                     renderEmptySlot={(rowIndex, slotIndex) => (

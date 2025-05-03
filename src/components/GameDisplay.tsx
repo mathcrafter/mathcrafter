@@ -24,6 +24,7 @@ import ExportGameModal from './ExportGameModal';
 import { blockStore } from '@/stores/BlockStore';
 import FurnaceModal from './FurnaceModal';
 import { Recipe } from '@/models/Recipe';
+import BlockDetails from './BlockDetails';
 
 type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
@@ -69,6 +70,7 @@ const GameDisplay: React.FC = () => {
     const [isHintAnswer, setIsHintAnswer] = useState<boolean>(false);
     const answerInputRef = useRef<HTMLInputElement>(null);
     const HINT_COST = 500;
+    const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -645,6 +647,16 @@ const GameDisplay: React.FC = () => {
     // Calculate total pickaxes
     const totalPickaxes = gameState.pickaxeInventory.length;
 
+    // Handle block click
+    const handleBlockClick = (blockName: string) => {
+        setSelectedBlock(blockName);
+    };
+
+    // Close block details modal
+    const handleCloseBlockDetails = () => {
+        setSelectedBlock(null);
+    };
+
     // Don't render anything substantial on the server to avoid hydration mismatches
     if (!isClient) {
         return <div className={styles.gameContainer}>Loading...</div>;
@@ -715,6 +727,7 @@ const GameDisplay: React.FC = () => {
                 <QuickInventory
                     gameState={gameState}
                     onSelectPickaxe={handleSelectPickaxe}
+                    onBlockClick={handleBlockClick}
                 />
             </div>
 
@@ -875,6 +888,13 @@ const GameDisplay: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            {/* Block Details Modal */}
+            <BlockDetails
+                isOpen={selectedBlock !== null}
+                onClose={handleCloseBlockDetails}
+                blockName={selectedBlock || ''}
+            />
         </div>
     );
 };

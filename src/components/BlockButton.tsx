@@ -8,12 +8,14 @@ interface BlockButtonProps {
     block: PlayerBlock;
     className?: string;
     showTooltip?: boolean;
+    onClick?: () => void;
 }
 
 const BlockButton: React.FC<BlockButtonProps> = ({
     block,
     className = '',
-    showTooltip = true
+    showTooltip = true,
+    onClick
 }) => {
     const [isHovered, setIsHovered] = useState(false);
     const blockDef = block.getBlock();
@@ -26,12 +28,20 @@ const BlockButton: React.FC<BlockButtonProps> = ({
         setIsHovered(false);
     };
 
+    const handleClick = () => {
+        if (onClick) {
+            onClick();
+        }
+    };
+
     return (
         <div
             className={`${styles.inventorySlot} ${className}`}
             title={`${block.name} - Quantity: ${block.quantity}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
+            style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
             <img
                 src={block.getImageUrl()}
