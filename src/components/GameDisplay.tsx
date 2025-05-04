@@ -697,6 +697,17 @@ const GameDisplay: React.FC = () => {
         // Close the chest modal
         setShowChestModal(false);
 
+        // Reset current biome health by creating a new biome with full health
+        setGameState(prev => {
+            const newBiome = new PlayerBiome({
+                id: null,
+                type: prev.currentBiome.type,
+                currentHealth: null, // This will reset to max health
+                chest: null
+            });
+            return prev.withCurrentBiome(newBiome);
+        });
+
         // Open biomes modal to select a new biome
         setShowBiomes(true);
     };
@@ -928,6 +939,18 @@ const GameDisplay: React.FC = () => {
                 isOpen={showChestModal}
                 onClose={() => {
                     setShowChestModal(false);
+
+                    // Reset current biome health by creating a new biome with full health
+                    setGameState(prev => {
+                        const newBiome = new PlayerBiome({
+                            id: null,
+                            type: prev.currentBiome.type,
+                            currentHealth: null, // This will reset to max health
+                            chest: null
+                        });
+                        return prev.withCurrentBiome(newBiome);
+                    });
+
                     setShowBiomes(true); // Open biomes selection after closing chest
                 }}
                 biomeType={chestBiomeType}
