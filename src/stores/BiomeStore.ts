@@ -14,7 +14,7 @@ const biomes: Biome[] = [
         description: "A flat, grassy biome.",
         availableBlocks: ["dirt", "wood", "clay", "pumpkin"],
         availablePickaxes: ["wood", "clay", "pumpkin"],
-        maxHealth: 10,
+        maxHealth: 11,
         chest: "small",
         cost: null,
     },

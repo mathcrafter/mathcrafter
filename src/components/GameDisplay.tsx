@@ -25,6 +25,8 @@ import { blockStore } from '@/stores/BlockStore';
 import FurnaceModal from './FurnaceModal';
 import { Recipe } from '@/models/Recipe';
 import BlockDetails from './BlockDetails';
+import ChestModal from './ChestModal';
+import { Chest } from '@/models/Chest';
 
 type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
@@ -71,6 +73,9 @@ const GameDisplay: React.FC = () => {
     const answerInputRef = useRef<HTMLInputElement>(null);
     const HINT_COST = 500;
     const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
+    const [showChestModal, setShowChestModal] = useState<boolean>(false);
+    const [chestBiomeType, setChestBiomeType] = useState<string | null>(null);
+    const [currentChest, setCurrentChest] = useState<Chest | null>(null);
 
     // Initialize client-side only data after component mounts
     useEffect(() => {
@@ -100,11 +105,18 @@ const GameDisplay: React.FC = () => {
             setDestroyedBiomeType(currentBiome.type);
             setBiomeDestroyed(true);
 
-            // Auto-hide notification after 3 seconds
+            // Get the chest for this biome
+            const biomeChest = currentBiome.getChest();
+
+            // Set chest modal data
+            setChestBiomeType(currentBiome.type);
+            setCurrentChest(biomeChest);
+            setShowChestModal(true);
+
+            // Auto-hide notification after 3 seconds, but keep chest modal open
             setTimeout(() => {
                 setBiomeDestroyed(false);
             }, 3000);
-            // User can open biomes modal manually now
         }
     }, [gameState]);
 
@@ -579,7 +591,8 @@ const GameDisplay: React.FC = () => {
             const newBiome = new PlayerBiome({
                 id: null, // Generate a new ID
                 type: biomeName,
-                currentHealth: null // This will reset to max health
+                currentHealth: null, // This will reset to max health
+                chest: null
             });
 
             return prev.withCurrentBiome(newBiome);
@@ -655,6 +668,37 @@ const GameDisplay: React.FC = () => {
     // Close block details modal
     const handleCloseBlockDetails = () => {
         setSelectedBlock(null);
+    };
+
+    // Handle claiming chest rewards
+    const handleClaimChestRewards = (rewards: { blockName: string, amount: number }[]) => {
+        // Add all the rewarded blocks to player's inventory
+        rewards.forEach(reward => {
+            if (reward.amount > 0) {
+                // Add blocks to inventory
+                setGameState(prev => {
+                    const updatedBlockInventory = prev.blockInventory.addBlock(reward.blockName, reward.amount);
+                    return prev.withBlockInventory(updatedBlockInventory);
+                });
+
+                // Create temporary block for notification
+                const tempBlock = new PlayerBlock({ name: reward.blockName, quantity: reward.amount });
+
+                // Show notification
+                setBlockAdded(tempBlock);
+
+                // Hide notification after delay
+                setTimeout(() => {
+                    setBlockAdded(null);
+                }, 3000);
+            }
+        });
+
+        // Close the chest modal
+        setShowChestModal(false);
+
+        // Open biomes modal to select a new biome
+        setShowBiomes(true);
     };
 
     // Don't render anything substantial on the server to avoid hydration mismatches
@@ -878,6 +922,18 @@ const GameDisplay: React.FC = () => {
                     <p>Please select a new biome to explore!</p>
                 </div>
             )}
+
+            {/* Chest Modal */}
+            <ChestModal
+                isOpen={showChestModal}
+                onClose={() => {
+                    setShowChestModal(false);
+                    setShowBiomes(true); // Open biomes selection after closing chest
+                }}
+                biomeType={chestBiomeType}
+                chest={currentChest}
+                onClaimRewards={handleClaimChestRewards}
+            />
 
             {/* Block added notification */}
             {blockAdded && (
