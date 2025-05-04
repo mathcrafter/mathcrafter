@@ -15,6 +15,7 @@ const biomes: Biome[] = [
         availableBlocks: ["dirt", "wood", "clay", "pumpkin"],
         availablePickaxes: ["wood", "clay", "pumpkin"],
         maxHealth: 10,
+        chest: "small",
         cost: null,
     },
     {
@@ -23,10 +24,8 @@ const biomes: Biome[] = [
         availableBlocks: ["sand", "glass", "sandstone", "cactus"],
         availablePickaxes: ["cactus", "sandstone", "glass"],
         maxHealth: 10,
-        cost: {
-            amount: 1,
-            itemType: "pumpkin"
-        }
+        chest: "small",
+        cost: null,
     },
     {
         name: "tundra",
@@ -34,6 +33,7 @@ const biomes: Biome[] = [
         availableBlocks: ["snow", "ice", "birchwood", "sapphire", "winter_candy"],
         availablePickaxes: ["birchwood", "ice", "sapphire", "candy"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "sandstone"
@@ -45,6 +45,7 @@ const biomes: Biome[] = [
         availableBlocks: ["stone", "gravel", "coal", "iron", "gold", "diamond", "redstone", "copper"],
         availablePickaxes: ["stone", "iron", "gold", "diamond", "arctic_copper"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "sapphire"
@@ -56,6 +57,7 @@ const biomes: Biome[] = [
         availableBlocks: ["emerald", "jasper", "lapis_lazuli", "deepslate", "calcite", "bedrock"],
         availablePickaxes: ["emerald", "lapis"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "copper"
@@ -67,6 +69,7 @@ const biomes: Biome[] = [
         availableBlocks: ["red_sand", "hardened_clay", "red_sandstone", "red_cactus", "topaz", "tumbleweed"],
         availablePickaxes: ["red_sandstone", "red_cactus", "topaz"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "bedrock"
@@ -78,6 +81,7 @@ const biomes: Biome[] = [
         availableBlocks: ["dandelion_seeds", "coffee_beans", "podzol", "jungle_log", "orchid_seeds", "jade"],
         availablePickaxes: ["flower", "jade"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "topaz"
@@ -89,6 +93,7 @@ const biomes: Biome[] = [
         availableBlocks: ["coral", "ocean_sand", "sponge", "live_rock", "prismarine", "pearl"],
         availablePickaxes: ["coral", "trident", "pearl"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "jade"
@@ -100,6 +105,7 @@ const biomes: Biome[] = [
         availableBlocks: ["magma_block", "andesite", "rhyolite", "pumice", "basalt", "cinnabar", "volcanic_quartz", "obsidian"],
         availablePickaxes: ["basalt", "cinnabar", "molten"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "pearl"
@@ -111,6 +117,7 @@ const biomes: Biome[] = [
         availableBlocks: ["netherrack", "soul_sand", "nether_brick", "nether_quartz", "glowstone_dust", "ruby"],
         availablePickaxes: ["glowstone", "ruby"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "obsidian"
@@ -122,6 +129,7 @@ const biomes: Biome[] = [
         availableBlocks: ["nylium", "warp_wart", "blackstone", "malachite", "shroomlight", "ender_dust"],
         availablePickaxes: ["blackstone", "malachite"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "ruby"
@@ -133,6 +141,7 @@ const biomes: Biome[] = [
         availableBlocks: ["brown_mushroom", "red_mushroom", "cursed_earth", "dawn_stone", "dusk_stone", "mycelium", "acacia_wood", "amber", "green_mushroom", "acorn", "circadian_dust"],
         availablePickaxes: ["mushroom", "amber", "circadian"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "shroomlight"
@@ -144,6 +153,7 @@ const biomes: Biome[] = [
         availableBlocks: ["endstone", "purpur", "chorus_plant", "chorus_flower", "endstone_bricks", "amethyst", "enderium", "ender_essence"],
         availablePickaxes: ["amethyst", "enderium", "endstone", "purpur"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "amber"
@@ -155,6 +165,7 @@ const biomes: Biome[] = [
         availableBlocks: ["moon_rock", "aluminum", "diorite", "lunar_meteorite", "alien_ooze", "cheese"],
         availablePickaxes: ["moon", "asteroid", "alien"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "enderium"
@@ -166,6 +177,7 @@ const biomes: Biome[] = [
         availableBlocks: ["martian_soil", "granite", "carbon_snow", "carbon_ice", "opal", "alien_crystal"],
         availablePickaxes: ["martian", "opal"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "alien_ooze"
@@ -177,6 +189,7 @@ const biomes: Biome[] = [
         availableBlocks: ["blight_vine", "blighted_soil", "ivory_wood", "komatiite", "mana_crystal", "astral_silver", "orichalcum", "adamantine", "wizard_wood", "enchanted_soil", "purity_shard", "signalite", "blighted_goo", "unicorn_horn"],
         availablePickaxes: ["blight", "ivory_wood", "mana", "orichalcum", "adamantine", "astral_silver", "purity", "unicorn"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "opal"
@@ -188,6 +201,7 @@ const biomes: Biome[] = [
         availableBlocks: ["sunstone", "sunspot", "plasma", "star_core", "tritium", "hydrogen", "qbit", "rocket_fuel", "dyson_sphere_part", "quantum_chip", "comet_dust"],
         availablePickaxes: ["star_core", "plasma", "tritium"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "rocket_fuel"
@@ -199,6 +213,7 @@ const biomes: Biome[] = [
         availableBlocks: ["sand_of_clock", "clock_gear", "book_of_time", "secret_of_time", "time_stone", "time_key_fragment", "time_key", "circuit_board", "clock_spring"],
         availablePickaxes: ["chronos_lair", "clock_gear"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "time_key"
@@ -210,6 +225,7 @@ const biomes: Biome[] = [
         availableBlocks: ["static", "struct", "null", "enum_crystal", "bool", "graviton", "off_bit", "on_bit", "c_sharp"],
         availablePickaxes: ["enum", "struct", "null"],
         maxHealth: 10,
+        chest: "small",
         cost: {
             amount: 1,
             itemType: "graviton"

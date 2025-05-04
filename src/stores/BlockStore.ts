@@ -5,6 +5,10 @@ export class BlockStore extends Store<Block> {
     constructor(blocks: Block[]) {
         super(blocks);
     }
+
+    public getItemByRarity(rarity: string): Block {
+        return this.items.find(block => block.rarity === rarity) as Block;
+    }
 }
 
 const blocks: Block[] = [
