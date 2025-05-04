@@ -6,8 +6,8 @@ export class BlockStore extends Store<Block> {
         super(blocks);
     }
 
-    public getItemByRarity(rarity: string): Block {
-        return this.items.find(block => block.rarity === rarity) as Block;
+    public getItemsByRarity(rarity: string): Block[] {
+        return this.items.filter(block => block.rarity === rarity) as Block[];
     }
 }
 

@@ -44,7 +44,8 @@ export class RandomRewardByRarity implements RewardProps {
     }
 
     public getBlock(): Block {
-        return blockStore.getItemByRarity(this.rarity) as Block;
+        const blocks = blockStore.getItemsByRarity(this.rarity);
+        return blocks[Math.floor(Math.random() * blocks.length)];
     }
 
     public getAmount(): number {
