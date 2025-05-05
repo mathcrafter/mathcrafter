@@ -58,6 +58,11 @@ export const getInitialGameState = (): IGameState => {
         blockInventory: new BlockInventory({ items: [] }),
         picks: 0,
         unlockedBiomes: ["plains"],
-        currentBiome: new PlayerBiome({ id: null, type: "plains", currentHealth: null })
+        currentBiome: new PlayerBiome({
+            id: null,
+            type: "plains",
+            currentHealth: null,
+            chest: null
+        })
     };
 };
