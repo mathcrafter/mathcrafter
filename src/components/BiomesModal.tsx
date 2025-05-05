@@ -7,6 +7,7 @@ import { biomeStore } from '@/stores/BiomeStore';
 import { Biome } from '@/models/Biome';
 import { getAssetPath } from '../utils/assetPath';
 import BlockDetails from './BlockDetails';
+import { logEvent } from '@/utils/analytics';
 
 interface BiomesModalProps {
     isOpen: boolean;
@@ -72,6 +73,8 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
 
     const handleUnlock = (biomeName: string) => {
         if (onUnlockBiome) {
+            // Track biome unlock event
+            logEvent('Biome', 'Unlock', biomeName);
             onUnlockBiome(biomeName.toLowerCase());
         }
     };
@@ -79,6 +82,8 @@ const BiomesModal: React.FC<BiomesModalProps> = ({
     const handleSelect = (e: React.MouseEvent, biomeName: string) => {
         e.stopPropagation(); // Prevent any parent click handlers
         if (onSelectBiome && isBiomeUnlocked(biomeName) && biomeName.toLowerCase() !== currentBiomeType) {
+            // Track biome selection event
+            logEvent('Biome', 'Select', biomeName);
             onSelectBiome(biomeName.toLowerCase());
             onClose();
         }

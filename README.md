@@ -95,6 +95,28 @@ MathCrafterZ can be played offline after the initial load. The game uses Progres
    - You can then play without an internet connection
    - On mobile devices, you can add the game to your home screen for an app-like experience
 
+## Google Analytics Integration
+
+MathCrafterZ includes Google Analytics 4 integration to track user interactions and improve the game experience:
+
+1. Set up your Google Analytics account:
+   - Create a new property in Google Analytics
+   - Set up a new web data stream
+   - Copy your Measurement ID (starts with G-)
+
+2. Configure the environment variable:
+   ```bash
+   # Create or edit your .env.local file
+   echo "NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX" > .env.local
+   # Replace G-XXXXXXXXXX with your actual measurement ID
+   ```
+
+3. Key tracked events:
+   - Page views: Automatically tracked when users navigate between pages
+   - Biome selection: When users select a new biome
+   - Biome unlocking: When users unlock a new biome
+   - More events can be added as needed
+
 ## Development
 
 1. Install dependencies:
