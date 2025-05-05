@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
 import { PlayerPickaxe } from '../models/Pickaxe';
-import { PlayerBiome } from '../models/Biome';
 import { getAssetPath } from '@/utils/assetPath';
 
 interface BiomeProps {
