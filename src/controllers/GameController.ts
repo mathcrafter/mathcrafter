@@ -60,7 +60,8 @@ class LocalStorageGameStateStorage implements IGameStateStorage {
                 const currentBiome = new PlayerBiome({
                     id: parsedState.currentBiome.id,
                     type: parsedState.currentBiome.type,
-                    currentHealth: parsedState.currentBiome.currentHealth
+                    currentHealth: parsedState.currentBiome.currentHealth,
+                    chest: parsedState.currentBiome.chest
                 });
 
                 return new GameState({
@@ -179,7 +180,8 @@ export class GameController {
             const currentBiome = new PlayerBiome({
                 id: parsedState.currentBiome.id,
                 type: parsedState.currentBiome.type,
-                currentHealth: parsedState.currentBiome.currentHealth
+                currentHealth: parsedState.currentBiome.currentHealth,
+                chest: parsedState.currentBiome.chest
             });
 
             return new GameState({
