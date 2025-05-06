@@ -1086,6 +1086,34 @@ const pickaxes: Pickaxe[] = [
         "notes": "Contains unstable material.",
         "maxHealth": 5,
     },
+    {
+        "name": "divine",
+        "strength": 20,
+        "critical": 0.90,
+        "cost": {
+            "amount": 20,
+            "itemType": "runic"
+        },
+        "power": "Let there be light",
+        "rarity": "Legendary",
+        "description": "A pickaxe made from divine material.",
+        "notes": "Contains divine material.",
+        "maxHealth": 5,
+    },
+    {
+        "name": "retro",
+        "strength": 20,
+        "critical": 0.90,
+        "cost": {
+            "amount": 20,
+            "itemType": "runic"
+        },
+        "power": "Pixelize",
+        "rarity": "Epic",
+        "description": "A pickaxe made from retro material.",
+        "notes": "Contains retro material.",
+        "maxHealth": 5,
+    }
 ]
 
 export const pickaxeStore = new PickaxeStore(pickaxes);
