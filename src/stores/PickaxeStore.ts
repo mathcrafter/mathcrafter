@@ -1113,7 +1113,21 @@ const pickaxes: Pickaxe[] = [
         "description": "A pickaxe made from retro material.",
         "notes": "Contains retro material.",
         "maxHealth": 5,
-    }
+    },
+    {
+        "name": "bone",
+        "strength": 10,
+        "critical": 0.45,
+        "cost": {
+            "amount": 10,
+            "itemType": "runic"
+        },
+        "power": "Bone Power",
+        "rarity": "Rare",
+        "description": "A pickaxe made from bone.",
+        "notes": "Contains bone.",
+        "maxHealth": 5,
+    },
 ]
 
 export const pickaxeStore = new PickaxeStore(pickaxes);
