@@ -147,72 +147,31 @@ const ShopPickaxesModal: React.FC<ShopPickaxesModalProps> = ({ isOpen, onClose, 
                                 const canBuy = canBuyPickaxe(pickaxe.cost.itemType, pickaxe.cost.amount);
                                 const rarityColor = getRarityColor(pickaxe.rarity);
                                 const blockImageUrl = getBlockImageUrl(pickaxe.cost.itemType);
+                                const pickaxeName = pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1);
 
                                 return (
                                     <div
                                         key={pickaxe.name}
-                                        className={styles.pickaxeItem}
+                                        className={styles.pickaxeCard}
                                     >
-                                        <div className={styles.pickaxeImageContainer}>
+                                        <div className={styles.pickaxeCardImageContainer}>
                                             <img
                                                 src={`${getAssetPath(`/assets/pickaxes/${pickaxe.name.toLowerCase()}.png`)}`}
                                                 alt={`${pickaxe.name} Pickaxe`}
-                                                className={styles.pickaxeItemImg}
+                                                className={styles.pickaxeCardImg}
                                             />
-                                            <div
-                                                className={styles.rarityBadge}
-                                                style={{
-                                                    backgroundColor: rarityColor,
-                                                    top: 'auto',
-                                                    bottom: '5px'
-                                                }}
-                                            >
-                                                {pickaxe.rarity}
-                                            </div>
                                         </div>
-                                        <div className={styles.pickaxeItemContent}>
-                                            <div className={styles.pickaxeInfo}>
-                                                <div className={styles.itemName}>
-                                                    {pickaxe.name.charAt(0).toUpperCase() + pickaxe.name.slice(1)} Pickaxe
-                                                </div>
-                                                <div className={styles.itemDescription}>
-                                                    Strength: {pickaxe.strength} | Durability: {pickaxe.maxHealth} | Crit: {pickaxe.critical * 100}%
-                                                </div>
-                                                <div className={styles.unlockCost}>
-                                                    <div className={styles.costWithImage}>
-                                                        <span>Cost: </span>
-                                                        <div className={styles.costItemImgWrapper} onClick={() => handleBlockClick(pickaxe.cost.itemType)}>
-                                                            <img
-                                                                src={blockImageUrl}
-                                                                alt={pickaxe.cost.itemType}
-                                                                className={styles.costBlockImage}
-                                                                style={{
-                                                                    width: '32px',
-                                                                    height: '32px',
-                                                                    cursor: 'pointer'
-                                                                }}
-                                                            />
-                                                            <div className={styles.costItemBadge}>
-                                                                {pickaxe.cost.amount}
-                                                            </div>
-                                                        </div>
-                                                        <span className={canBuy ? styles.affordableCost : styles.unaffordableCost}>
-                                                            {pickaxe.cost.itemType}
-                                                        </span>
-                                                    </div>
-                                                    <div>
-                                                        (You have: {gameState.blockInventory.getBlockQuantity(pickaxe.cost.itemType)})
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button
-                                                className={`${styles.buyPickaxeButton} ${!canBuy ? styles.buyPickaxeButtonDisabled : ''}`}
-                                                onClick={() => onBuyItem(pickaxe.name, 0)}
-                                                disabled={!canBuy}
-                                            >
-                                                {getBuyButtonText(pickaxe)}
-                                            </button>
+                                        <div className={styles.pickaxeCardInfo}>
+                                            <div className={styles.pickaxeCardName}>{pickaxeName}</div>
+                                            <div className={styles.pickaxeCardRarity} style={{ color: rarityColor }}>{pickaxe.rarity}</div>
                                         </div>
+                                        <button
+                                            className={`${styles.buyPickaxeButton} ${!canBuy ? styles.buyPickaxeButtonDisabled : ''}`}
+                                            onClick={() => onBuyItem(pickaxe.name, 0)}
+                                            disabled={!canBuy}
+                                        >
+                                            {getBuyButtonText(pickaxe)}
+                                        </button>
                                     </div>
                                 );
                             })}
