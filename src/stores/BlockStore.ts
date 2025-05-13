@@ -583,7 +583,11 @@ const blocks: Block[] = [
     {
         name: "runic",
         rarity: "Rare",
-    }
+    },
+    {
+        name: "chronos_lair",
+        rarity: "Legendary",
+    },
 ]
 
 export const blockStore = new BlockStore(blocks);

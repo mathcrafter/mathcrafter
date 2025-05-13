@@ -406,15 +406,17 @@ const GameDisplay: React.FC = () => {
         const randomValue = Math.random();
         const criticalValue = currentPickaxe.getPickaxe().critical;
 
-        // If random number is between 0 and critical, show the question
-        if (randomValue <= criticalValue) {
-            // Show the math question
-            setShowQuestion(true);
-            generateNewProblem();
-        } else {
-            // Skip the question and directly mine the biome
-            handleCorrectAnswer(currentPickaxe.getPickaxe().strength, true);
-        }
+        generateNewProblem();
+        setShowQuestion(true);
+        // // If random number is between 0 and critical, show the question
+        // if (randomValue <= criticalValue) {
+        //     // Show the math question
+        //     setShowQuestion(true);
+        //     generateNewProblem();
+        // } else {
+        //     // Skip the question and directly mine the biome
+        //     handleCorrectAnswer(currentPickaxe.getPickaxe().strength, true);
+        // }
     };
 
     // Reset the game
@@ -791,7 +793,6 @@ const GameDisplay: React.FC = () => {
                 <div className={`${styles.modalContent} ${styles.questionModalContent}`}>
                     <div className={styles.modalHeader}>
                         <h2>Math Problem</h2>
-                        <button className={styles.closeBtn} onClick={closeQuestionModal}>×</button>
                     </div>
                     <form
                         className={`${styles.mathProblem} ${wrongAnswer ? styles.wrongAnswerShake + ' ' + styles.wrongAnswerFlash : ''}`}
