@@ -1,8 +1,10 @@
+import { pickaxeStore } from "@/stores/PickaxeStore";
 import { Block } from "./Block";
 import { blockStore } from "@/stores/BlockStore";
+import { Pickaxe } from "./Pickaxe";
 
 export interface RewardProps {
-    getBlock(): Block;
+    get(): Block | Pickaxe;
     getAmount(): number;
 }
 
@@ -19,8 +21,8 @@ export class FixedReward implements RewardProps {
         this.chancePercentage = props.chancePercentage;
     }
 
-    public getBlock(): Block {
-        return blockStore.getItemByName(this.name) as Block;
+    public get(): Block | Pickaxe {
+        return blockStore.getItemByName(this.name) as Block | Pickaxe;
     }
 
     public getAmount(): number {
@@ -43,13 +45,32 @@ export class RandomBlockByRarity implements RewardProps {
         this.chancePercentage = props.chancePercentage;
     }
 
-    public getBlock(): Block {
+    public get(): Block | Pickaxe {
         const blocks = blockStore.getItemsByRarity(this.rarity);
         return blocks[Math.floor(Math.random() * blocks.length)];
     }
 
     public getAmount(): number {
         return this.amount;
+    }
+}
+
+export class RandomPickaxeByRarity implements RewardProps {
+    rarity: string;
+    chancePercentage: number;
+
+    constructor(props: { rarity: string, chancePercentage: number }) {
+        this.rarity = props.rarity;
+        this.chancePercentage = props.chancePercentage;
+    }
+
+    public get(): Pickaxe | Block {
+        const pickaxes = pickaxeStore.getItemsByRarity(this.rarity);
+        return pickaxes[Math.floor(Math.random() * pickaxes.length)];
+    }
+
+    public getAmount(): number {
+        return 1;
     }
 }
 
@@ -73,7 +94,7 @@ export class Chest implements ChestProps {
         this.rewards = props.rewards;
     }
 
-    public open(): Array<{ block: Block, amount: number }> {
-        return this.rewards.map(reward => ({ block: reward.getBlock(), amount: reward.getAmount() }));
+    public open(): Array<{ block: Block | Pickaxe, amount: number }> {
+        return this.rewards.map(reward => ({ block: reward.get(), amount: reward.getAmount() }));
     }
 }

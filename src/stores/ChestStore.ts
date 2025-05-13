@@ -1,4 +1,4 @@
-import { Chest, FixedReward, RandomBlockByRarity } from "@/models/Chest";
+import { Chest, FixedReward, RandomBlockByRarity, RandomPickaxeByRarity } from "@/models/Chest";
 import { Store } from "./Store";
 
 export class ChestStore extends Store<Chest> {
@@ -70,6 +70,7 @@ const chests: Chest[] = [
             new FixedReward({ name: "runic", maxAmount: 100, minAmount: 1, chancePercentage: 1 }),
             new RandomBlockByRarity({ rarity: "Rare", amount: 150, chancePercentage: 1 }),
             new RandomBlockByRarity({ rarity: "Common", amount: 250, chancePercentage: 1 }),
+            new RandomPickaxeByRarity({ rarity: "Legendary", chancePercentage: 1 }),
         ]
     })
 ]

@@ -5,6 +5,10 @@ class PickaxeStore extends Store<Pickaxe> {
     constructor(pickaxes: Pickaxe[]) {
         super(pickaxes);
     }
+
+    public getItemsByRarity(rarity: string): Pickaxe[] {
+        return this.items.filter(pickaxe => pickaxe.rarity === rarity);
+    }
 }
 
 const pickaxes: Pickaxe[] = [
