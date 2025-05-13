@@ -32,7 +32,7 @@ export class FixedReward implements RewardProps {
     }
 }
 
-export class RandomRewardByRarity implements RewardProps {
+export class RandomBlockByRarity implements RewardProps {
     rarity: string;
     amount: number;
     chancePercentage: number;
