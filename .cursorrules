@@ -1,2 +1,3 @@
 * Prefix all node/npm calls with nvm use 22
 * Place all supporting scripts under scripts/ folder.  Use `uv` to manage dependencies for that folder.
+* UI fonts should be vt323

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import gameController from '../controllers/GameController';
 import ImportGameModal from './ImportGameModal';
@@ -41,6 +42,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartNewGame, onContinueGame 
 
     return (
         <div className={styles.homeScreen}>
+            <div className={styles.logo}>
+                <Image
+                    src="/assets/favicon.webp"
+                    alt="MathCrafter Logo"
+                    width={100}
+                    height={100}
+                    priority
+                />
+            </div>
             <div className={styles.title}>
                 <h1>MathCrafter</h1>
             </div>

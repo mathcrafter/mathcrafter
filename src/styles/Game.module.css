@@ -3046,6 +3046,7 @@
     cursor: pointer;
     margin-top: 20px;
     transition: all 0.2s ease;
+    font-family: 'VT323', monospace;
 }
 
 .claimButton:hover {
