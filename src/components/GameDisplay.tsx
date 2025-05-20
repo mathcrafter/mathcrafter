@@ -12,10 +12,10 @@ import InventoryModal from './InventoryModal';
 import BiomesModal from './BiomesModal';
 import QuickInventory from './QuickInventory';
 import gameController from '../controllers/GameController';
-import { PlayerPickaxe } from '@/models/Pickaxe';
+import { Pickaxe, PlayerPickaxe } from '@/models/Pickaxe';
 import soundManager from '@/utils/SoundManager';
 import { PickaxeInventory } from '@/models/Inventory';
-import { PlayerBlock } from '@/models/Block';
+import { Block, PlayerBlock } from '@/models/Block';
 import { pickaxeStore } from '@/stores/PickaxeStore';
 import BuyBlocksModal from './BuyBlocksModal';
 import { biomeStore } from '@/stores/BiomeStore';
@@ -26,7 +26,7 @@ import FurnaceModal from './FurnaceModal';
 import { Recipe } from '@/models/Recipe';
 import BlockDetails from './BlockDetails';
 import ChestModal from './ChestModal';
-import { Chest } from '@/models/Chest';
+import { Chest, RewardProps } from '@/models/Chest';
 
 type BlockType = ReturnType<typeof blockStore.getItemByName> extends null ? never : NonNullable<ReturnType<typeof blockStore.getItemByName>>;
 
@@ -64,6 +64,7 @@ const GameDisplay: React.FC = () => {
     const [picksToShow, setPicksToShow] = useState<number | null>(null);
     const [minedBlock, setMinedBlock] = useState<{ name: string; imageUrl: string } | null>(null);
     const [blockAdded, setBlockAdded] = useState<PlayerBlock | null>(null);
+    const [pickaxeAdded, setPickaxeAdded] = useState<PlayerPickaxe | null>(null);
     const [showBuyBlocks, setShowBuyBlocks] = useState<boolean>(false);
     const [showExportGame, setShowExportGame] = useState<boolean>(false);
     const [showFurnace, setShowFurnace] = useState<boolean>(false);
@@ -673,21 +674,41 @@ const GameDisplay: React.FC = () => {
     };
 
     // Handle claiming chest rewards
-    const handleClaimChestRewards = (rewards: { blockName: string, amount: number }[]) => {
-        // Add all the rewarded blocks to player's inventory
+    const handleClaimChestRewards = (rewards: RewardProps[]) => {
+        // Add all the rewarded items to player's inventory
         rewards.forEach(reward => {
-            if (reward.amount > 0) {
-                // Add blocks to inventory
-                setGameState(prev => {
-                    const updatedBlockInventory = prev.blockInventory.addBlock(reward.blockName, reward.amount);
-                    return prev.withBlockInventory(updatedBlockInventory);
-                });
+            if (reward.getAmount() > 0) {
+                // Check if reward has a "strength" property to determine if it's a pickaxe
+                if (reward.getType() === 'pickaxe') {
+                    // // It's a pickaxe
+                    const pickaxeName = reward.get().name;
 
-                // Create temporary block for notification
-                const tempBlock = new PlayerBlock({ name: reward.blockName, quantity: reward.amount });
+                    // Create a new pickaxe and add it to inventory
+                    for (let i = 0; i < reward.getAmount(); i++) {
+                        const newPickaxe = new PlayerPickaxe({ id: null, type: pickaxeName, health: null });
 
-                // Show notification
-                setBlockAdded(tempBlock);
+                        // Add the new pickaxe to inventory
+                        setGameState(prev => {
+                            const updatedPickaxeInventory = new PickaxeInventory({
+                                items: [...prev.pickaxeInventory.items, newPickaxe],
+                                currentItem: prev.pickaxeInventory.currentItem
+                            });
+                            return prev.withPickaxeInventory(updatedPickaxeInventory);
+                        });
+                        setPickaxeAdded(newPickaxe);
+                    }
+                } else {
+                    // It's a block
+                    // Add blocks to inventory
+                    setGameState(prev => {
+                        const updatedBlockInventory = prev.blockInventory.addBlock(reward.get().name, reward.getAmount());
+                        return prev.withBlockInventory(updatedBlockInventory);
+                    });
+
+                    // Create temporary block for notification
+                    const tempBlock = new PlayerBlock({ name: reward.get().name, quantity: reward.getAmount() });
+                    setBlockAdded(tempBlock);
+                }
 
                 // Hide notification after delay
                 setTimeout(() => {
@@ -965,6 +986,16 @@ const GameDisplay: React.FC = () => {
                     <img src={blockAdded.getImageUrl()} alt={blockAdded.name} />
                     <div>
                         <div>+1 {blockAdded.name}</div>
+                    </div>
+                </div>
+            )}
+
+            {/* Pickaxe added notification */}
+            {pickaxeAdded && (
+                <div className={styles.pickaxeAddedNotification}>
+                    <img src={pickaxeAdded.getImageUrl()} alt={pickaxeAdded.getPickaxe().name} />
+                    <div>
+                        <div>+1 {pickaxeAdded.getPickaxe().name}</div>
                     </div>
                 </div>
             )}

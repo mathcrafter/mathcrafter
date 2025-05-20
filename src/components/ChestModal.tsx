@@ -3,16 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Game.module.css';
 import { getAssetPath } from '@/utils/assetPath';
-import { Chest } from '@/models/Chest';
-import { GameState } from '@/models/GameState';
-import { PlayerBlock } from '@/models/Block';
+import { Chest, RewardProps } from '@/models/Chest';
+import { Block, PlayerBlock } from '@/models/Block';
+import { Pickaxe, PlayerPickaxe } from '@/models/Pickaxe';
 
 interface ChestModalProps {
     isOpen: boolean;
     onClose: () => void;
     biomeType: string | null;
     chest: Chest | null;
-    onClaimRewards: (rewards: { blockName: string, amount: number }[]) => void;
+    onClaimRewards: (rewards: RewardProps[]) => void;
 }
 
 const ChestModal: React.FC<ChestModalProps> = ({
@@ -24,7 +24,7 @@ const ChestModal: React.FC<ChestModalProps> = ({
 }) => {
     const [isOpening, setIsOpening] = useState(false);
     const [showItems, setShowItems] = useState(false);
-    const [rewards, setRewards] = useState<Array<{ block: any, amount: number }>>([]);
+    const [rewards, setRewards] = useState<RewardProps[]>([]);
 
     // Reset state when modal is opened
     useEffect(() => {
@@ -43,7 +43,7 @@ const ChestModal: React.FC<ChestModalProps> = ({
             if (chest) {
                 const chestRewards = chest.open();
                 // Filter out rewards with amount 0
-                const validRewards = chestRewards.filter(reward => reward.amount > 0);
+                const validRewards = chestRewards.filter(reward => reward.getAmount() > 0);
                 setRewards(validRewards);
             }
             setShowItems(true);
@@ -53,13 +53,7 @@ const ChestModal: React.FC<ChestModalProps> = ({
     // Handle claiming items and closing modal
     const handleClaim = () => {
         if (rewards.length > 0) {
-            // Convert rewards to the format expected by the onClaimRewards callback
-            const claimableRewards = rewards.map(reward => ({
-                blockName: reward.block.name,
-                amount: reward.amount
-            }));
-
-            onClaimRewards(claimableRewards);
+            onClaimRewards(rewards);
         }
         onClose();
     };
@@ -95,19 +89,35 @@ const ChestModal: React.FC<ChestModalProps> = ({
                             <div className={styles.rewardsList}>
                                 {rewards.length > 0 ? (
                                     rewards.map((reward, index) => (
-                                        <div key={index} className={styles.rewardItem}>
-                                            <div className={styles.rewardIconContainer}>
-                                                <img
-                                                    src={new PlayerBlock({ name: reward.block.name, quantity: 1 }).getImageUrl()}
-                                                    alt={reward.block.name}
-                                                    className={styles.rewardIcon}
-                                                />
+                                        reward.getType() === 'block' ? (
+                                            <div key={index} className={styles.rewardItem}>
+                                                <div className={styles.rewardIconContainer}>
+                                                    <img
+                                                        src={new PlayerBlock({ name: reward.get().name, quantity: 1 }).getImageUrl()}
+                                                        alt={reward.get().name}
+                                                        className={styles.rewardIcon}
+                                                    />
+                                                </div>
+                                                <div className={styles.rewardInfo}>
+                                                    <span className={styles.rewardName}>{reward.get().name}</span>
+                                                    <span className={styles.rewardAmount}>x{reward.getAmount()}</span>
+                                                </div>
                                             </div>
-                                            <div className={styles.rewardInfo}>
-                                                <span className={styles.rewardName}>{reward.block.name}</span>
-                                                <span className={styles.rewardAmount}>x{reward.amount}</span>
+                                        ) : (
+                                            <div key={index} className={styles.rewardItem}>
+                                                <div className={styles.rewardIconContainer}>
+                                                    <img
+                                                        src={new PlayerPickaxe({ id: null, type: reward.get().name, health: null }).getImageUrl()}
+                                                        alt={reward.get().name}
+                                                        className={styles.rewardIcon}
+                                                    />
+                                                </div>
+                                                <div className={styles.rewardInfo}>
+                                                    <span className={styles.rewardName}>{reward.get().name}</span>
+                                                    <span className={styles.rewardAmount}>x{reward.getAmount()}</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )
                                     ))
                                 ) : (
                                     <p>The chest was empty!</p>

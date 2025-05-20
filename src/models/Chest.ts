@@ -5,6 +5,7 @@ import { Pickaxe } from "./Pickaxe";
 
 export interface RewardProps {
     get(): Block | Pickaxe;
+    getType(): 'block' | 'pickaxe';
     getAmount(): number;
 }
 
@@ -23,6 +24,10 @@ export class FixedReward implements RewardProps {
 
     public get(): Block | Pickaxe {
         return blockStore.getItemByName(this.name) as Block | Pickaxe;
+    }
+
+    public getType(): 'block' | 'pickaxe' {
+        return 'block';
     }
 
     public getAmount(): number {
@@ -50,6 +55,10 @@ export class RandomBlockByRarity implements RewardProps {
         return blocks[Math.floor(Math.random() * blocks.length)];
     }
 
+    public getType(): 'block' | 'pickaxe' {
+        return 'block';
+    }
+
     public getAmount(): number {
         return this.amount;
     }
@@ -67,6 +76,10 @@ export class RandomPickaxeByRarity implements RewardProps {
     public get(): Pickaxe | Block {
         const pickaxes = pickaxeStore.getItemsByRarity(this.rarity);
         return pickaxes[Math.floor(Math.random() * pickaxes.length)];
+    }
+
+    public getType(): 'block' | 'pickaxe' {
+        return 'pickaxe';
     }
 
     public getAmount(): number {
@@ -94,7 +107,7 @@ export class Chest implements ChestProps {
         this.rewards = props.rewards;
     }
 
-    public open(): Array<{ block: Block | Pickaxe, amount: number }> {
-        return this.rewards.map(reward => ({ block: reward.get(), amount: reward.getAmount() }));
+    public open(): Array<RewardProps> {
+        return this.rewards;
     }
 }
