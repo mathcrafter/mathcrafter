@@ -35,8 +35,8 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
-            itemType: "sandstone"
+            amount: 2,
+            itemType: "glass"
         },
     },
     {
@@ -47,7 +47,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 3,
             itemType: "sapphire"
         },
     },
@@ -59,7 +59,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 5,
             itemType: "copper"
         },
     },
@@ -71,7 +71,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 8,
             itemType: "bedrock"
         },
     },
@@ -83,7 +83,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 13,
             itemType: "topaz"
         }
     },
@@ -95,7 +95,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 21,
             itemType: "jade"
         }
     },
@@ -107,7 +107,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 34,
             itemType: "pearl"
         },
     },
@@ -119,7 +119,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 55,
             itemType: "obsidian"
         },
     },
@@ -131,7 +131,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 89,
             itemType: "ruby"
         },
     },
@@ -143,7 +143,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 144,
             itemType: "shroomlight"
         },
     },
@@ -155,7 +155,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 233,
             itemType: "amber"
         },
     },
@@ -167,7 +167,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 377,
             itemType: "enderium"
         },
     },
@@ -179,7 +179,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 610,
             itemType: "alien_ooze"
         },
     },
@@ -191,7 +191,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 987,
             itemType: "opal"
         },
     },
@@ -203,7 +203,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 1597,
             itemType: "rocket_fuel"
         },
     },
@@ -215,7 +215,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 2584,
             itemType: "time_key"
         },
     },
@@ -227,7 +227,7 @@ const biomes: Biome[] = [
         maxHealth: 11,
         chest: "small",
         cost: {
-            amount: 1,
+            amount: 4181,
             itemType: "graviton"
         },
     },
