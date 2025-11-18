@@ -517,20 +517,6 @@ const pickaxes: Pickaxe[] = [
         "maxHealth": 5,
     },
     {
-        "name": "sandstone",
-        "strength": 4,
-        "critical": 0.25,
-        "cost": {
-            "amount": 10,
-            "itemType": "sandstone"
-        },
-        "power": "Desert Power",
-        "rarity": "Common",
-        "description": "A pickaxe made from sandstone.",
-        "notes": "From the desert biome.",
-        "maxHealth": 15,
-    },
-    {
         "name": "ice",
         "strength": 5,
         "critical": 0.30,
