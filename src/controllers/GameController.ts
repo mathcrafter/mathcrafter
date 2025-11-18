@@ -239,8 +239,8 @@ class MathProblemGenerator implements IMathProblemGenerator {
     }
 
     private generateMultiplicationProblem(): MathProblem {
-        let num1 = this.chooseRandom([0, 1, 2, 3, 5, 10, 11]);
-        let num2 = Math.floor(Math.random() * 12);
+        let num1 = Math.floor(Math.random() * 11) + 2; // Random number from 2-12
+        let num2 = Math.floor(Math.random() * 11) + 2; // Random number from 2-12
 
         if (Math.random() < 0.5) {
             [num1, num2] = [num2, num1];
@@ -255,16 +255,14 @@ class MathProblemGenerator implements IMathProblemGenerator {
     }
 
     public generateMathProblem(): MathProblem {
-        const operator = this.chooseRandom(['+', '-', '*']);
-        switch (operator) {
-            case '+':
-                return this.generateAdditionProblem();
-            case '-':
-                return this.generateSubtractionProblem();
-            case '*':
-                return this.generateMultiplicationProblem();
-            default:
-                throw new Error('Invalid operator');
+        // 80% chance of multiplication, 10% addition, 10% subtraction
+        const rand = Math.random();
+        if (rand < 0.8) {
+            return this.generateMultiplicationProblem();
+        } else if (rand < 0.9) {
+            return this.generateAdditionProblem();
+        } else {
+            return this.generateSubtractionProblem();
         }
     }
 }

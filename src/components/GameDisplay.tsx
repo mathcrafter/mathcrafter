@@ -820,7 +820,7 @@ const GameDisplay: React.FC = () => {
                         onSubmit={handleSubmit}
                     >
                         <div className={styles.question}>
-                            {problem.num1} {problem.operator} {problem.num2} = ?
+                            {problem.num1} {problem.operator === '*' ? '×' : problem.operator} {problem.num2} = ?
                         </div>
                         {notEnoughPicks && (
                             <div className={styles.notEnoughPicks}>
