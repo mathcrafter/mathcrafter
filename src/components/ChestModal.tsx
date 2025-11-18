@@ -88,37 +88,41 @@ const ChestModal: React.FC<ChestModalProps> = ({
                             <h3>You found:</h3>
                             <div className={styles.rewardsList}>
                                 {rewards.length > 0 ? (
-                                    rewards.map((reward, index) => (
-                                        reward.getType() === 'block' ? (
+                                    rewards.map((reward, index) => {
+                                        const item = reward.get(); // Call get() once and store the result
+                                        const type = reward.getType();
+                                        const amount = reward.getAmount();
+
+                                        return type === 'block' ? (
                                             <div key={index} className={styles.rewardItem}>
                                                 <div className={styles.rewardIconContainer}>
                                                     <img
-                                                        src={new PlayerBlock({ name: reward.get().name, quantity: 1 }).getImageUrl()}
-                                                        alt={reward.get().name}
+                                                        src={new PlayerBlock({ name: item.name, quantity: 1 }).getImageUrl()}
+                                                        alt={item.name}
                                                         className={styles.rewardIcon}
                                                     />
                                                 </div>
                                                 <div className={styles.rewardInfo}>
-                                                    <span className={styles.rewardName}>{reward.get().name}</span>
-                                                    <span className={styles.rewardAmount}>x{reward.getAmount()}</span>
+                                                    <span className={styles.rewardName}>{item.name}</span>
+                                                    <span className={styles.rewardAmount}>x{amount}</span>
                                                 </div>
                                             </div>
                                         ) : (
                                             <div key={index} className={styles.rewardItem}>
                                                 <div className={styles.rewardIconContainer}>
                                                     <img
-                                                        src={new PlayerPickaxe({ id: null, type: reward.get().name, health: null }).getImageUrl()}
-                                                        alt={reward.get().name}
+                                                        src={new PlayerPickaxe({ id: null, type: item.name, health: null }).getImageUrl()}
+                                                        alt={item.name}
                                                         className={styles.rewardIcon}
                                                     />
                                                 </div>
                                                 <div className={styles.rewardInfo}>
-                                                    <span className={styles.rewardName}>{reward.get().name}</span>
-                                                    <span className={styles.rewardAmount}>x{reward.getAmount()}</span>
+                                                    <span className={styles.rewardName}>{item.name}</span>
+                                                    <span className={styles.rewardAmount}>x{amount}</span>
                                                 </div>
                                             </div>
-                                        )
-                                    ))
+                                        );
+                                    })
                                 ) : (
                                     <p>The chest was empty!</p>
                                 )}
